@@ -1,3 +1,5 @@
 <template>
-  <v-content>patate</v-content>
+  <v-app>
+    <v-content>User Profile</v-content>
+  </v-app>
 </template>

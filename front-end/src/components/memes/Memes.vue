@@ -1,3 +1,3 @@
 <template>
-  <v-content></v-content>
+  <v-content>Memes</v-content>
 </template>
