@@ -19,3 +19,13 @@ VALUES
 	("Nice view you've got there mate", "https://preview.redd.it/zrid66bv7ho21.jpg?width=960&crop=smart&auto=webp&s=321fdfb6948eb2c077160062ff7846b37ac65dab");
 
 	
+CREATE TABLE user
+(
+	id INTEGER NOT NULL,
+	username VARCHAR(30),
+	email VARCHAR(50),
+	hashedPassword VARCHAR(64),
+	salt VARCHAR(16),
+	PRIMARY KEY(id),
+);
+
