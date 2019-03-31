@@ -16,16 +16,19 @@ export default new Router({
     },
     {
       path: "/nav",
-      name: "Navigation",
       component: NavigationBar,
       children: [
         {
-          path: "/",
+          path: "",
+          redirect: "UserProfile"
+        },
+        {
+          path: "userprofile",
+          name: "UserProfile",
           component: UserProfile
         },
         {
           path: "*",
-          name: "NotfoundLog",
           component: NotFound
         }
       ]

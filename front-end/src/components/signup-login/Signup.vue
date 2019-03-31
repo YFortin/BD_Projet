@@ -1,35 +1,38 @@
 <template>
+  <v-app>
     <v-content>
-      <v-container>
-        <v-layout column fill-height>
-          <v-card>
-            <v-form ref="form" v-model="valid" lazy-validation>
-              <v-flex grow pa-4>
-                <v-text-field
-                  v-model="username"
-                  :counter="usernameLength"
-                  :rules="userNameRules"
-                  label="Username"
-                  required
-                ></v-text-field>
-              </v-flex>
-              <v-flex grow pa-4>
-                <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
-              </v-flex>
-              <v-flex grow pa-4>
-                <v-text-field
-                  :type="'password'"
-                  v-model="password"
-                  :rules="passwordRules"
-                  label="Password"
-                  required
-                ></v-text-field>
-              </v-flex>
-              <v-flex>
-                <v-btn color="#007ac1" @click="submit">Submit</v-btn>
-              </v-flex>
-            </v-form>
-          </v-card>
+      <v-container fluid fill-height>
+        <v-layout align-center justify-center>
+          <v-flex xs12 sm8 md4>
+            <v-card class="elevation-12">
+              <v-toolbar dark color="primary">
+                <v-toolbar-title>Sign Up</v-toolbar-title>
+              </v-toolbar>
+              <v-card-text>
+                <v-form ref="form" v-model="valid" lazy-validation>
+                  <v-text-field
+                    v-model="username"
+                    :counter="usernameLength"
+                    :rules="userNameRules"
+                    label="Username"
+                    required
+                  ></v-text-field>
+                  <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
+                  <v-text-field
+                    :type="'password'"
+                    v-model="password"
+                    :rules="passwordRules"
+                    label="Password"
+                    required
+                  ></v-text-field>
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" @click="submit">Submit</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
         </v-layout>
       </v-container>
     </v-content>
