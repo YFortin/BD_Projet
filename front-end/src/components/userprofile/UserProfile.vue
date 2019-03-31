@@ -1,3 +1,3 @@
 <template>
-  <v-content></v-content>
+  <v-content>patate</v-content>
 </template>
