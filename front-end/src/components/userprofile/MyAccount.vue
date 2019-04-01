@@ -79,7 +79,7 @@
         <v-divider></v-divider>
 
         <v-layout>
-          <v-dialog v-model="dialog" persistent max-width="290">
+          <v-dialog v-model="dialog" persistent max-width="500">
             <template v-slot:activator="{ on }">
               <v-btn class="ma-0 mt-4" color="error" v-on="on" depressed>Delete My Account</v-btn>
             </template>
@@ -87,12 +87,12 @@
               <v-card-title class="headline">Do you really want to delete your account?</v-card-title>
               <v-card-text>
                 All your informations will be
-                <span class="font-weight-bold">deleted</span>
+                <span class="font-weight-bold">deleted</span>. This action cannot be undone.
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="green darken-1" flat @click="dialog = false">Disagree</v-btn>
-                <v-btn color="red darken-1" flat @click="dialog = false">Agree</v-btn>
+                <v-btn color="green darken-1" flat @click="dialog = false">Cancel</v-btn>
+                <v-btn color="red darken-1" flat @click="dialog = false">I want to delete my account</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
