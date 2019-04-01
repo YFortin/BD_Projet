@@ -1,6 +1,6 @@
 <template>
   <v-content>
-    <v-toolbar>
+    <v-toolbar flat color="primary" dark>
       <v-toolbar-title>
         Memer
         <div class="subheading">Find your favorites memes</div>

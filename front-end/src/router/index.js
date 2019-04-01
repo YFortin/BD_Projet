@@ -14,7 +14,7 @@ export default new Router({
   routes: [
     {
       path: "/",
-      redirect: "Signup"
+      redirect: "Login"
     },
     {
       path: "/nav",
@@ -60,6 +60,10 @@ export default new Router({
           component: Login
         }
       ]
+    },
+    {
+      path: "*",
+      component: NotFound
     }
   ]
 });
