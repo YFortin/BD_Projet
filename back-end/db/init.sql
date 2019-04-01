@@ -75,3 +75,24 @@ CREATE TABLE comment
 	text VARCHAR(1000),
 	PRIMARY KEY(commentId),
 )
+
+CREATE TABLE token
+(
+	userId INTEGER NOT NULL,
+	token VARCHAR(200),
+)
+
+CREATE TABLE nbLike
+(
+	memeId INTEGER(10),
+	nbLike INTEGER(6),
+	top BOOLEAN,
+)
+
+CREATE TRIGGER isTop
+AFTER UPDATE
+ON nbLike  
+FOR EACH ROW
+IF (NEW.nbLike > 10)
+SET NEW.top = TRUE 
+ELSE NEW.top = FALSE
