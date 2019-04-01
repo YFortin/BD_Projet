@@ -42,7 +42,7 @@ def login():
     raise NotImplementedError
 
 
-@app.route('/users/<id>', methods=['GET'])
+@app.route('/users/<int:id>', methods=['GET'])
 def get_user(id):
     """
     Get user at id
@@ -53,8 +53,8 @@ def get_user(id):
 
 
 # TODO need to be the same user
-@app.route('/users/<id>', methods=['DELETE'])
-def get_user(id):
+@app.route('/users/<int:id>', methods=['DELETE'])
+def delete_user(id):
     """
     Delete user at id
     :param id: user id
@@ -63,7 +63,7 @@ def get_user(id):
     raise NotImplementedError
 
 
-@app.route('/users/<id>/follow', methods=['POST'])
+@app.route('/users/<int:id>/follow', methods=['POST'])
 def follow_user(id):
     """
     The current user follow the user with id
@@ -73,7 +73,7 @@ def follow_user(id):
     raise NotImplementedError
 
 
-@app.route('/users/<id>/unfollow', methods=['POST'])
+@app.route('/users/<int:id>/unfollow', methods=['POST'])
 def unfollow_user(id):
     """
     The current user unfollow the user with id
@@ -95,7 +95,7 @@ def get_memes():
     raise NotImplementedError
 
 
-@app.route('/memes/<id>', methods=['GET'])
+@app.route('/memes/<int:id>', methods=['GET'])
 def get_meme_at_id(id):
     """
     Return to meme with id
@@ -105,8 +105,8 @@ def get_meme_at_id(id):
     raise NotImplementedError
 
 
-@app.route('/memes/<id>', methods=['DELETE'])
-def get_meme_at_id(id):
+@app.route('/memes/<int:id>', methods=['DELETE'])
+def delete_meme_at_id(id):
     """
     Delete meme with id
     :param id: meme id
@@ -153,7 +153,7 @@ def upload_meme():
     raise NotImplementedError
 
 
-@app.route('/memes/<id>/upvote', methods=['POST'])
+@app.route('/memes/<int:id>/upvote', methods=['POST'])
 def upvote_a_meme(id):
     """
     Upvote the meme
@@ -163,7 +163,7 @@ def upvote_a_meme(id):
     raise NotImplementedError
 
 
-@app.route('/memes/<id>/downvote', methods=['POST'])
+@app.route('/memes/<int:id>/downvote', methods=['POST'])
 def downvote_a_meme(id):
     """
     Downvote the meme
@@ -173,8 +173,8 @@ def downvote_a_meme(id):
     raise NotImplementedError
 
 
-@app.route('/memes/<id>/comment', methods=['POST'])
-def upvote_a_meme(id):
+@app.route('/memes/<int:id>/comment', methods=['POST'])
+def comment_a_meme(id):
     """
     Comment the meme
     JSON input
