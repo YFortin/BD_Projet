@@ -10,8 +10,9 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <v-btn flat to="UserProfile">My account</v-btn>
         <v-btn flat to="Memes">Memes</v-btn>
+        <v-btn flat to="MyAccount">My account</v-btn>
+        <v-btn flat to="UserProfile">Search User</v-btn>
         <v-btn flat to="../Login">Back to log in</v-btn>
       </v-toolbar-items>
     </v-toolbar>

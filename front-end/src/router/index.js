@@ -7,6 +7,7 @@ import NavigationBar from "@/components/navigation/NavigationBar";
 import UserProfile from "@/components/userprofile/UserProfile";
 import Memes from "@/components/memes/Memes";
 import NotLoginNavigation from "@/components/navigation/NotLoginNavigation";
+import MyAccount from "@/components/userprofile/MyAccount";
 
 Vue.use(Router);
 
@@ -26,6 +27,11 @@ export default new Router({
           path: "userprofile",
           name: "UserProfile",
           component: UserProfile
+        },
+        {
+          path: "myaccount",
+          name: "MyAccount",
+          component: MyAccount
         },
         {
           path: "memes",

@@ -13,7 +13,7 @@
                   <v-text-field
                     v-model="username"
                     :counter="usernameLength"
-                    :rules="userNameRules"
+                    :rules="usernameRules"
                     label="Username"
                     required
                   ></v-text-field>
@@ -45,11 +45,9 @@ export default {
     valid: true,
     username: "",
     usernameLength: 30,
-    userNameRules: [
+    usernameRules: [
       v => !!v || "Username is required",
-      v =>
-        (v && v.length <= this.usernameLength) ||
-        "Username must be less than 30 characters"
+      v => v.length <= 30 || "Username must be less than 30 characters"
     ],
     email: "",
     emailRules: [
