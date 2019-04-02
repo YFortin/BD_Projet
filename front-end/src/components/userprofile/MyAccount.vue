@@ -133,7 +133,7 @@ export default {
     },
     avatar: {
       oldURL:
-        "https://cdn.iconscout.com/icon/free/png-256/avatar-372-456324.png",
+        "https://scontent.fyhu2-1.fna.fbcdn.net/v/t1.0-9/12195929_10207762342233419_5750346653754879508_n.jpg?_nc_cat=110&_nc_ht=scontent.fyhu2-1.fna&oh=da05239e577d1b8e690b20c90f0e4c38&oe=5D4CA965",
       newURL: "",
       editButton: "edit",
       enableEdit: true

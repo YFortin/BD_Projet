@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app id="inspire">
     <v-content>
       <v-container grid-list-md>
         <h1 class="display-1 black--text text-xs-center">
@@ -25,44 +25,21 @@
           </v-flex>
         </v-layout>
         <v-divider></v-divider>
-        <v-layout align-center justify-center row wrap fill-height>
-          <v-flex xs8 align-self-center>
-            <v-card color="secondary">
-              <v-card-title primary-title>
-                <h3 class="headline font-weight-bold mb-2">My memes</h3>
-              </v-card-title>
-              <v-carousel>
-                <v-carousel-item v-for="(item,i) in items" :key="i" :src="item.src"></v-carousel-item>
-              </v-carousel>
-            </v-card>
-          </v-flex>
-        </v-layout>
+        <MemesVisualizer></MemesVisualizer>
       </v-container>
     </v-content>
   </v-app>
 </template>
 
 <script>
+import MemesVisualizer from "../memesvisualizer/MemesVisualizer";
+
 export default {
   data: () => ({
     userName: "MPP",
     numberOfFollowers: 0,
     follower: "Follow",
-    followColor: "success",
-    items: [
-      {
-        src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg"
-      },
-      {
-        src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg"
-      },
-      {
-        src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg"
-      },
-      {
-        src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg"
-      }
-    ]
+    followColor: "success"
   }),
   methods: {
     follow() {
@@ -76,7 +53,11 @@ export default {
         this.numberOfFollowers--;
       }
     }
+  },
+  components: {
+    MemesVisualizer
   }
 };
 </script>
+
 

@@ -29,7 +29,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="primary" to="Signup">Sign Up</v-btn>
-                <v-btn color="primary" @click="login" to="Nav/UserProfile">Log in</v-btn>
+                <v-btn color="primary" @click="login" to="Nav/Memes">Log in</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
