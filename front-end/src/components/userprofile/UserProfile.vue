@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inspire">
+  <v-app>
     <v-content>
       <v-container grid-list-md>
         <h1 class="display-1 black--text text-xs-center">
@@ -32,14 +32,14 @@
 </template>
 
 <script>
-import MemesVisualizer from "../memesvisualizer/MemesVisualizer";
+import MemesVisualizer from "./MemesVisualizer";
 
 export default {
   data: () => ({
     userName: "MPP",
     numberOfFollowers: 0,
     follower: "Follow",
-    followColor: "success"
+    followColor: "info"
   }),
   methods: {
     follow() {
@@ -49,7 +49,7 @@ export default {
         this.numberOfFollowers++;
       } else {
         this.follower = "Follow";
-        this.followColor = "success";
+        this.followColor = "info";
         this.numberOfFollowers--;
       }
     }
