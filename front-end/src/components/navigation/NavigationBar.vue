@@ -11,14 +11,35 @@
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-btn flat to="Memes">Memes</v-btn>
+        <v-btn flat @click="showSearch">Search User</v-btn>
+        <v-btn flat to="UserProfile">User Profile</v-btn>
         <v-btn flat to="MyAccount">My account</v-btn>
-        <v-btn flat to="UserProfile">Search User</v-btn>
         <v-btn flat to="../Login">Back to log in</v-btn>
       </v-toolbar-items>
     </v-toolbar>
-
+    <v-expand-transition>
+      <SearchBar v-show="show"></SearchBar>
+    </v-expand-transition>
     <transition name="fade" mode="out-in">
       <router-view></router-view>
     </transition>
   </v-content>
 </template>
+
+<script>
+import SearchBar from "../search/SearchBar";
+
+export default {
+  data: () => ({
+    show: false
+  }),
+  methods: {
+    showSearch() {
+      this.show = !this.show;
+    }
+  },
+  components: {
+    SearchBar
+  }
+};
+</script>
