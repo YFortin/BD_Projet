@@ -1,16 +1,16 @@
 CREATE DATABASE memeber;
 use memeber;
 
-CREATE TABLE memes
+CREATE TABLE Memes
 (
-	name VARCHAR(100),
-	url VARCHAR(200),
-	memeId INTEGER(10),
+    memeId VARCHAR(36) NOT NULL,
+    title  VARCHAR(100),
+    url    VARCHAR(200),
 
-	PRIMARY KEY(memeId)
-
+    PRIMARY KEY (memeId)
 );
 
+/*
 INSERT INTO memes
 	(name,url,memeId)
 VALUES
@@ -21,78 +21,106 @@ VALUES
 	("Sometimes I just can't stand her", "https://img-9gag-fun.9cache.com/photo/a739m9b_460swp.webp",4),
 	("Think about it, Google ", "https://img-9gag-fun.9cache.com/photo/aB0EMG2_460swp.webp",5),
 	("Nice view you've got there mate", "https://preview.redd.it/zrid66bv7ho21.jpg?width=960&crop=smart&auto=webp&s=321fdfb6948eb2c077160062ff7846b37ac65dab",6);
+*/
 
-	
-CREATE TABLE user
+CREATE TABLE Users
 (
-	userId INTEGER NOT NULL,
-	username VARCHAR(30),
-	email VARCHAR(50),
-	hashedPassword VARCHAR(64),
-	salt VARCHAR(16),
-	PRIMARY KEY(userId),
+    userId         VARCHAR(36) NOT NULL,
+    username       VARCHAR(30),
+    email          VARCHAR(50),
+    hashedPassword VARCHAR(64),
+    salt           VARCHAR(16),
+
+    PRIMARY KEY (userId)
 );
 
-CREATE TABLE follow
+CREATE TABLE Follow
 (
-	userId INTEGER NOT NULL,
-	followerId INTEGER NOT NULL,
-)
+    followee VARCHAR(36) NOT NULL,
+    follower VARCHAR(36) NOT NULL,
 
-CREATE TABLE liked
+    PRIMARY KEY (followee),
+    FOREIGN KEY (follower) REFERENCES Users (userId),
+    FOREIGN KEY (followee) REFERENCES Users (userId)
+);
+
+CREATE TABLE Liked
 (
-	userId INTEGER NOT NULL,
-	memeId INTEGER(10)
-	date DATE
-)
+    userId VARCHAR(36) NOT NULL,
+    memeId VARCHAR(36) NOT NULL,
+    date   DATE,
 
-CREATE TABLE seen
+    PRIMARY KEY (userId),
+    FOREIGN KEY (userId) REFERENCES Users (userId),
+    FOREIGN KEY (memeId) REFERENCES Memes (memeId)
+);
+
+CREATE TABLE Disliked
 (
-	userId INTEGER NOT NULL,
-	memeId INTEGER(10)
-	time INT(5)
-)
+    userId VARCHAR(36) NOT NULL,
+    memeId VARCHAR(36) NOT NULL,
+    date   DATE,
 
-CREATE TABLE disliked
+    PRIMARY KEY (userId),
+    FOREIGN KEY (userId) REFERENCES Users (userId),
+    FOREIGN KEY (memeId) REFERENCES Memes (memeId)
+);
+
+CREATE TABLE Seen
 (
-	userId INTEGER NOT NULL,
-	memeId INTEGER(10)
-	date DATE
-)
+    id        INT AUTO_INCREMENT PRIMARY KEY,
+    userId    VARCHAR(36) NOT NULL,
+    memeId    VARCHAR(36) NOT NULL,
+    startTime DATE,
+    endTime   DATE,
 
-CREATE TABLE uploaded
+    PRIMARY KEY (id),
+    FOREIGN KEY (userId) REFERENCES Users (userId),
+    FOREIGN KEY (memeId) REFERENCES Memes (memeId)
+);
+
+CREATE TABLE Uploaded
 (
-	userId INTEGER NOT NULL,
-	memeId INTEGER(10)
-	date DATE
-)
+    userId VARCHAR(36) NOT NULL,
+    memeId VARCHAR(36),
+    date   DATE,
 
-CREATE TABLE comment
+    PRIMARY KEY (userId),
+    FOREIGN KEY (userId) REFERENCES Users (userId),
+    FOREIGN KEY (memeId) REFERENCES Memes (memeId)
+);
+
+CREATE TABLE Comment
 (
-	userId INTEGER NOT NULL,
-	date DATE,
-	commentId INTEGER NOT NULL,
-	text VARCHAR(1000),
-	PRIMARY KEY(commentId),
-)
+    commentId INTEGER AUTO_INCREMENT,
+    userId    INTEGER NOT NULL,
+    memeId    INTEGER NOT NULL,
+    date      DATE,
+    text      VARCHAR(1000),
 
-CREATE TABLE token
+    PRIMARY KEY (commentId),
+    FOREIGN KEY (userId) REFERENCES Users (userId),
+    FOREIGN KEY (memeId) REFERENCES Memes (memeId)
+);
+
+CREATE TABLE Token
 (
-	userId INTEGER NOT NULL,
-	token VARCHAR(200),
-)
+    id     INTEGER AUTO_INCREMENT,
+    userId VARCHAR(36) NOT NULL,
+    token  VARCHAR(36),
 
-CREATE TABLE nbLike
+    PRIMARY KEY (id),
+    FOREIGN KEY (userId) REFERENCES Users (userId)
+);
+
+CREATE TABLE Top
 (
-	memeId INTEGER(10),
-	nbLike INTEGER(6),
-	top BOOLEAN,
-)
+    memeId VARCHAR(36) NOT NULL,
+    data   DATE,
 
-CREATE TRIGGER isTop
-AFTER UPDATE
-ON nbLike  
-FOR EACH ROW
-IF (NEW.nbLike > 10)
-SET NEW.top = TRUE 
-ELSE NEW.top = FALSE
+    PRIMARY KEY (memeId),
+    FOREIGN KEY (memeId) REFERENCES Memes (memeId)
+);
+
+/* TODO trigger on Liked to Top*/
+/* TODO trigger verify username validity */
