@@ -1,4 +1,4 @@
-from services.repository import Repository
+from services import Repository
 
 
 class MemeService:

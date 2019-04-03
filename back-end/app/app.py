@@ -1,8 +1,8 @@
-from services.user_service import UserService
-from services.meme_service import MemeService
+from services import UserService
+from services import MemeService
 
-from handlers.meme_handler import MemeHandler
-from handlers.user_handler import UserHandler
+from handlers import MemeHandler
+from handlers import UserHandler
 from db.mysql_repository import MySQLRepository
 
 from flask import Flask
@@ -23,6 +23,12 @@ def connect_to_database() -> MySQLRepository:
 
 app = Flask(__name__)
 
+
+@app.route('/')
+def index():
+    return 'Hello, World!'
+
+
 repository = connect_to_database()
 
 user_service = UserService(repository)
@@ -34,4 +40,4 @@ meme_handler = MemeHandler(app, meme_service)
 meme_handler.register_routes()
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run('0.0.0.0', 5000)

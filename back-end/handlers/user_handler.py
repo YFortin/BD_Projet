@@ -1,7 +1,7 @@
 from flask import Flask
 
-from handlers.handler import Handler
-from services.user_service import UserService
+from handlers import Handler
+from services import UserService
 
 
 class UserHandler(Handler):

@@ -3,11 +3,11 @@ use memeber;
 
 CREATE TABLE Memes
 (
-    memeId VARCHAR(36) NOT NULL,
-    title  VARCHAR(100),
-    url    VARCHAR(200),
+    id    VARCHAR(36) NOT NULL,
+    title VARCHAR(100),
+    url   VARCHAR(200),
 
-    PRIMARY KEY (memeId)
+    PRIMARY KEY (id)
 );
 
 /*
@@ -25,13 +25,13 @@ VALUES
 
 CREATE TABLE Users
 (
-    userId         VARCHAR(36) NOT NULL,
+    id             VARCHAR(36) NOT NULL,
     username       VARCHAR(30),
     email          VARCHAR(50),
     hashedPassword VARCHAR(64),
     salt           VARCHAR(16),
 
-    PRIMARY KEY (userId)
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE Follow
@@ -40,8 +40,8 @@ CREATE TABLE Follow
     follower VARCHAR(36) NOT NULL,
 
     PRIMARY KEY (followee),
-    FOREIGN KEY (follower) REFERENCES Users (userId),
-    FOREIGN KEY (followee) REFERENCES Users (userId)
+    FOREIGN KEY (follower) REFERENCES Users (id),
+    FOREIGN KEY (followee) REFERENCES Users (id)
 );
 
 CREATE TABLE Liked
@@ -51,8 +51,8 @@ CREATE TABLE Liked
     date   DATE,
 
     PRIMARY KEY (userId),
-    FOREIGN KEY (userId) REFERENCES Users (userId),
-    FOREIGN KEY (memeId) REFERENCES Memes (memeId)
+    FOREIGN KEY (userId) REFERENCES Users (id),
+    FOREIGN KEY (memeId) REFERENCES Memes (id)
 );
 
 CREATE TABLE Disliked
@@ -62,8 +62,8 @@ CREATE TABLE Disliked
     date   DATE,
 
     PRIMARY KEY (userId),
-    FOREIGN KEY (userId) REFERENCES Users (userId),
-    FOREIGN KEY (memeId) REFERENCES Memes (memeId)
+    FOREIGN KEY (userId) REFERENCES Users (id),
+    FOREIGN KEY (memeId) REFERENCES Memes (id)
 );
 
 CREATE TABLE Seen
@@ -75,8 +75,8 @@ CREATE TABLE Seen
     endTime   DATE,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (userId) REFERENCES Users (userId),
-    FOREIGN KEY (memeId) REFERENCES Memes (memeId)
+    FOREIGN KEY (userId) REFERENCES Users (id),
+    FOREIGN KEY (memeId) REFERENCES Memes (id)
 );
 
 CREATE TABLE Uploaded
@@ -86,8 +86,8 @@ CREATE TABLE Uploaded
     date   DATE,
 
     PRIMARY KEY (userId),
-    FOREIGN KEY (userId) REFERENCES Users (userId),
-    FOREIGN KEY (memeId) REFERENCES Memes (memeId)
+    FOREIGN KEY (userId) REFERENCES Users (id),
+    FOREIGN KEY (memeId) REFERENCES Memes (id)
 );
 
 CREATE TABLE Comment
@@ -99,8 +99,8 @@ CREATE TABLE Comment
     text      VARCHAR(1000),
 
     PRIMARY KEY (commentId),
-    FOREIGN KEY (userId) REFERENCES Users (userId),
-    FOREIGN KEY (memeId) REFERENCES Memes (memeId)
+    FOREIGN KEY (userId) REFERENCES Users (id),
+    FOREIGN KEY (memeId) REFERENCES Memes (id)
 );
 
 CREATE TABLE Token
@@ -110,7 +110,7 @@ CREATE TABLE Token
     token  VARCHAR(36),
 
     PRIMARY KEY (id),
-    FOREIGN KEY (userId) REFERENCES Users (userId)
+    FOREIGN KEY (userId) REFERENCES Users (id),
 );
 
 CREATE TABLE Top
@@ -119,7 +119,7 @@ CREATE TABLE Top
     data   DATE,
 
     PRIMARY KEY (memeId),
-    FOREIGN KEY (memeId) REFERENCES Memes (memeId)
+    FOREIGN KEY (memeId) REFERENCES Memes (id)
 );
 
 /* TODO trigger on Liked to Top*/
