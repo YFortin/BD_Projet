@@ -1,7 +1,7 @@
 from flask import Flask
 
-from handlers import Handler
-from services import MemeService
+from handlers.handler import Handler
+from services.meme_service import MemeService
 
 
 class MemeHandler(Handler):

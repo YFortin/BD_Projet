@@ -1,23 +1,20 @@
 version: "2"
 services:
   app:
-    build: ./app
+    build: .
     ports:
       - "5000:5000"
-    links:
-      - db
-    volumes:
-      - .:/code
     depends_on:
+      - db
+    links:
       - db
 
   db:
-    image: mysql:8
+    image: mysql:5.7
     ports:
       - "32000:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
+    command: --init-file /docker-entrypoint-initdb.d/init.sql
     volumes:
-      - ./db:/docker-entrypoint-initdb.d/:ro
-
-
+        - ./mysqlSchema:/docker-entrypoint-initdb.d/

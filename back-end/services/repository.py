@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from entities import User
-from entities import Meme
+from entities.user import User
+from entities.meme import Meme
 
 
 class Repository(ABC):

@@ -1,8 +1,8 @@
 from mysql.connector import MySQLConnection
 
-from entities import Meme
-from entities import User
-from services import Repository
+from entities.meme import Meme
+from entities.user import User
+from services.repository import Repository
 
 
 class MySQLRepository(Repository):

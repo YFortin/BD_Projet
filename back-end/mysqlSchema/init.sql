@@ -1,5 +1,17 @@
-CREATE DATABASE memeber;
-use memeber;
+DROP DATABASE IF EXISTS Memeber;
+
+CREATE DATABASE Memeber;
+use Memeber;
+
+DROP TABLE IF EXISTS Memes;
+DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS Liked;
+DROP TABLE IF EXISTS Disliked;
+DROP TABLE IF EXISTS Seen;
+DROP TABLE IF EXISTS Uploaded;
+DROP TABLE IF EXISTS Comment;
+DROP TABLE IF EXISTS Token;
+DROP TABLE IF EXISTS Top;
 
 CREATE TABLE Memes
 (
@@ -9,19 +21,6 @@ CREATE TABLE Memes
 
     PRIMARY KEY (id)
 );
-
-/*
-INSERT INTO memes
-	(name,url,memeId)
-VALUES
-	("no gaz", "https://img-9gag-fun.9cache.com/photo/aKxewzj_700bwp.webp",0),
-	("Probably the happiest guy alive right now <3", "https://img-9gag-fun.9cache.com/photo/a1QV4Wb_700bwp.webp",1),
-	("That subtle marble thigh softness", "https://img-9gag-fun.9cache.com/photo/an9EeR5_700bwp.webp",2),
-	("2019 be like", "https://img-9gag-fun.9cache.com/photo/a6O2rgR_700bwp.webp",3),
-	("Sometimes I just can't stand her", "https://img-9gag-fun.9cache.com/photo/a739m9b_460swp.webp",4),
-	("Think about it, Google ", "https://img-9gag-fun.9cache.com/photo/aB0EMG2_460swp.webp",5),
-	("Nice view you've got there mate", "https://preview.redd.it/zrid66bv7ho21.jpg?width=960&crop=smart&auto=webp&s=321fdfb6948eb2c077160062ff7846b37ac65dab",6);
-*/
 
 CREATE TABLE Users
 (
@@ -68,7 +67,7 @@ CREATE TABLE Disliked
 
 CREATE TABLE Seen
 (
-    id        INT AUTO_INCREMENT PRIMARY KEY,
+    id        INT AUTO_INCREMENT,
     userId    VARCHAR(36) NOT NULL,
     memeId    VARCHAR(36) NOT NULL,
     startTime DATE,
@@ -82,7 +81,7 @@ CREATE TABLE Seen
 CREATE TABLE Uploaded
 (
     userId VARCHAR(36) NOT NULL,
-    memeId VARCHAR(36),
+    memeId VARCHAR(36) NOT NULL,
     date   DATE,
 
     PRIMARY KEY (userId),
@@ -93,8 +92,8 @@ CREATE TABLE Uploaded
 CREATE TABLE Comment
 (
     commentId INTEGER AUTO_INCREMENT,
-    userId    INTEGER NOT NULL,
-    memeId    INTEGER NOT NULL,
+    userId    VARCHAR(36) NOT NULL,
+    memeId    VARCHAR(36) NOT NULL,
     date      DATE,
     text      VARCHAR(1000),
 
@@ -110,7 +109,7 @@ CREATE TABLE Token
     token  VARCHAR(36),
 
     PRIMARY KEY (id),
-    FOREIGN KEY (userId) REFERENCES Users (id),
+    FOREIGN KEY (userId) REFERENCES Users (id)
 );
 
 CREATE TABLE Top
@@ -122,5 +121,6 @@ CREATE TABLE Top
     FOREIGN KEY (memeId) REFERENCES Memes (id)
 );
 
-/* TODO trigger on Liked to Top*/
-/* TODO trigger verify username validity */
+-- TODO add ONE DELETE and ON UPDATE
+-- TODO trigger on Liked to Top
+-- TODO trigger verify username validity
