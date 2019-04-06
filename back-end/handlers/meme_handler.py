@@ -7,13 +7,14 @@ import json
 
 from handlers.handler import Handler
 from services.meme_service import MemeService
+from services.user_service import UserService
 
 
 class MemeHandler(Handler):
     def __init__(self, app: Flask, meme_service: MemeService):
         self.app = app
         self.meme_service = meme_service
-        from services.user_service import UserService
+
 
     def register_routes(self):
         @self.app.route('/memes', methods=['GET'])
@@ -25,11 +26,12 @@ class MemeHandler(Handler):
                 offset -> return memes starting at offset
             :return: array of memes
             """
-            content = json.loads(request.json)
-            limit = content.limit
-            offset = content.offset
+            content = json.loads(request.data)
+            limit = content['limit']
+            offset = content['offset']
 
-            return self.meme_service.get_memes(limit, offset)
+            memes = self.meme_service.get_memes(limit, offset)
+            return jsonify(memes)
 
         @self.app.route('/memes/<int:meme_id>', methods=['GET'])
         def get_meme_at(meme_id):
@@ -79,19 +81,25 @@ class MemeHandler(Handler):
             content = json.loads(request.json)
             raise NotImplementedError
 
-        @self.app.route('/memes', methods=['POST'])
+        @self.app.route('/meme', methods=['POST'])
         def upload_meme():
             """
             Get memes
             JSON input
             {
+                "title": "" :: string
                 "url": "" :: string
                 "category": "" :: string
             }
             :return:
             """
-            content = json.loads(request.json)
-            raise NotImplementedError
+            content = json.loads(request.data)
+            title = content['title']
+            url = content['url']
+            category = content['category']
+
+            self.meme_service.upload_meme(title, url, category)
+            return Response(status=201)
 
         @self.app.route('/memes/<int:meme_id>/upvote', methods=['POST'])
         def upvote_meme(meme_id):

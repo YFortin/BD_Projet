@@ -1,8 +1,9 @@
 class Meme:
-    def __init__(self, id, title, url):
+    def __init__(self, id, title, url, category):
         self._id = id
         self._title = title
         self._url = url
+        self._category = category
 
     @property
     def id(self):
@@ -27,3 +28,11 @@ class Meme:
     @url.setter
     def url(self, value):
         self._url = value
+
+    @property
+    def category(self):
+        return self._category
+
+    @category.setter
+    def category(self, value):
+        self._category = value

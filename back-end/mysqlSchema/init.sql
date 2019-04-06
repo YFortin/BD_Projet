@@ -18,6 +18,7 @@ CREATE TABLE Memes
     id    VARCHAR(36) NOT NULL,
     title VARCHAR(100),
     url   VARCHAR(200),
+    category VARCHAR(100),
 
     PRIMARY KEY (id)
 );

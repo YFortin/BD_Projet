@@ -44,11 +44,15 @@ class MySQLRepository(Repository):
 
     def get_all_memes(self):
         cursor = self.db_connection.cursor()
-        cursor.execute(f'SELECT * FROM Memes m')
+        cursor.execute(f'SELECT * FROM Memes')
+
+        return cursor.fetchall()
 
     def add_meme(self, meme: Meme):
         cursor = self.db_connection.cursor()
-        cursor.execute(f'UPDATE * FROM Memes m SET VALUES({meme}) WHERE m.id = {meme.id}')
+        sql = "INSERT INTO Memes (id, title, url, category) VALUES (%s, %s, %s, %s)"
+        val = (meme.id, meme.title, meme.url, meme.category)
+        cursor.execute(sql, val)
 
     def edit_meme(self, meme: Meme):
         cursor = self.db_connection.cursor()
