@@ -9,20 +9,16 @@ class MySQLRepository(Repository):
     def __init__(self, connection: MySQLConnection):
         self.db_connection = connection
 
-
-    def _user_tuple_to_user(self, data):
-        raise NotImplementedError()
-
     def get_user(self, user_id):
         cursor = self.db_connection.cursor()
-        cursor.execute(f"SELECT * FROM Users u WHERE u.id={user_id}")
+        cursor.execute(f'SELECT * FROM Users u WHERE u.id={user_id}')
         res = cursor.fetchall();
         user = User(res.id, res.username, res.email, res.hashedPassword, res.salt)
         return user
 
     def get_all_users(self):
         cursor = self.db_connection.cursor()
-        cursor.execute(f"SELECT * FROM Users u")
+        cursor.execute(f'SELECT * FROM Users u')
         cursor.fetchall()
         users = []
         for user in cursor:
@@ -30,16 +26,16 @@ class MySQLRepository(Repository):
         return users
 
     def add_user(self, user: User):
-        cursor = self.db_connection()
-        cursor.execute(f"INSERT INTO Users VALUES ({user})")
+        cursor = self.db_connection.cursor()
+        cursor.execute(f'INSERT INTO Users VALUES ({user})')
 
     def edit_user(self, user: User):
-        cursor = self.db_connection()
-        cursor.execute(f"UPDATE Users u SET VALUES({user}) WHERE u.id = {user.id}")
+        cursor = self.db_connection.cursor()
+        cursor.execute(f'UPDATE Users u SET VALUES({user}) WHERE u.id = {user.id}')
 
     def remove_user(self, user_id):
-        cursor = self.db_connection()
-        cursor.execute(f"DELETE Users u WHERE u.ud = {user_id}")
+        cursor = self.db_connection.cursor()
+        cursor.execute(f'DELETE Users u WHERE u.ud = {user_id}')
 
     def get_meme(self, meme_id):
         raise NotImplementedError()
