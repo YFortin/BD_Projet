@@ -2,10 +2,12 @@ from flask import Flask
 
 from handlers.handler import Handler
 from services.meme_service import MemeService
+from services.repository import Repository
 
 
 class MemeHandler(Handler):
-    def __init__(self, app: Flask, meme_service: MemeService):
+    def __init__(self, app: Flask, meme_service: MemeService, repository: Repository):
+        super().__init__(repository)
         self.app = app
         self.meme_service = meme_service
 

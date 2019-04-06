@@ -1,11 +1,18 @@
 from flask import Flask
+from flask import request
+from flask import Response
+from flask import jsonify
+
+import json
 
 from handlers.handler import Handler
+from services.repository import Repository
 from services.user_service import UserService
 
 
 class UserHandler(Handler):
-    def __init__(self, app: Flask, user_service: UserService):
+    def __init__(self, app: Flask, user_service: UserService, repository: Repository):
+        super().__init__(repository)
         self.app = app
         self.user_service = user_service
 
@@ -14,17 +21,46 @@ class UserHandler(Handler):
         def signup():
             """
             Create a new user
+            Input:
+            {
+                name
+                email
+                password
+            }
+            Output
+            400 if bbad json
+            201 if created
             :return:
             """
-            raise NotImplementedError
+            if not request.is_json:
+                return Response(status=400)
+
+            content = json.loads(request.json)
+            name = content.name
+            email = content.email
+            password = content.password
+            self.user_service.create_user(name, email, password)
+            return Response(status=201)
 
         @self.app.route('/login', methods=['POST'])
         def login():
             """
             log the user if the email-password pair is correct
+            Input:
+            {
+                email
+                password
+            }
+            Output
+            400 if bbad json
+            200 and
+            {
+                token
+            }
             :return: Set token cookie in client
             """
-            raise NotImplementedError
+            user = self.user_service.authenticate_user()
+            return jsonify
 
         @self.app.route('/users/<int:user_id>', methods=['GET'])
         def get_user(user_id):

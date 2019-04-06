@@ -48,3 +48,11 @@ class Repository(ABC):
     @abstractmethod
     def get_user_with_email(self, email):
         ...
+
+    @abstractmethod
+    def get_user_from_token(self, token):
+        ...
+
+    @abstractmethod
+    def add_token(self, user, token):
+        ...

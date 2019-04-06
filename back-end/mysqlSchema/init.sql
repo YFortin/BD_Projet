@@ -104,9 +104,10 @@ CREATE TABLE Comment
 
 CREATE TABLE Token
 (
-    id     INTEGER AUTO_INCREMENT,
-    userId VARCHAR(36) NOT NULL,
-    token  VARCHAR(36),
+    id          INTEGER AUTO_INCREMENT,
+    userId      VARCHAR(36) NOT NULL,
+    token       VARCHAR(36),
+    expiredDate DATE,
 
     PRIMARY KEY (id),
     FOREIGN KEY (userId) REFERENCES Users (id)
@@ -124,3 +125,4 @@ CREATE TABLE Top
 -- TODO add ONE DELETE and ON UPDATE
 -- TODO trigger on Liked to Top
 -- TODO trigger verify username validity
+-- TODO trigger remove old token
