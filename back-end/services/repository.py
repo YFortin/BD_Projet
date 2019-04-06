@@ -44,3 +44,7 @@ class Repository(ABC):
     @abstractmethod
     def remove_meme(self, meme_id):
         ...
+
+    @abstractmethod
+    def get_user_with_email(self, email):
+        ...

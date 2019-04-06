@@ -13,7 +13,7 @@ class MySQLRepository(Repository):
         cursor = self.db_connection.cursor()
         cursor.execute(f'SELECT * FROM Users u WHERE u.id={user_id}')
         res = cursor.fetchall();
-        user = User(res.id, res.username, res.email, res.hashedPassword, res.salt)
+        user = User(res.id, res.username, res.email, res.hashed_password, res.salt)
         return user
 
     def get_all_users(self):
@@ -22,7 +22,7 @@ class MySQLRepository(Repository):
         cursor.fetchall()
         users = []
         for user in cursor:
-            users.insert(User(user.id, user.username, user.email, user.hashedPassword, user.salt))
+            users.insert(User(user.id, user.username, user.email, user.hashed_password, user.salt))
         return users
 
     def add_user(self, user: User):

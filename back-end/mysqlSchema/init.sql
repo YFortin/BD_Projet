@@ -27,8 +27,8 @@ CREATE TABLE Users
     id             VARCHAR(36) NOT NULL,
     username       VARCHAR(30),
     email          VARCHAR(50),
-    hashedPassword VARCHAR(64),
-    salt           VARCHAR(16),
+    hashedPassword VARCHAR(128),
+    salt           VARCHAR(36),
 
     PRIMARY KEY (id)
 );

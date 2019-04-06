@@ -1,9 +1,9 @@
 class User:
-    def __init__(self, id, name, email, hashedPassword, salt):
-        self._id = id
+    def __init__(self, uid, name, email, hashed_password, salt):
+        self._id = uid
         self._name = name
         self._email = email
-        self._hashedPassword = hashedPassword
+        self._hashed_password = hashed_password
         self._salt = salt
 
     @property
@@ -31,12 +31,12 @@ class User:
         self._email = value
 
     @property
-    def hashedPassword(self):
+    def hashed_password(self):
         return
 
-    @hashedPassword.setter
-    def hashedPassword(self, value):
-        self.hashedPassword = value
+    @hashed_password.setter
+    def hashed_password(self, value):
+        self.hashed_password = value
 
     @property
     def salt(self):
