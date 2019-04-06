@@ -15,9 +15,9 @@ DROP TABLE IF EXISTS Top;
 
 CREATE TABLE Memes
 (
-    id    VARCHAR(36) NOT NULL,
-    title VARCHAR(100),
-    url   VARCHAR(200),
+    id       VARCHAR(36) NOT NULL,
+    title    VARCHAR(100),
+    url      VARCHAR(200),
     category VARCHAR(100),
 
     PRIMARY KEY (id)
@@ -25,11 +25,11 @@ CREATE TABLE Memes
 
 CREATE TABLE Users
 (
-    id             VARCHAR(36) NOT NULL,
-    username       VARCHAR(30),
-    email          VARCHAR(50),
-    hashedPassword VARCHAR(64),
-    salt           VARCHAR(16),
+    id              VARCHAR(36) NOT NULL,
+    username        VARCHAR(30),
+    email           VARCHAR(50),
+    hashed_password VARCHAR(64),
+    salt            VARCHAR(16),
 
     PRIMARY KEY (id)
 );
@@ -85,9 +85,10 @@ CREATE TABLE Uploaded
     memeId VARCHAR(36) NOT NULL,
     date   DATE,
 
-    PRIMARY KEY (userId),
-    FOREIGN KEY (userId) REFERENCES Users (id),
+    FOREIGN KEY (userId) REFERENCES Users (id)
+        ON DELETE CASCADE,
     FOREIGN KEY (memeId) REFERENCES Memes (id)
+        ON DELETE CASCADE
 );
 
 CREATE TABLE Comment

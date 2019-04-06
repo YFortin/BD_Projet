@@ -9,6 +9,7 @@ class UserHandler(Handler):
         self.app = app
         self.user_service = user_service
 
+
     def register_routes(self):
         @self.app.route('/signup', methods=['POST'])
         def signup():

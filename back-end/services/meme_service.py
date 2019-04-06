@@ -2,6 +2,7 @@ from services.repository import Repository
 from entities.meme import Meme
 
 import uuid
+import datetime
 
 
 class MemeService:
@@ -21,7 +22,8 @@ class MemeService:
     def delete_meme(self, meme_id):
         self.repository.remove_meme(meme_id)
 
-    def upload_meme(self, title, url, category):
+    def upload_meme(self, title, url, category, user_id):
         id = str(uuid.uuid4())
         meme = Meme(id, title, url, category)
-        self.repository.add_meme(meme)
+        date = datetime.datetime.now()
+        self.repository.add_meme(meme,user_id,date)

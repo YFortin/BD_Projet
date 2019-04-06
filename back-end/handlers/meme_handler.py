@@ -15,7 +15,6 @@ class MemeHandler(Handler):
         self.app = app
         self.meme_service = meme_service
 
-
     def register_routes(self):
         @self.app.route('/memes', methods=['GET'])
         def get_memes():
@@ -33,29 +32,26 @@ class MemeHandler(Handler):
             memes = self.meme_service.get_memes(limit, offset)
             return jsonify(memes)
 
-        @self.app.route('/memes/<int:meme_id>', methods=['GET'])
+        @self.app.route('/memes/<meme_id>', methods=['GET'])
         def get_meme_at(meme_id):
             """
             Return the meme with meme_id
             :param meme_id: meme meme_id
             :return: meme
             """
-            content = json.loads(request.json)
-            meme_id = content.meme_id
+            meme = self.meme_service.get_meme(meme_id)
+            return jsonify(meme)
 
-            return self.meme_service.get_meme(meme_id)
-
-        @self.app.route('/memes/<int:meme_id>', methods=['DELETE'])
+        @self.app.route('/memes/<meme_id>', methods=['DELETE'])
         def delete_meme(meme_id):
             """
             Delete meme with meme_id
             :param meme_id: meme meme_id
             :return:
             """
-            content = json.loads(request.json)
-            meme_id = content.meme_id
-
             self.meme_service.delete_meme(meme_id)
+            return Response(status=201)
+
 
         @self.app.route('/memes/top', methods=['GET'])
         def get_top_memes():
@@ -66,7 +62,7 @@ class MemeHandler(Handler):
                 offset -> return memes starting at offset
             :return: array of memes
             """
-            content = json.loads(request.json)
+
             raise NotImplementedError
 
         @self.app.route('/memes/new', methods=['GET'])
@@ -81,7 +77,7 @@ class MemeHandler(Handler):
             content = json.loads(request.json)
             raise NotImplementedError
 
-        @self.app.route('/meme', methods=['POST'])
+        @self.app.route('/memes', methods=['POST'])
         def upload_meme():
             """
             Get memes
@@ -90,6 +86,7 @@ class MemeHandler(Handler):
                 "title": "" :: string
                 "url": "" :: string
                 "category": "" :: string
+                "userId: "" :: string
             }
             :return:
             """
@@ -97,8 +94,9 @@ class MemeHandler(Handler):
             title = content['title']
             url = content['url']
             category = content['category']
+            user_id = content['userId']
 
-            self.meme_service.upload_meme(title, url, category)
+            self.meme_service.upload_meme(title, url, category, user_id)
             return Response(status=201)
 
         @self.app.route('/memes/<int:meme_id>/upvote', methods=['POST'])
