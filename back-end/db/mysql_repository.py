@@ -27,27 +27,33 @@ class MySQLRepository(Repository):
 
     def add_user(self, user: User):
         cursor = self.db_connection.cursor()
-        cursor.execute(f'INSERT INTO Users VALUES ({user})')
+        cursor.execute(
+            f'INSERT INTO Users VALUES ({user.id,},{user.name},{user.email},{user.hashedPassword},{user.salt})')
 
     def edit_user(self, user: User):
         cursor = self.db_connection.cursor()
-        cursor.execute(f'UPDATE Users u SET VALUES({user}) WHERE u.id = {user.id}')
+        cursor.execute(f'UPDATE * FROM Users u SET VALUES({user}) WHERE u.id = {user.id}')
 
     def remove_user(self, user_id):
         cursor = self.db_connection.cursor()
-        cursor.execute(f'DELETE Users u WHERE u.ud = {user_id}')
+        cursor.execute(f'DELETE * FROM Users u WHERE u.ud = {user_id}')
 
     def get_meme(self, meme_id):
-        raise NotImplementedError()
+        cursor = self.db_connection.cursor()
+        cursor.execute(f'SELECT * FROM Memes m WHERE m.md = {meme_id}')
 
     def get_all_memes(self):
-        raise NotImplementedError()
+        cursor = self.db_connection.cursor()
+        cursor.execute(f'SELECT * FROM Memes m')
 
     def add_meme(self, meme: Meme):
-        raise NotImplementedError()
+        cursor = self.db_connection.cursor()
+        cursor.execute(f'UPDATE * FROM Memes m SET VALUES({meme}) WHERE m.id = {meme.id}')
 
     def edit_meme(self, meme: Meme):
-        raise NotImplementedError
+        cursor = self.db_connection.cursor()
+        cursor.execute(f'UPDATE * FROM Memes m SET VALUES({meme}) WHERE m.id = {meme.id}')
 
     def remove_meme(self, meme_id):
-        raise NotImplementedError()
+        cursor = self.db_connection.cursor()
+        cursor.execute(f'DELETE * FROM Memes m WHERE m.ud = {meme_id}')
