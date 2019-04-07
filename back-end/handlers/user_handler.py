@@ -36,11 +36,13 @@ class UserHandler(Handler):
             if not request.is_json:
                 return Response(status=400)
 
-            content = json.loads(request.json)
-            name = content.name
-            email = content.email
-            password = content.password
+            content = request.json
+            name = content['name']
+            email = content['email']
+            password = content['password']
+            print(name)
             self.user_service.create_user(name, email, password)
+            print('wut')
             return Response(status=201)
 
         @self.app.route('/login', methods=['POST'])
@@ -60,9 +62,9 @@ class UserHandler(Handler):
             }
             :return: Set token cookie in client
             """
-            content = json.loads(request.json)
-            email = content.email
-            password = content.password
+            content = request.json
+            email = content['email']
+            password = content['password']
 
             token = self.user_service.create_user_token(email, password)
             if token is None:

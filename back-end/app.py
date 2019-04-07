@@ -47,11 +47,11 @@ while True:
         time.sleep(5)
 
 user_service = UserService(repository)
-user_handler = UserHandler(app, user_service)
+user_handler = UserHandler(app, user_service, repository)
 user_handler.register_routes()
 
 meme_service = MemeService(repository)
-meme_handler = MemeHandler(app, meme_service)
+meme_handler = MemeHandler(app, meme_service, repository)
 meme_handler.register_routes()
 
 # Create admin

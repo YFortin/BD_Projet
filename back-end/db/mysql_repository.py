@@ -24,30 +24,37 @@ class MySQLRepository(Repository):
 
     def get_user_from_token(self, token):
         cursor = self.db_connection.cursor()
-        cursor.execute(f'SELECT u '
-                       f'FROM Users u, Token t'
-                       f'WHERE u.id=t.userId AND t.token={token}')
+        query = """SELECT u 
+                   FROM Users u, Token t
+                   WHERE u.id=t.userId AND t.token=%s"""
+        cursor.execute(query, token)
         res = cursor.fetchall()
         user = User(res.id, res.username, res.email, res.hashed_password, res.salt)
         return user
 
     def get_user(self, user_id):
         cursor = self.db_connection.cursor()
-        cursor.execute(f'SELECT * FROM Users u WHERE u.id={user_id}')
+        query = """SELECT * 
+                   FROM Users u 
+                   WHERE u.id=%s"""
+        cursor.execute(query, user_id)
         res = cursor.fetchall()
         user = User(res.id, res.username, res.email, res.hashed_password, res.salt)
         return user
 
     def get_user_with_email(self, email):
         cursor = self.db_connection.cursor()
-        cursor.execute(f'SELECT * FROM Users u WHERE u.email={email}')
+        query = """SELECT * 
+                   FROM Users u 
+                   WHERE u.email=%s"""
+        cursor.execute(query, email)
         res = cursor.fetchall()
         user = User(res.id, res.username, res.email, res.hashed_password, res.salt)
         return user
 
     def get_all_users(self):
         cursor = self.db_connection.cursor()
-        cursor.execute(f'SELECT * FROM Users u')
+        cursor.execute('SELECT * FROM Users u')
         cursor.fetchall()
         users = []
         for user in cursor:
@@ -56,16 +63,23 @@ class MySQLRepository(Repository):
 
     def add_user(self, user: User):
         cursor = self.db_connection.cursor()
-        cursor.execute(
-            f'INSERT INTO Users VALUES ({user.id,},{user.name},{user.email},{user.hashedPassword},{user.salt})')
+        query = 'INSERT INTO Users (id, username, email, hashedPassword, salt) VALUES (%s, %s, %s, %s, %s)'
+        data_tuple = str(user.id), user.name, user.email, user.hashed_password, user.salt
+        cursor.execute(query, data_tuple)
 
     def edit_user(self, user: User):
         cursor = self.db_connection.cursor()
-        cursor.execute(f'UPDATE * FROM Users u SET VALUES({user}) WHERE u.id = {user.id}')
+        query = """UPDATE Users 
+                   SET id = %s, username = %s, email = %s, hashedPassword = %s, salt = %s
+                   WHERE u.id = %s"""
+        values = (user.id, user.name, user.email, user.hashed_password, user.salt, user.id)
+        cursor.execute(query, values)
 
     def remove_user(self, user_id):
         cursor = self.db_connection.cursor()
-        cursor.execute(f'DELETE * FROM Users u WHERE u.ud = {user_id}')
+        query = """DELETE * FROM Users u WHERE u.id = %s"""
+        values = user_id
+        cursor.execute(query, values)
 
     def get_meme(self, meme_id):
         cursor = self.db_connection.cursor()
@@ -94,7 +108,11 @@ class MySQLRepository(Repository):
 
     def edit_meme(self, meme: Meme):
         cursor = self.db_connection.cursor()
-        cursor.execute(f'UPDATE * FROM Memes m SET VALUES({meme}) WHERE m.id = {meme.id}')
+        query = """UPDATE Users 
+                   SET id = %s, title = %s, url = %s, category = %s
+                   WHERE m.id = %s"""
+        values = (meme.id, meme.title, meme.url, meme.category)
+        cursor.execute(query, values)
 
     def remove_meme(self, meme_id):
         cursor = self.db_connection.cursor()

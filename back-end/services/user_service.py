@@ -12,7 +12,7 @@ class UserService:
 
     def create_user(self, name, email, password):
         salt = uuid.uuid4().hex
-        hashed_password = hashlib.sha512(password + salt).hexdigest()
+        hashed_password = hashlib.sha512((password + salt).encode('utf-8')).hexdigest()
 
         user_id = uuid.uuid4()
         new_user = User(user_id, name, email, hashed_password, salt)

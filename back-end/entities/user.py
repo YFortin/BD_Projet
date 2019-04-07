@@ -16,11 +16,11 @@ class User:
 
     @property
     def name(self):
-        return
+        return self._name
 
     @name.setter
     def name(self, value):
-        pass
+        self._name = value
 
     @property
     def email(self):
@@ -32,7 +32,7 @@ class User:
 
     @property
     def hashed_password(self):
-        return
+        return self._hashed_password
 
     @hashed_password.setter
     def hashed_password(self, value):
@@ -40,7 +40,7 @@ class User:
 
     @property
     def salt(self):
-        return
+        return self._salt
 
     @salt.setter
     def salt(self, value):
