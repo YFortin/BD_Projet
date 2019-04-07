@@ -50,8 +50,7 @@ class MemeHandler(Handler):
             :return:
             """
             self.meme_service.delete_meme(meme_id)
-            return Response(status=201)
-
+            return Response(status=200)
 
         @self.app.route('/memes/top', methods=['GET'])
         def get_top_memes():
@@ -99,25 +98,38 @@ class MemeHandler(Handler):
             self.meme_service.upload_meme(title, url, category, user_id)
             return Response(status=201)
 
-        @self.app.route('/memes/<int:meme_id>/upvote', methods=['POST'])
+        @self.app.route('/memes/<meme_id>/upvote', methods=['POST'])
         def upvote_meme(meme_id):
             """
             Upvote the meme
             :param meme_id: meme meme_id
+            JSON input
+            {
+                "user_id" : "" :: string
+            }
             :return:
             """
-            content = json.loads(request.json)
-            raise NotImplementedError
+            content = json.loads(request.data)
+            user_id = content['user_id']
+            self.meme_service.upvote_meme(meme_id, user_id)
+            return Response(status=200)
 
-        @self.app.route('/memes/<int:meme_id>/downvote', methods=['POST'])
+        @self.app.route('/memes/<meme_id>/downvote', methods=['POST'])
         def downvote_meme(meme_id):
             """
             Downvote the meme
             :param meme_id: meme meme_id
+            JSON input
+            {
+                "user_id" : "" :: string
+            }
             :return:
             """
-            content = json.loads(request.json)
-            raise NotImplementedError
+            content = json.loads(request.data)
+            user_id = content['user_id']
+
+            self.meme_service.downvote_meme(meme_id,user_id)
+            return Response(status=200)
 
         @self.app.route('/memes/<int:meme_id>/comment', methods=['POST'])
         def comment_meme(meme_id):

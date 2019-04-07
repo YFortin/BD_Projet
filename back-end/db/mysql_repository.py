@@ -80,3 +80,17 @@ class MySQLRepository(Repository):
         cursor.execute(sql, val)
         self.db_connection.commit()
 
+    def upvote_meme(self, meme_id, user_id, date):
+        cursor = self.db_connection.cursor()
+        sql = "INSERT INTO Liked (userId, memeId, date) VALUES(%s, %s, %s)"
+        val = (user_id, meme_id, date)
+
+        cursor.execute(sql, val)
+
+    def downvote_meme(self,meme_id, user_id, date):
+        cursor = self.db_connection.cursor()
+        sql = "INSERT INTO Disliked (userId, memeId, date) VALUES(%s, %s, %s)"
+        val = (user_id, meme_id, date)
+
+        cursor.execute(sql, val)
+

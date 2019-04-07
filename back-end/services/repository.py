@@ -48,3 +48,10 @@ class Repository(ABC):
     @abstractmethod
     def init_user_admin(self, user: User):
         ...
+
+    def upvote_meme(self, meme_id, user_id, date):
+        ...
+
+    @abstractmethod
+    def downvote_meme(self,meme_id, user_id, date):
+        ...

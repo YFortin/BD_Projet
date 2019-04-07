@@ -26,4 +26,12 @@ class MemeService:
         id = str(uuid.uuid4())
         meme = Meme(id, title, url, category)
         date = datetime.datetime.now()
-        self.repository.add_meme(meme,user_id,date)
+        self.repository.add_meme(meme, user_id, date)
+
+    def upvote_meme(self, meme_id, user_id):
+        date = datetime.datetime.now()
+        self.repository.upvote_meme(meme_id, user_id, date)
+
+    def downvote_meme(self, meme_id, user_id):
+        date = datetime.datetime.now()
+        self.repository.downvote_meme(meme_id, user_id, date)

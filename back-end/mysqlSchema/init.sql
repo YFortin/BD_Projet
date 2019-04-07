@@ -50,7 +50,6 @@ CREATE TABLE Liked
     memeId VARCHAR(36) NOT NULL,
     date   DATE,
 
-    PRIMARY KEY (userId),
     FOREIGN KEY (userId) REFERENCES Users (id),
     FOREIGN KEY (memeId) REFERENCES Memes (id)
 );
@@ -61,7 +60,6 @@ CREATE TABLE Disliked
     memeId VARCHAR(36) NOT NULL,
     date   DATE,
 
-    PRIMARY KEY (userId),
     FOREIGN KEY (userId) REFERENCES Users (id),
     FOREIGN KEY (memeId) REFERENCES Memes (id)
 );
