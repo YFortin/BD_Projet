@@ -29,7 +29,7 @@ class UserService:
             return None
 
     def create_user_token(self, email, password):
-        user = self.user_service.get_user_if_credentials_valid(email, password)
+        user = self.get_user_if_credentials_valid(email, password)
         if user is None:
             return None
 

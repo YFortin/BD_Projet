@@ -27,7 +27,8 @@ class MySQLRepository(Repository):
         query = """SELECT u 
                    FROM Users u, Token t
                    WHERE u.id=t.userId AND t.token=%s"""
-        cursor.execute(query, token)
+        val = (token,)
+        cursor.execute(query, val)
         res = cursor.fetchall()
         user = User(res.id, res.username, res.email, res.hashed_password, res.salt)
         return user
@@ -37,7 +38,7 @@ class MySQLRepository(Repository):
         query = """SELECT * 
                    FROM Users u 
                    WHERE u.id=%s"""
-        cursor.execute(query, user_id)
+        cursor.execute(query, (user_id,))
         res = cursor.fetchall()
         user = User(res.id, res.username, res.email, res.hashed_password, res.salt)
         return user
@@ -47,7 +48,8 @@ class MySQLRepository(Repository):
         query = """SELECT * 
                    FROM Users u 
                    WHERE u.email=%s"""
-        cursor.execute(query, email)
+        val = (email,)
+        cursor.execute(query, val)
         res = cursor.fetchall()
         user = User(res.id, res.username, res.email, res.hashed_password, res.salt)
         return user
