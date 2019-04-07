@@ -3,6 +3,7 @@ import uuid
 
 from entities.user import User
 from services.repository import Repository
+from entities.user import User
 
 
 class UserService:

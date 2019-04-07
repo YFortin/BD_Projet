@@ -56,3 +56,15 @@ class Repository(ABC):
     @abstractmethod
     def add_token(self, user, token):
         ...
+
+    @abstractmethod
+    def upvote_meme(self, meme_id, user_id, date):
+        ...
+
+    @abstractmethod
+    def downvote_meme(self,meme_id, user_id, date):
+        ...
+
+    @abstractmethod
+    def comment_meme(self, comment_id, meme_id, user_id, date, text):
+        ...

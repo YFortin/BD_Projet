@@ -1,8 +1,14 @@
 from flask import Flask
+from flask import request
+from flask import Response
+from flask import jsonify
+
+import json
 
 from handlers.handler import Handler
 from services.meme_service import MemeService
 from services.repository import Repository
+from services.user_service import UserService
 
 
 class MemeHandler(Handler):
@@ -21,25 +27,32 @@ class MemeHandler(Handler):
                 offset -> return memes starting at offset
             :return: array of memes
             """
-            raise NotImplementedError
+            content = json.loads(request.data)
+            limit = content['limit']
+            offset = content['offset']
 
-        @self.app.route('/memes/<int:meme_id>', methods=['GET'])
+            memes = self.meme_service.get_memes(limit, offset)
+            return jsonify(memes)
+
+        @self.app.route('/memes/<meme_id>', methods=['GET'])
         def get_meme_at(meme_id):
             """
-            Return to meme with meme_id
+            Return the meme with meme_id
             :param meme_id: meme meme_id
             :return: meme
             """
-            raise NotImplementedError
+            meme = self.meme_service.get_meme(meme_id)
+            return jsonify(meme)
 
-        @self.app.route('/memes/<int:meme_id>', methods=['DELETE'])
+        @self.app.route('/memes/<meme_id>', methods=['DELETE'])
         def delete_meme(meme_id):
             """
             Delete meme with meme_id
             :param meme_id: meme meme_id
             :return:
             """
-            raise NotImplementedError
+            self.meme_service.delete_meme(meme_id)
+            return Response(status=200)
 
         @self.app.route('/memes/top', methods=['GET'])
         def get_top_memes():
@@ -50,6 +63,7 @@ class MemeHandler(Handler):
                 offset -> return memes starting at offset
             :return: array of memes
             """
+
             raise NotImplementedError
 
         @self.app.route('/memes/new', methods=['GET'])
@@ -61,6 +75,7 @@ class MemeHandler(Handler):
                 offset -> return memes starting at offset
             :return: array of memes
             """
+            content = json.loads(request.json)
             raise NotImplementedError
 
         @self.app.route('/memes', methods=['POST'])
@@ -69,40 +84,71 @@ class MemeHandler(Handler):
             Get memes
             JSON input
             {
+                "title": "" :: string
                 "url": "" :: string
                 "category": "" :: string
+                "userId: "" :: string
             }
             :return:
             """
-            raise NotImplementedError
+            content = json.loads(request.data)
+            title = content['title']
+            url = content['url']
+            category = content['category']
+            user_id = content['userId']
 
-        @self.app.route('/memes/<int:meme_id>/upvote', methods=['POST'])
+            self.meme_service.upload_meme(title, url, category, user_id)
+            return Response(status=201)
+
+        @self.app.route('/memes/<meme_id>/upvote', methods=['POST'])
         def upvote_meme(meme_id):
             """
             Upvote the meme
             :param meme_id: meme meme_id
+            JSON input
+            {
+                "user_id" : "" :: string
+            }
             :return:
             """
-            raise NotImplementedError
+            content = json.loads(request.data)
+            user_id = content['user_id']
+            self.meme_service.upvote_meme(meme_id, user_id)
+            return Response(status=200)
 
-        @self.app.route('/memes/<int:meme_id>/downvote', methods=['POST'])
+        @self.app.route('/memes/<meme_id>/downvote', methods=['POST'])
         def downvote_meme(meme_id):
             """
             Downvote the meme
             :param meme_id: meme meme_id
+            JSON input
+            {
+                "user_id" : "" :: string
+            }
             :return:
             """
-            raise NotImplementedError
+            content = json.loads(request.data)
+            user_id = content['user_id']
 
-        @self.app.route('/memes/<int:meme_id>/comment', methods=['POST'])
+            self.meme_service.downvote_meme(meme_id,user_id)
+            return Response(status=200)
+
+        @self.app.route('/memes/<meme_id>/comment', methods=['POST'])
         def comment_meme(meme_id):
             """
             Comment the meme
             JSON input
             {
+                user_id:
                 contents:
             }
             :param meme_id: meme meme_id
             :return:
             """
-            raise NotImplementedError
+            content = json.loads(request.data)
+            text = content['contents']
+            user_id = content['user_id']
+
+            self.meme_service.comment_meme(user_id,meme_id,text)
+
+            return  Response(status=201)

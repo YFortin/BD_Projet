@@ -54,6 +54,9 @@ meme_service = MemeService(repository)
 meme_handler = MemeHandler(app, meme_service)
 meme_handler.register_routes()
 
+# Create admin
+user_service.create_user('admin', 'admin@admin', 'root')
+
 print(__name__)
 
 if __name__ == '__main__':
