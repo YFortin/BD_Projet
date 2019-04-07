@@ -14,9 +14,9 @@ class MySQLRepository(Repository):
 
     def add_token(self, user, token):
         user_id = user.id
-        expire_date = datetime.datetime.now() + datetime.timedelta(days=1)
+        expire_date = self._datetime_to_str(datetime.datetime.now() + datetime.timedelta(days=1))
         cursor = self.db_connection.cursor()
-        cursor.execute(f'INSERT INTO Token VALUES ({user})')  # todo fixme
+        cursor.execute(f'INSERT INTO Token (userId, token, expiredDate) VALUES ({user_id, token, expire_date})')
 
     def _datetime_to_str(self, date: datetime.datetime):
         return date.date().isoformat()

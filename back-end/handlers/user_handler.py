@@ -59,8 +59,16 @@ class UserHandler(Handler):
             }
             :return: Set token cookie in client
             """
-            user = self.user_service.authenticate_user()
-            return jsonify
+            content = json.loads(request.json)
+            email = content.email
+            password = content.password
+
+            token = self.user_service.create_user_token(email, password)
+            if token is None:
+                return Response(status=401)
+            else:
+                response = {"token": token}
+                return jsonify(response)
 
         @self.app.route('/users/<int:user_id>', methods=['GET'])
         def get_user(user_id):
