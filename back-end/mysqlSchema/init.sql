@@ -91,7 +91,7 @@ CREATE TABLE Uploaded
 
 CREATE TABLE Comment
 (
-    commentId INTEGER AUTO_INCREMENT,
+    commentId VARCHAR(36) NOT NULL,
     userId    VARCHAR(36) NOT NULL,
     memeId    VARCHAR(36) NOT NULL,
     date      DATE,

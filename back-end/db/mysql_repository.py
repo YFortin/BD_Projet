@@ -87,10 +87,16 @@ class MySQLRepository(Repository):
 
         cursor.execute(sql, val)
 
-    def downvote_meme(self,meme_id, user_id, date):
+    def downvote_meme(self, meme_id, user_id, date):
         cursor = self.db_connection.cursor()
         sql = "INSERT INTO Disliked (userId, memeId, date) VALUES(%s, %s, %s)"
         val = (user_id, meme_id, date)
 
         cursor.execute(sql, val)
 
+    def comment_meme(self, comment_id, meme_id, user_id, date, text):
+        cursor = self.db_connection.cursor()
+        sql = "INSERT INTO Comment (commentId, userId, memeId , date, text) VALUES(%s, %s, %s, %s, %s)"
+        val = (comment_id, user_id, meme_id, date, text)
+
+        cursor.execute(sql, val)

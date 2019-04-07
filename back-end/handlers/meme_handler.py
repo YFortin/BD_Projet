@@ -131,16 +131,22 @@ class MemeHandler(Handler):
             self.meme_service.downvote_meme(meme_id,user_id)
             return Response(status=200)
 
-        @self.app.route('/memes/<int:meme_id>/comment', methods=['POST'])
+        @self.app.route('/memes/<meme_id>/comment', methods=['POST'])
         def comment_meme(meme_id):
             """
             Comment the meme
             JSON input
             {
+                user_id:
                 contents:
             }
             :param meme_id: meme meme_id
             :return:
             """
-            content = json.loads(request.json)
-            raise NotImplementedError
+            content = json.loads(request.data)
+            text = content['contents']
+            user_id = content['user_id']
+
+            self.meme_service.comment_meme(user_id,meme_id,text)
+
+            return  Response(status=201)

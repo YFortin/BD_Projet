@@ -35,3 +35,9 @@ class MemeService:
     def downvote_meme(self, meme_id, user_id):
         date = datetime.datetime.now()
         self.repository.downvote_meme(meme_id, user_id, date)
+
+    def comment_meme(self, user_id, meme_id, text):
+        date = datetime.datetime.now()
+        id = str(uuid.uuid4())
+
+        self.repository.comment_meme(id, meme_id, user_id, date, text)
