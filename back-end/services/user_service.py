@@ -21,7 +21,7 @@ class UserService:
     def get_user_if_credentials_valid(self, email, password):
         user = self.repository.get_user_with_email(email)
         salt = user.salt
-        hashed_password = hashlib.sha512(password + salt).hexdigest()
+        hashed_password = hashlib.sha512((password + salt).encode('utf-8')).hexdigest()
 
         if user.hashed_password == hashed_password:
             return user
@@ -29,7 +29,7 @@ class UserService:
             return None
 
     def create_user_token(self, email, password):
-        user = self.user_service.get_user_if_credentials_valid(email, password)
+        user = self.get_user_if_credentials_valid(email, password)
         if user is None:
             return None
 

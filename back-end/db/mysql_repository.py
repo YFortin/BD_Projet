@@ -16,7 +16,10 @@ class MySQLRepository(Repository):
         user_id = user.id
         expire_date = self._datetime_to_str(datetime.datetime.now() + datetime.timedelta(days=1))
         cursor = self.db_connection.cursor()
-        cursor.execute(f'INSERT INTO Token (userId, token, expiredDate) VALUES ({user_id, token, expire_date})')
+
+        sql = 'INSERT INTO Token (userId, token, expiredDate) VALUES (%s, %s, %s)'
+        val = (user_id, str(token), expire_date)
+        cursor.execute(sql, val)
 
     @staticmethod
     def _datetime_to_str(date: datetime.datetime):
@@ -27,7 +30,8 @@ class MySQLRepository(Repository):
         query = """SELECT u 
                    FROM Users u, Token t
                    WHERE u.id=t.userId AND t.token=%s"""
-        cursor.execute(query, token)
+        val = (token,)
+        cursor.execute(query, val)
         res = cursor.fetchall()
         user = User(res.id, res.username, res.email, res.hashed_password, res.salt)
         return user
@@ -47,9 +51,11 @@ class MySQLRepository(Repository):
         query = """SELECT * 
                    FROM Users u 
                    WHERE u.email=%s"""
-        cursor.execute(query, email)
+        val = (email,)
+        cursor.execute(query, val)
         res = cursor.fetchall()
-        user = User(res.id, res.username, res.email, res.hashed_password, res.salt)
+        user_info = res[0]
+        user = User(user_info[0], user_info[1], user_info[2], user_info[3], user_info[4])
         return user
 
     def get_all_users(self):

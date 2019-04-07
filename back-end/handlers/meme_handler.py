@@ -130,7 +130,7 @@ class MemeHandler(Handler):
             content = json.loads(request.data)
             user_id = content['user_id']
 
-            self.meme_service.downvote_meme(meme_id,user_id)
+            self.meme_service.downvote_meme(meme_id, user_id)
             return Response(status=200)
 
         @self.app.route('/memes/<meme_id>/comment', methods=['POST'])
@@ -149,6 +149,6 @@ class MemeHandler(Handler):
             text = content['contents']
             user_id = content['user_id']
 
-            self.meme_service.comment_meme(user_id,meme_id,text)
+            self.meme_service.comment_meme(user_id, meme_id, text)
 
-            return  Response(status=201)
+            return Response(status=201)
