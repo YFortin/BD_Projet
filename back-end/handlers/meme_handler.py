@@ -87,7 +87,7 @@ class MemeHandler(Handler):
                 "title": "" :: string
                 "url": "" :: string
                 "category": "" :: string
-                "userId: "" :: string
+                "token: "" :: string
             }
             :return:
             """
@@ -95,9 +95,9 @@ class MemeHandler(Handler):
             title = content['title']
             url = content['url']
             category = content['category']
-            user_id = content['userId']
+            token = content['token']
 
-            self.meme_service.upload_meme(title, url, category, user_id)
+            self.meme_service.upload_meme(title, url, category, token)
             return Response(status=201)
 
         @self.app.route('/memes/<meme_id>/upvote', methods=['POST'])

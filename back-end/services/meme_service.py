@@ -22,11 +22,11 @@ class MemeService:
     def delete_meme(self, meme_id):
         self.repository.remove_meme(meme_id)
 
-    def upload_meme(self, title, url, category, user_id):
+    def upload_meme(self, title, url, category, token):
         id = str(uuid.uuid4())
         meme = Meme(id, title, url, category)
         date = datetime.datetime.now()
-        self.repository.add_meme(meme, user_id, date)
+        self.repository.add_meme(meme, token, date)
 
     def upvote_meme(self, meme_id, user_id):
         date = datetime.datetime.now()

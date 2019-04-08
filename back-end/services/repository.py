@@ -36,7 +36,7 @@ class Repository(ABC):
         ...
 
     @abstractmethod
-    def add_meme(self, meme: Meme, user_id: uuid, date:datetime.datetime):
+    def add_meme(self, meme: Meme, token: uuid, date:datetime.datetime):
         ...
 
     @abstractmethod

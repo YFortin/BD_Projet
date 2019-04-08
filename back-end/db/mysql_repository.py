@@ -101,8 +101,18 @@ class MySQLRepository(Repository):
 
         return cursor.fetchall()
 
-    def add_meme(self, meme: Meme, user_id, date):
+    def add_meme(self, meme: Meme, token, date):
         cursor = self.db_connection.cursor()
+
+        sql = "SELECT * FROM Token t WHERE t.token = %s"
+        val = (token,)
+        cursor.execute(sql, val)
+
+        response = cursor.fetchall()
+        token_response = response[0]
+        user_id = token_response[1]
+
+
         sql = "INSERT INTO Memes (id, title, url, category) VALUES (%s, %s, %s, %s)"
         val = (meme.id, meme.title, meme.url, meme.category)
         cursor.execute(sql, val)
