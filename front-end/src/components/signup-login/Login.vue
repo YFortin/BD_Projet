@@ -29,7 +29,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="primary" to="/NotSignedIn/Signup">Sign Up</v-btn>
-                <v-btn color="primary" @click="login" to="/Nav/Memes">Log in</v-btn>
+                <v-btn color="primary" @click="login">Log in</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -66,6 +66,7 @@ export default {
         try {
           const response = await MemerAPI.User.login(this.email, this.password);
           console.log(response);
+          this.$router.push({path: '/Nav/Memes'})
         } catch (error) {
           console.log(error);
         }

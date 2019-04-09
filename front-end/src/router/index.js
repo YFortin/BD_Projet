@@ -80,19 +80,17 @@ export default router;
 router.beforeEach((to, from, next) => {
   console.log(`🚦 navigating to ${to.name} from ${from.name}`);
   if (to.matched.some(route => route.meta.requiresAuth)) {
+    console.log('truc');
     const autorization = document.cookie
         .split(';')
-        .filter(item => item.trim().startsWith('Authorization=')).length;
-    console.log('requiresAuth');
-    
+        .filter(item => item.trim().startsWith('AuthorizationMemer=')).length;
+    console.log(autorization);
     if (!autorization) {
-      next({
-        path: '/NotSignedIn/Login'
-      });
+        console.log('patate');
     } else {
-      next();
+      console.log('else');
     }
-  } else {
+} else {
     next();
   }
 });
