@@ -66,7 +66,6 @@ export default {
         try {
           const response = await MemerAPI.User.login(this.email, this.password);
           document.cookie = `AuthorizationMemer=${response.data.token}`;
-          console.log(response);
           this.$router.push({path: '/Nav/Memes'})
         } catch (error) {
           console.log(error);

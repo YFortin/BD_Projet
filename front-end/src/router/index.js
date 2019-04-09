@@ -79,7 +79,6 @@ const router = new Router({
 export default router;
 
 router.beforeEach((to, from, next) => {
-  console.log(`🚦 navigating to ${to.name} from ${from.name}`);
 
   const autorization = document.cookie
   .split(';')
