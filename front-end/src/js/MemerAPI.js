@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export default class MemerAPI {
     static get BASE_URL() {
-        return 'localhost:5000'
+        return 'http://localhost:5000'
     }
 
     static userId = 'not set';

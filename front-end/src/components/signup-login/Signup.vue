@@ -29,7 +29,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click="submit" to="Login">Submit</v-btn>
+                <v-btn color="primary" @click="submit">Submit</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import MemerAPI from '../../js/MemerAPI';
+
 export default {
   data: () => ({
     valid: true,
@@ -58,9 +60,10 @@ export default {
     passwordRules: [v => !!v || "Password is required"]
   }),
   methods: {
-    submit() {
+    async submit() {
       if (this.$refs.form.validate()) {
-        console.log("patate");
+        await MemerAPI.User.signup(this.username, this.email, this.password);
+        this.$router.push({path: '/NotSignedIn/Login'});
       }
     }
   }
