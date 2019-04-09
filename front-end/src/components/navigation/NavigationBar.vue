@@ -1,7 +1,7 @@
 <template>
   <v-content>
     <v-toolbar flat color="primary" dark>
-      <v-toolbar-side-icon to="Memes" color="accent">
+      <v-toolbar-side-icon to="/Nav/Memes" color="accent">
         <v-img src="https://cdn3.iconfinder.com/data/icons/popular-memes/48/JD-26-512.png"></v-img>
       </v-toolbar-side-icon>
       <v-toolbar-title>
@@ -10,11 +10,11 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <v-btn flat to="Memes">Memes</v-btn>
+        <v-btn flat to="/Nav/Memes">Memes</v-btn>
         <v-btn flat @click="showSearch">Search User</v-btn>
-        <v-btn flat to="UserProfile">User Profile</v-btn>
-        <v-btn flat to="MyAccount">My account</v-btn>
-        <v-btn flat to="../Login">Back to log in</v-btn>
+        <v-btn flat to="/Nav/UserProfile">User Profile</v-btn>
+        <v-btn flat to="/Nav/MyAccount">My account</v-btn>
+        <v-btn flat to="/NotSignedIn/Login">Back to log in</v-btn>
       </v-toolbar-items>
     </v-toolbar>
     <v-expand-transition>

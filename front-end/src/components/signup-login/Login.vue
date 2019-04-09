@@ -28,8 +28,8 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" to="Signup">Sign Up</v-btn>
-                <v-btn color="primary" @click="login" to="Nav/Memes">Log in</v-btn>
+                <v-btn color="primary" to="/NotSignedIn/Signup">Sign Up</v-btn>
+                <v-btn color="primary" @click="login" to="/Nav/Memes">Log in</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -42,6 +42,7 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required, email } from "vuelidate/lib/validators";
+import MemerAPI from '../../js/MemerAPI';
 
 export default {
   mixins: [validationMixin],
@@ -63,7 +64,8 @@ export default {
         this.$v.password.required
       ) {
         try {
-          console.log("hello");
+          const response = await MemerAPI.User.login(this.email, this.password);
+          console.log(response);
         } catch (error) {
           console.log(error);
         }
