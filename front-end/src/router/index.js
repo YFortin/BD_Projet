@@ -15,7 +15,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/notsignedin/login'
+      redirect: '/Nav/UserProfile'
     },
     {
       path: '/nav',
@@ -50,6 +50,7 @@ const router = new Router({
       path: '/notsignedin',
       name: 'NotSignedIn',
       component: NotLoginNavigation,
+      meta: { unsigned: true },
       children: [
         {
           path: 'signup',
@@ -79,18 +80,22 @@ export default router;
 
 router.beforeEach((to, from, next) => {
   console.log(`🚦 navigating to ${to.name} from ${from.name}`);
+
+  const autorization = document.cookie
+  .split(';')
+  .filter(item => item.trim().startsWith('AuthorizationMemer=')).length;
+
   if (to.matched.some(route => route.meta.requiresAuth)) {
-    console.log('truc');
-    const autorization = document.cookie
-        .split(';')
-        .filter(item => item.trim().startsWith('AuthorizationMemer=')).length;
-    console.log(autorization);
     if (!autorization) {
-        console.log('patate');
+      router.push({path: '/NotSignedIn/Login'})
     } else {
-      console.log('else');
+      next()
     }
-} else {
-    next();
+} else if (to.matched.some(route => route.meta.unsigned)) {
+  if (!autorization) {
+    next()
+  } else {
+    router.push({path: '/Nav/UserProfile'});
   }
+}
 });

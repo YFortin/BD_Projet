@@ -14,7 +14,7 @@
         <v-btn flat @click="showSearch">Search User</v-btn>
         <v-btn flat to="/Nav/UserProfile">User Profile</v-btn>
         <v-btn flat to="/Nav/MyAccount">My account</v-btn>
-        <v-btn flat to="/NotSignedIn/Login">Back to log in</v-btn>
+        <v-btn flat @click="signout">Sign out</v-btn>
       </v-toolbar-items>
     </v-toolbar>
     <v-expand-transition>
@@ -36,6 +36,11 @@ export default {
   methods: {
     showSearch() {
       this.show = !this.show;
+    },
+
+    signout() {
+      document.cookie = "AuthorizationMemer= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+      this.$router.push('/NotSignedIn/Login');
     }
   },
   components: {
