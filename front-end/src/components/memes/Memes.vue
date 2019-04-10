@@ -101,7 +101,15 @@ export default {
           }
         );
       }
+    },
+
+    setup() {
+      console.log('getMemes');
     }
+  },
+
+  beforeMount() {
+    this.setup();
   }
 };
 </script>

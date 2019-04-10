@@ -1,6 +1,9 @@
 <template>
   <v-content>
     <v-toolbar flat color="primary" dark>
+            <v-toolbar-side-icon to="/Nav/Memes" color="accent">
+        <v-img src="https://cdn3.iconfinder.com/data/icons/popular-memes/48/JD-26-512.png"></v-img>
+      </v-toolbar-side-icon>
       <v-toolbar-title>
         Memer
         <div class="subheading">Find your favorites memes</div>

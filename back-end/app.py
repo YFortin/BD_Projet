@@ -4,6 +4,7 @@ import mysql.connector
 import time
 
 from flask import Flask
+from flask_cors import CORS
 from gevent.pywsgi import WSGIServer
 from gevent import monkey
 
@@ -30,6 +31,7 @@ def connect_to_database() -> MySQLRepository:
 
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route('/')
