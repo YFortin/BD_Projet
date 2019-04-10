@@ -107,13 +107,13 @@ class MemeHandler(Handler):
             :param meme_id: meme meme_id
             JSON input
             {
-                "user_id" : "" :: string
+                "token" : "" :: string
             }
             :return:
             """
             content = json.loads(request.data)
-            user_id = content['user_id']
-            self.meme_service.upvote_meme(meme_id, user_id)
+            token = content['token']
+            self.meme_service.upvote_meme(meme_id, token)
             return Response(status=200)
 
         @self.app.route('/memes/<meme_id>/downvote', methods=['POST'])
@@ -123,14 +123,14 @@ class MemeHandler(Handler):
             :param meme_id: meme meme_id
             JSON input
             {
-                "user_id" : "" :: string
+                "token" : "" :: string
             }
             :return:
             """
             content = json.loads(request.data)
-            user_id = content['user_id']
+            token = content['token']
 
-            self.meme_service.downvote_meme(meme_id, user_id)
+            self.meme_service.downvote_meme(meme_id, token)
             return Response(status=200)
 
         @self.app.route('/memes/<meme_id>/comment', methods=['POST'])
@@ -147,8 +147,8 @@ class MemeHandler(Handler):
             """
             content = json.loads(request.data)
             text = content['contents']
-            user_id = content['user_id']
+            token = content['token']
 
-            self.meme_service.comment_meme(user_id, meme_id, text)
+            self.meme_service.comment_meme(token, meme_id, text)
 
             return Response(status=201)

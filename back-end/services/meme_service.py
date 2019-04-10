@@ -28,16 +28,18 @@ class MemeService:
         date = datetime.datetime.now()
         self.repository.add_meme(meme, token, date)
 
-    def upvote_meme(self, meme_id, user_id):
+    def upvote_meme(self, meme_id, token):
         date = datetime.datetime.now()
-        self.repository.upvote_meme(meme_id, user_id, date)
+        self.repository.seen_meme(meme_id, token, date)
+        self.repository.upvote_meme(meme_id, token)
 
-    def downvote_meme(self, meme_id, user_id):
+    def downvote_meme(self, meme_id, token):
         date = datetime.datetime.now()
-        self.repository.downvote_meme(meme_id, user_id, date)
+        self.repository.seen_meme(meme_id, token, date)
+        self.repository.downvote_meme(meme_id, token)
 
-    def comment_meme(self, user_id, meme_id, text):
+    def comment_meme(self, token, meme_id, text):
         date = datetime.datetime.now()
         id = str(uuid.uuid4())
 
-        self.repository.comment_meme(id, meme_id, user_id, date, text)
+        self.repository.comment_meme(id, meme_id, token, date, text)

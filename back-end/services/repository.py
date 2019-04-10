@@ -60,13 +60,17 @@ class Repository(ABC):
         ...
 
     @abstractmethod
-    def upvote_meme(self, meme_id, user_id, date):
+    def upvote_meme(self, meme_id, token):
         ...
 
     @abstractmethod
-    def downvote_meme(self,meme_id, user_id, date):
+    def downvote_meme(self,meme_id, token):
         ...
 
     @abstractmethod
-    def comment_meme(self, comment_id, meme_id, user_id, date, text):
+    def comment_meme(self, comment_id, meme_id, token, date, text):
+        ...
+
+    @abstractmethod
+    def seen_meme(self,meme_id, token, date):
         ...

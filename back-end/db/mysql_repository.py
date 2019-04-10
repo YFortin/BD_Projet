@@ -104,14 +104,7 @@ class MySQLRepository(Repository):
     def add_meme(self, meme: Meme, token, date):
         cursor = self.db_connection.cursor()
 
-        sql = "SELECT * FROM Token t WHERE t.token = %s"
-        val = (token,)
-        cursor.execute(sql, val)
-
-        response = cursor.fetchall()
-        token_response = response[0]
-        user_id = token_response[1]
-
+        user_id = self.get_userId_with_token(token)
 
         sql = "INSERT INTO Memes (id, title, url, category) VALUES (%s, %s, %s, %s)"
         val = (meme.id, meme.title, meme.url, meme.category)
@@ -137,23 +130,41 @@ class MySQLRepository(Repository):
         cursor.execute(sql, val)
         self.db_connection.commit()
 
-    def upvote_meme(self, meme_id, user_id, date):
+    def upvote_meme(self, meme_id, token):
         cursor = self.db_connection.cursor()
-        sql = "INSERT INTO Liked (userId, memeId, date) VALUES(%s, %s, %s)"
-        val = (user_id, meme_id, date)
-
+        user_id = self.get_userId_with_token(token)
+        sql = "INSERT INTO Liked (userId, memeId) VALUES(%s, %s)"
+        val = (user_id, meme_id)
         cursor.execute(sql, val)
 
-    def downvote_meme(self, meme_id, user_id, date):
+    def downvote_meme(self, meme_id, token):
         cursor = self.db_connection.cursor()
-        sql = "INSERT INTO Disliked (userId, memeId, date) VALUES(%s, %s, %s)"
-        val = (user_id, meme_id, date)
-
+        user_id = self.get_userId_with_token(token)
+        sql = "INSERT INTO Disliked (userId, memeId) VALUES(%s, %s)"
+        val = (user_id, meme_id)
         cursor.execute(sql, val)
 
-    def comment_meme(self, comment_id, meme_id, user_id, date, text):
+    def seen_meme(self, meme_id, token, date):
         cursor = self.db_connection.cursor()
+        user_id = self.get_userId_with_token(token)
+        sql = "INSERT INTO Seen (userId, memeId, date) VALUES(%s, %s, %s)"
+        val = (user_id, meme_id, date)
+        cursor.execute(sql, val)
+
+    def comment_meme(self, comment_id, meme_id, token, date, text):
+        cursor = self.db_connection.cursor()
+        user_id = self.get_userId_with_token(token)
         sql = "INSERT INTO Comment (commentId, userId, memeId , date, text) VALUES(%s, %s, %s, %s, %s)"
         val = (comment_id, user_id, meme_id, date, text)
-
         cursor.execute(sql, val)
+
+    def get_userId_with_token(self, token):
+        cursorToken = self.db_connection.cursor()
+        sql = "SELECT * FROM Token t WHERE t.token = %s"
+        val = (token,)
+        cursorToken.execute(sql, val)
+
+        response = cursorToken.fetchall()
+        token_response = response[0]
+        user_id = token_response[1]
+        return user_id

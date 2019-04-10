@@ -44,38 +44,42 @@ CREATE TABLE Follow
     FOREIGN KEY (followee) REFERENCES Users (id)
 );
 
-CREATE TABLE Liked
+
+CREATE TABLE Seen
 (
     userId VARCHAR(36) NOT NULL,
     memeId VARCHAR(36) NOT NULL,
     date   DATE,
 
+
     FOREIGN KEY (userId) REFERENCES Users (id),
     FOREIGN KEY (memeId) REFERENCES Memes (id)
+);
+
+CREATE TABLE Liked
+(
+    userId VARCHAR(36) NOT NULL,
+    memeId VARCHAR(36) NOT NULL,
+
+
+    FOREIGN KEY (userId) REFERENCES Users (id),
+    FOREIGN KEY (memeId) REFERENCES Memes (id)
+
+
 );
 
 CREATE TABLE Disliked
 (
     userId VARCHAR(36) NOT NULL,
     memeId VARCHAR(36) NOT NULL,
-    date   DATE,
+
 
     FOREIGN KEY (userId) REFERENCES Users (id),
     FOREIGN KEY (memeId) REFERENCES Memes (id)
+
 );
 
-CREATE TABLE Seen
-(
-    id        INT AUTO_INCREMENT,
-    userId    VARCHAR(36) NOT NULL,
-    memeId    VARCHAR(36) NOT NULL,
-    startTime DATE,
-    endTime   DATE,
 
-    PRIMARY KEY (id),
-    FOREIGN KEY (userId) REFERENCES Users (id),
-    FOREIGN KEY (memeId) REFERENCES Memes (id)
-);
 
 CREATE TABLE Uploaded
 (
@@ -112,6 +116,7 @@ CREATE TABLE Token
     PRIMARY KEY (id),
     FOREIGN KEY (userId) REFERENCES Users (id)
 );
+
 
 CREATE TABLE Top
 (
