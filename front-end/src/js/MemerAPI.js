@@ -1,14 +1,9 @@
 import axios from 'axios';
-import URL from './URL.js'
 
 export default class MemerAPI {
     static get BASE_URL() {
-        const ip = URL.BASE_URL;
-        if (ip === '') {
-            return 'http://localhost:5000';
-        } else {
-            return `http://${ip}:5000`;
-        }
+
+            return `http://app:5000`;
     }
 
     static userId = 'not set';
