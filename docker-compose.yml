@@ -21,8 +21,6 @@ services:
         
   web:
     build: ./front-end
-    environment:
-      - VUE_APP_BACK_END_IP=${BACK_END_IP}
     ports:
       - "8080:8080"
     depends_on:

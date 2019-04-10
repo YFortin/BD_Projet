@@ -1,11 +1,10 @@
 import axios from 'axios';
+import URL from './URL.js'
 
 export default class MemerAPI {
     static get BASE_URL() {
-        const ip = process.env.VUE_APP_BACK_END_IP;
-        console.log(ip);
-        console.log(process.env);
-        if (typeof ip === 'undefined') {
+        const ip = URL.BASE_URL;
+        if (ip === '') {
             return 'http://localhost:5000';
         } else {
             return `http://${ip}:5000`;
