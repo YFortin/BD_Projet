@@ -101,6 +101,18 @@ class MySQLRepository(Repository):
 
         return cursor.fetchall()
 
+    def get_unseen_memes(self, limit):
+        cursor = self.db_connection.cursor()
+
+        sql = "SELECT * FROM Memes m, Seen s " \
+              "WHERE m.id != s.memeId" \
+              "GROUP BY RAND()" \
+              "LIMIT %s"
+        val = (limit,)
+
+        cursor.execute(sql, val)
+        return cursor.fetchall()
+
     def add_meme(self, meme: Meme, token, date):
         cursor = self.db_connection.cursor()
 
