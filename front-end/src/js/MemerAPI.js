@@ -3,7 +3,11 @@ import axios from 'axios';
 export default class MemerAPI {
     static get BASE_URL() {
         const ip = process.env.BACK_END_IP;
-        return `${ip}`
+        if (typeof ip === 'undefined') {
+            return 'http://localhost:5000';
+        } else {
+            return `http://${ip}:5000`;
+        }
     }
 
     static userId = 'not set';
