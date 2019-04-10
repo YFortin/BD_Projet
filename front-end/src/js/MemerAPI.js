@@ -2,7 +2,9 @@ import axios from 'axios';
 
 export default class MemerAPI {
     static get BASE_URL() {
-        const ip = process.env.BACK_END_IP;
+        const ip = process.env.VUE_APP_BACK_END_IP;
+        console.log(ip);
+        console.log(process.env);
         if (typeof ip === 'undefined') {
             return 'http://localhost:5000';
         } else {
