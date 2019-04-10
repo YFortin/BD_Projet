@@ -64,5 +64,5 @@ print(__name__)
 if __name__ == '__main__':
     print(f"Listening")
     # app.run('0.0.0.0')
-    http = WSGIServer(('', 5000), app.wsgi_app)
+    http = WSGIServer(('', 5000), app)
     http.serve_forever()

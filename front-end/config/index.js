@@ -1,8 +1,11 @@
-// module.exports = {
-//     proxyTable: {
-//         '**': {
-//           target: 'http://app:5000',
-//           changeOrigin: true
-//         }
-//     }
-// }
+module.exports = {
+    devServer: {
+      proxy: {
+        '*': {
+          target: 'http://app:5000',
+          ws: true,
+          changeOrigin: true
+        },
+      }
+    }
+  }
