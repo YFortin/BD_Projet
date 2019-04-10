@@ -35,7 +35,7 @@ class MemeHandler(Handler):
             return jsonify(memes)
 
         @self.app.route('/memes/unseen', methods=['GET'])
-        def get_memes():
+        def get_memes_unseen():
             """
             Get memes
             {

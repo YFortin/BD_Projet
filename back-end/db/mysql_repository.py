@@ -104,11 +104,12 @@ class MySQLRepository(Repository):
     def get_unseen_memes(self, limit):
         cursor = self.db_connection.cursor()
 
-        sql = "SELECT * FROM Memes m, Seen s " \
-              "WHERE m.id != s.memeId" \
-              "GROUP BY RAND()" \
-              "LIMIT %s"
-        val = (limit,)
+        sql = """ SELECT * FROM Memes m, Seen s
+                  WHERE m.id != s.memeId
+                  GROUP BY RAND()
+                  LIMIT %d"""
+
+        val = (int(limit),)
 
         cursor.execute(sql, val)
         return cursor.fetchall()
