@@ -88,6 +88,18 @@ class MySQLRepository(Repository):
         values = user_id
         cursor.execute(query, values)
 
+    def autocomplete_username(self, input, limit):
+        cursor = self.db_connection.cursor()
+        sql = """
+                SELECT u.id, u.username FROM Users u
+                WHERE u.username LIKE %s
+                LIMIT %s
+             """
+
+        val = (('%' + input + '%'), int(limit))
+        cursor.execute(sql, val)
+        return cursor.fetchall()
+
     def get_meme(self, meme_id):
         cursor = self.db_connection.cursor()
 

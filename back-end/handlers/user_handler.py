@@ -72,6 +72,30 @@ class UserHandler(Handler):
                 response = {"token": token}
                 return jsonify(response)
 
+        @self.app.route('/users/autocomplete', methods=['GET'])
+        def autocomplete_username():
+            """
+            Autocomplete username
+            Input:
+            {
+                "input" = "" : string
+                "limit" = "" : string
+
+            }
+            Output
+            {
+            List of
+                userId
+                username
+            }
+            """
+            content = request.json
+            input = content['input']
+            limit = content['limit']
+
+            usernames = self.user_service.autocomplete_username(input, limit)
+            return  jsonify(usernames)
+
         @self.app.route('/users/<int:user_id>', methods=['GET'])
         def get_user(user_id):
             """

@@ -37,7 +37,9 @@ class UserService:
         self.repository.add_token(user, token)
         return token
 
-    def create_admin_token(self,token):
+    def create_admin_token(self, token):
         user = self.repository.get_user_with_email('admin@admin')
         self.repository.add_token(user, token)
 
+    def autocomplete_username(self, input, limit):
+        return self.repository.autocomplete_username(input, limit)

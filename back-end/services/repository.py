@@ -77,3 +77,6 @@ class Repository(ABC):
 
     def get_unseen_memes(self, limit, token):
         ...
+
+    def autocomplete_username(self, input, limit):
+        ...
