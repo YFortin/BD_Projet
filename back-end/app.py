@@ -55,7 +55,9 @@ meme_handler = MemeHandler(app, meme_service, repository)
 meme_handler.register_routes()
 
 # Create admin
+
 user_service.create_user('admin', 'admin@admin', 'root')
+user_service.create_admin_token('6c26bf90-172d-433c-a8b4-dbc4c62edf62')
 
 print(__name__)
 

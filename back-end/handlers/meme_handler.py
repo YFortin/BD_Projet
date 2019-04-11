@@ -39,14 +39,16 @@ class MemeHandler(Handler):
             """
             Get memes
             {
+                "token" = "" : string
                 "limit" = "" : string
             }
             :return: array of memes
             """
             content = json.loads(request.data)
+            token = content['token']
             limit = content['limit']
 
-            memes = self.meme_service.get_unseen_meme(limit)
+            memes = self.meme_service.get_unseen_meme(limit,token)
             return jsonify(memes)
 
         @self.app.route('/memes/<meme_id>', methods=['GET'])

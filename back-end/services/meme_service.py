@@ -44,6 +44,6 @@ class MemeService:
 
         self.repository.comment_meme(id, meme_id, token, date, text)
 
-    def get_unseen_meme(self,limit):
-        memes = self.repository.get_unseen_memes(limit)
+    def get_unseen_meme(self,limit, token):
+        memes = self.repository.get_unseen_memes(limit,token)
         return memes
