@@ -76,12 +76,12 @@ class UserHandler(Handler):
             raise NotImplementedError
 
         # TODO need to be the same user
-        @self.app.route('/users/<int:user_id>', methods=['DELETE'])
+        @self.app.route('/users', methods=['DELETE'])
         @self.login_required
         def delete_user(user):
             """
             Delete user at user_id
-            :param user_id: user user_id
+            :param user: user
             :return: user
             """
             raise NotImplementedError

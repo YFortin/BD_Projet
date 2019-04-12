@@ -10,16 +10,6 @@ class MemeService:
     def __init__(self, repository: Repository):
         self.repository = repository
 
-    def get_memes(self, limit, offset):
-        memes = []
-        memes.extend(self.repository.get_all_memes())
-        memes = memes[int(offset):int(offset + limit)]
-
-        return memes
-
-    def get_meme(self, meme_id):
-        return self.repository.get_meme(meme_id)
-
     def delete_meme(self, meme_id):
         self.repository.remove_meme(meme_id)
 
@@ -41,8 +31,6 @@ class MemeService:
 
     def comment_meme(self, user: User, meme_id, text):
         date = datetime.datetime.now()
-        meme_id = str(uuid.uuid4())
-
         self.repository.comment_meme(user, meme_id, date, text)
 
     def get_unseen_meme(self, user: User, limit: int):

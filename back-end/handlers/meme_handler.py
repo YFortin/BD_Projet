@@ -11,6 +11,7 @@ from services.repository import Repository
 
 
 class MemeHandler(Handler):
+
     DEFAULT_LIMIT = 10
     DEFAULT_OFFSET = 0
 
@@ -20,22 +21,6 @@ class MemeHandler(Handler):
         self.meme_service = meme_service
 
     def register_routes(self):
-        @self.app.route('/memes', methods=['GET'])
-        def get_memes():
-            """
-            Get memes
-            Query params:
-                limit -> maximum number of memes to return
-                offset -> return memes starting at offset
-            :return: array of memes
-            """
-            content = json.loads(request.data)
-            limit = content.get('limit', self.DEFAULT_LIMIT)
-            offset = content.get('offset', self.DEFAULT_OFFSET)
-
-            memes = self.meme_service.get_memes(limit, offset)
-            return jsonify(memes)
-
         @self.app.route('/memes/unseen', methods=['GET'])
         @self.login_required
         def get_memes_unseen(user):
@@ -48,21 +33,10 @@ class MemeHandler(Handler):
             :return: array of memes
             """
             content = json.loads(request.data)
-
             limit = content.get('limit', self.DEFAULT_LIMIT)
 
             memes = self.meme_service.get_unseen_meme(user, limit)
-            return jsonify(memes)
-
-        @self.app.route('/memes/<meme_id>', methods=['GET'])
-        def get_meme_at(meme_id):
-            """
-            Return the meme with meme_id
-            :param meme_id: meme meme_id
-            :return: meme
-            """
-            meme = self.meme_service.get_meme(meme_id)
-            return jsonify(meme)
+            return jsonify([m.__dict__ for m in memes])
 
         @self.app.route('/memes/<meme_id>', methods=['DELETE'])
         def delete_meme(meme_id):
@@ -84,18 +58,6 @@ class MemeHandler(Handler):
             :return: array of memes
             """
 
-            raise NotImplementedError
-
-        @self.app.route('/memes/new', methods=['GET'])
-        def get_new_memes():
-            """
-            Get newest memes
-            Query params:
-                limit -> maximum number of memes to return
-                offset -> return memes starting at offset
-            :return: array of memes
-            """
-            content = json.loads(request.json)
             raise NotImplementedError
 
         @self.app.route('/memes', methods=['POST'])
@@ -132,7 +94,6 @@ class MemeHandler(Handler):
             }
             :return:
             """
-            content = json.loads(request.data)
             self.meme_service.upvote_meme(user, meme_id)
             return Response(status=200)
 
@@ -141,6 +102,7 @@ class MemeHandler(Handler):
         def downvote_meme(user, meme_id):
             """
             Downvote the meme
+            :param user: user
             :param meme_id: meme meme_id
             JSON input
             {
@@ -148,8 +110,6 @@ class MemeHandler(Handler):
             }
             :return:
             """
-            content = json.loads(request.data)
-
             self.meme_service.downvote_meme(user, meme_id)
             return Response(status=200)
 
@@ -162,6 +122,7 @@ class MemeHandler(Handler):
             {
                 contents:
             }
+            :param user: user
             :param meme_id: meme meme_id
             :return:
             """

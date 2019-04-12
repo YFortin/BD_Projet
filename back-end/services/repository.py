@@ -11,10 +11,6 @@ class Repository(ABC):
         ...
 
     @abstractmethod
-    def get_all_users(self):
-        ...
-
-    @abstractmethod
     def add_user(self, user: User):
         ...
 
@@ -27,19 +23,7 @@ class Repository(ABC):
         ...
 
     @abstractmethod
-    def get_meme(self, meme_id):
-        ...
-
-    @abstractmethod
-    def get_all_memes(self):
-        ...
-
-    @abstractmethod
     def add_meme(self, user: User, meme: Meme, date: datetime.datetime):
-        ...
-
-    @abstractmethod
-    def edit_meme(self, meme: Meme):
         ...
 
     @abstractmethod
