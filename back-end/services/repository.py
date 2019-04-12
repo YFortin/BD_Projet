@@ -74,3 +74,6 @@ class Repository(ABC):
     @abstractmethod
     def seen_meme(self,meme_id, token, date):
         ...
+
+    def get_unseen_memes(self, limit, token):
+        ...

@@ -36,3 +36,8 @@ class UserService:
         token = uuid.uuid4()
         self.repository.add_token(user, token)
         return token
+
+    def create_admin_token(self,token):
+        user = self.repository.get_user_with_email('admin@admin')
+        self.repository.add_token(user, token)
+

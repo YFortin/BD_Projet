@@ -4,6 +4,7 @@ import mysql.connector
 import time
 
 from flask import Flask
+from flask_cors import CORS
 from gevent.pywsgi import WSGIServer
 from gevent import monkey
 
@@ -30,6 +31,7 @@ def connect_to_database() -> MySQLRepository:
 
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route('/')
@@ -54,11 +56,10 @@ meme_service = MemeService(repository)
 meme_handler = MemeHandler(app, meme_service, repository)
 meme_handler.register_routes()
 
-
 print(__name__)
 
 if __name__ == '__main__':
     print(f"Listening")
-    # app.run('0.0.0.0')
-    http = WSGIServer(('', 5000), app.wsgi_app)
-    http.serve_forever()
+    app.run('0.0.0.0')
+    # http = WSGIServer(('', 5000), app)
+    # http.serve_forever()

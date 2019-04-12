@@ -5,6 +5,7 @@ from mysql.connector import MySQLConnection
 from entities.meme import Meme
 from entities.user import User
 from services.repository import Repository
+import random
 
 
 class MySQLRepository(Repository):
@@ -101,6 +102,23 @@ class MySQLRepository(Repository):
 
         return cursor.fetchall()
 
+    def get_unseen_memes(self, limit, token):
+        cursor = self.db_connection.cursor()
+        user_id = self.get_userId_with_token(token)
+
+        sql = """SELECT * FROM Memes m
+                 WHERE 1 > (
+                 SELECT COUNT(*) FROM Seen s
+                 WHERE s.memeId = m.id AND s.userId = %s
+                 )
+                 ORDER BY RAND()
+                 LIMIT %s
+              """
+        val = (user_id, int(limit))
+
+        cursor.execute(sql, val)
+        return cursor.fetchall()
+
     def add_meme(self, meme: Meme, token, date):
         cursor = self.db_connection.cursor()
 
@@ -168,3 +186,12 @@ class MySQLRepository(Repository):
         token_response = response[0]
         user_id = token_response[1]
         return user_id
+
+    def get_number_element_in_a_table(self, table):
+        cursor = self.db_connection.cursor()
+        sql = "SELECT COUNT(*) FROM %s"
+        val = (table,)
+
+        cursor.execute(sql, val)
+        res = cursor.fetchall()
+        return int(res[0])
