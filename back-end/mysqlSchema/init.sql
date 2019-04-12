@@ -127,6 +127,14 @@ CREATE TABLE Top
     FOREIGN KEY (memeId) REFERENCES Memes (id)
 );
 
+-- TODO remove before deposit
+INSERT INTO Users (id, username, email, hashedPassword, salt)
+VALUES ('admin', 'admin', 'admin', 'admin', 'admin')
+
+
+
+
+
 -- TODO add ONE DELETE and ON UPDATE
 -- TODO trigger on Liked to Top
 -- TODO trigger verify username validity
