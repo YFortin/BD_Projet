@@ -9,9 +9,10 @@
                 <v-toolbar-title>Login</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
-                <v-form>
+                <v-form ref="form" v-model="valid" lazy-validation>
                   <v-text-field
                     v-model="email"
+                    :rules="emailRules"
                     prepend-icon="person"
                     name="email"
                     label="email"
@@ -20,6 +21,7 @@
                   <v-text-field
                     v-model="password"
                     prepend-icon="lock"
+                    :rules="passwordRules"
                     name="password"
                     label="Password"
                     type="password"
@@ -53,23 +55,26 @@ export default {
   },
 
   data: () => ({
+    valid: true,
     email: "",
-    password: ""
+    password: "",
+    emailRules: [
+      v => !!v || "E-mail is required",
+      v => /.+@.+/.test(v) || "E-mail must be valid"
+    ],
+    passwordRules: [v => !!v || "Password is required"]
   }),
   methods: {
     async login() {
-      if (
-        this.$v.email.email &&
-        this.$v.email.required &&
-        this.$v.password.required
-      ) {
+      if (this.$refs.form.validate()) {
         try {
           const response = await MemerAPI.User.login(this.email, this.password);
           document.cookie = `AuthorizationMemer=${response.data.token}`;
           MemerAPI.userId = response.data.token;
           this.$router.push({path: '/Nav/Memes'});
         } catch (error) {
-          console.log(error);
+          alert(error.message + "\n Username or password is invalid");
+
         }
       }
     }
