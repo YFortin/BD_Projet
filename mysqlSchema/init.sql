@@ -129,8 +129,10 @@ CREATE TABLE Top
 
 -- TODO remove before deposit
 INSERT INTO Users (id, username, email, hashedPassword, salt)
-VALUES ('admin', 'admin', 'admin', 'admin', 'admin')
+VALUES ('admin', 'admin', 'admin', 'admin', 'admin');
 
+INSERT INTO Token (userId, token, expiredDate)
+VALUES ('admin', 'admin', '2021-01-01');
 
 
 

@@ -59,15 +59,6 @@ class MySQLRepository(Repository):
         user = User(user_info[0], user_info[1], user_info[2], user_info[3], user_info[4])
         return user
 
-    def get_all_users(self):
-        cursor = self.db_connection.cursor()
-        cursor.execute('SELECT * FROM Users u')
-        cursor.fetchall()
-        users = []
-        for user in cursor:
-            users.insert(User(user.id, user.username, user.email, user.hashed_password, user.salt))
-        return users
-
     def add_user(self, user: User):
         cursor = self.db_connection.cursor()
         query = 'INSERT INTO Users (id, username, email, hashedPassword, salt) VALUES (%s, %s, %s, %s, %s)'
@@ -88,20 +79,6 @@ class MySQLRepository(Repository):
         values = user_id
         cursor.execute(query, values)
 
-    def get_meme(self, meme_id):
-        cursor = self.db_connection.cursor()
-
-        sql = "SELECT * FROM Memes m WHERE m.id = %s"
-        val = (meme_id,)
-        cursor.execute(sql, val)
-        return cursor.fetchall()
-
-    def get_all_memes(self):
-        cursor = self.db_connection.cursor()
-        cursor.execute(f'SELECT * FROM Memes')
-
-        return cursor.fetchall()
-
     def get_unseen_memes(self, limit, token):
         cursor = self.db_connection.cursor()
         user_id = self.get_userId_with_token(token)
@@ -117,7 +94,16 @@ class MySQLRepository(Repository):
         val = (user_id, int(limit))
 
         cursor.execute(sql, val)
-        return cursor.fetchall()
+        memes_tuples = cursor.fetchall()
+        memes = []
+        for meme_tuple in memes_tuples:
+            memes.append(self.tuple_to_meme(meme_tuple))
+
+        return memes
+
+    @staticmethod
+    def tuple_to_meme(meme_tuple):
+        return Meme(meme_tuple[0], meme_tuple[1], meme_tuple[2], meme_tuple[3])
 
     def add_meme(self, meme: Meme, token, date):
         cursor = self.db_connection.cursor()
@@ -132,14 +118,6 @@ class MySQLRepository(Repository):
         val = (user_id, meme.id, date)
         cursor.execute(sql, val)
         self.db_connection.commit()
-
-    def edit_meme(self, meme: Meme):
-        cursor = self.db_connection.cursor()
-        query = """UPDATE Users 
-                   SET id = %s, title = %s, url = %s, category = %s
-                   WHERE m.id = %s"""
-        values = (meme.id, meme.title, meme.url, meme.category)
-        cursor.execute(query, values)
 
     def remove_meme(self, meme_id):
         cursor = self.db_connection.cursor()
@@ -176,7 +154,7 @@ class MySQLRepository(Repository):
         val = (comment_id, user_id, meme_id, date, text)
         cursor.execute(sql, val)
 
-    def get_userId_with_token(self, token):
+    def get_user_id_with_token(self, token):
         cursorToken = self.db_connection.cursor()
         sql = "SELECT * FROM Token t WHERE t.token = %s"
         val = (token,)
@@ -186,12 +164,3 @@ class MySQLRepository(Repository):
         token_response = response[0]
         user_id = token_response[1]
         return user_id
-
-    def get_number_element_in_a_table(self, table):
-        cursor = self.db_connection.cursor()
-        sql = "SELECT COUNT(*) FROM %s"
-        val = (table,)
-
-        cursor.execute(sql, val)
-        res = cursor.fetchall()
-        return int(res[0])

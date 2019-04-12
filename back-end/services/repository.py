@@ -40,10 +40,6 @@ class Repository(ABC):
         ...
 
     @abstractmethod
-    def edit_meme(self, meme: Meme):
-        ...
-
-    @abstractmethod
     def remove_meme(self, meme_id):
         ...
 

@@ -18,21 +18,6 @@ class MemeHandler(Handler):
         self.meme_service = meme_service
 
     def register_routes(self):
-        @self.app.route('/memes', methods=['GET'])
-        def get_memes():
-            """
-            Get memes
-            Query params:
-                limit -> maximum number of memes to return
-                offset -> return memes starting at offset
-            :return: array of memes
-            """
-            content = json.loads(request.data)
-            limit = content['limit']
-            offset = content['offset']
-
-            memes = self.meme_service.get_memes(limit, offset)
-            return jsonify(memes)
 
         @self.app.route('/memes/unseen', methods=['GET'])
         def get_memes_unseen():
@@ -48,18 +33,9 @@ class MemeHandler(Handler):
             token = content['token']
             limit = content['limit']
 
-            memes = self.meme_service.get_unseen_meme(limit,token)
-            return jsonify(memes)
+            memes = self.meme_service.get_unseen_meme(limit, token)
+            return jsonify([m.__dict__ for m in memes])
 
-        @self.app.route('/memes/<meme_id>', methods=['GET'])
-        def get_meme_at(meme_id):
-            """
-            Return the meme with meme_id
-            :param meme_id: meme meme_id
-            :return: meme
-            """
-            meme = self.meme_service.get_meme(meme_id)
-            return jsonify(meme)
 
         @self.app.route('/memes/<meme_id>', methods=['DELETE'])
         def delete_meme(meme_id):
@@ -81,18 +57,6 @@ class MemeHandler(Handler):
             :return: array of memes
             """
 
-            raise NotImplementedError
-
-        @self.app.route('/memes/new', methods=['GET'])
-        def get_new_memes():
-            """
-            Get newest memes
-            Query params:
-                limit -> maximum number of memes to return
-                offset -> return memes starting at offset
-            :return: array of memes
-            """
-            content = json.loads(request.json)
             raise NotImplementedError
 
         @self.app.route('/memes', methods=['POST'])
