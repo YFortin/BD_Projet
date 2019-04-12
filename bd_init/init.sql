@@ -28,7 +28,6 @@ CREATE TABLE Users
     id             VARCHAR(36) NOT NULL,
     username       VARCHAR(30),
     email          VARCHAR(50),
-	avatar		   VARCHAR(200),
     hashedPassword VARCHAR(128),
     salt           VARCHAR(36),
 
