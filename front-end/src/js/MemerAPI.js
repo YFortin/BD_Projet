@@ -5,7 +5,17 @@ export default class MemerAPI {
         return '';
     }
 
-    static userId = 'not set';
+    static get AUTH_HEADER() {
+        const token = document.cookie.replace(
+          /(?:(?:^|.*;\s*)AuthorizationMemer\s*=\s*([^;]*).*$)|^.*$/,
+          '$1'
+        );
+        return {
+          headers: {
+            Authorization: token
+          }
+        };
+      }
 
     static Memes = class {
 
@@ -13,12 +23,12 @@ export default class MemerAPI {
             return `${MemerAPI.BASE_URL}/memes`;
         }
 
-        static getAll() {
-            return axios.get(`${this.MEMES_URL}`);
+        static getUnseenMemes() {
+            return axios.get(`${this.MEMES_URL}/unseen`, MemerAPI.AUTH_HEADER);
         }
 
         static addMeme(meme) {
-            return axios.post(`${this.MEMES_URL}`, meme);
+            return axios.post(`${this.MEMES_URL}`, meme, MemerAPI.AUTH_HEADER);
         }
 
         static getMeme(id) {
@@ -30,21 +40,20 @@ export default class MemerAPI {
         }
 
         static upvote(id) {
-            return axios.post(`${this.MEMES_URL}/${id}/upvote`, this.userId);
+            return axios.post(`${this.MEMES_URL}/${id}/upvote`, MemerAPI.AUTH_HEADER);
         }
 
         static downvote(id) {
-            return axios.post(`${this.MEMES_URL}/${id}/downvote`, this.userId);
+            return axios.post(`${this.MEMES_URL}/${id}/downvote`, MemerAPI.AUTH_HEADER);
         }
 
         static comment(comment, id) {
             
             const params = {
-                userId: this.userId,
                 contents: comment 
             }
 
-            return axios.post(`${this.MEMES_URL}/${id}/comment`, params);
+            return axios.post(`${this.MEMES_URL}/${id}/comment`, params, MemerAPI.AUTH_HEADER);
         }
 
     }

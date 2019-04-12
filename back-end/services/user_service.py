@@ -20,6 +20,8 @@ class UserService:
 
     def get_user_if_credentials_valid(self, email, password) -> Optional[User]:
         user = self.repository.get_user_with_email(email)
+        if user is None:
+            return None
         salt = user.salt
         hashed_password = hashlib.sha512((password + salt).encode('utf-8')).hexdigest()
 

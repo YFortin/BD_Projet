@@ -23,9 +23,9 @@ class Handler(ABC):
         # and https://stackoverflow.com/questions/34495632/how-to-implement-login-required-decorator-in-flask
         @wraps(route)
         def function(*args, **kwargs):
-            if 'Authorization' not in request.headers:
+            if 'AuthorizationMemer' not in request.headers:
                 abort(401)
-            token = request.headers['Authorization']
+            token = request.headers['AuthorizationMemer']
             user = self._repository.get_user_from_token(token)
             if user is None:
                 abort(401)

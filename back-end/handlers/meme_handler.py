@@ -160,7 +160,6 @@ class MemeHandler(Handler):
             Comment the meme
             JSON input
             {
-                user_id:
                 contents:
             }
             :param meme_id: meme meme_id
