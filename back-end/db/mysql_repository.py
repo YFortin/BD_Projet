@@ -54,6 +54,8 @@ class MySQLRepository(Repository):
         val = (email,)
         cursor.execute(query, val)
         res = cursor.fetchall()
+        if len(res) == 0:
+            return None
         user_info = res[0]
         user = User(user_info[0], user_info[1], user_info[2], user_info[3], user_info[4])
         return user
