@@ -1,11 +1,13 @@
 import datetime
 import sys
 
-from mysql.connector import MySQLConnection
+from mysql.connector import MySQLConnection, IntegrityError
 
 from entities.meme import Meme
 from entities.user import User
 from services.repository import Repository
+
+from services.repository_exception import RepositoryException
 
 
 class MySQLRepository(Repository):
@@ -69,7 +71,10 @@ class MySQLRepository(Repository):
         cursor = self.db_connection.cursor()
         query = 'INSERT INTO Users (id, username, email, hashedPassword, salt) VALUES (%s, %s, %s, %s, %s)'
         data_tuple = str(user.id), user.name, user.email, user.hashed_password, user.salt
-        cursor.execute(query, data_tuple)
+        try:
+            cursor.execute(query, data_tuple)
+        except IntegrityError:
+            raise RepositoryException()
         self.db_connection.commit()
 
     def edit_user(self, user: User):
