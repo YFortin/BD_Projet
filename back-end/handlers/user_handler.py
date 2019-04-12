@@ -1,9 +1,4 @@
-from flask import Flask
-from flask import request
-from flask import Response
-from flask import jsonify
-
-import json
+from flask import Flask, Response, request, jsonify, abort
 
 from handlers.handler import Handler
 from services.repository import Repository
@@ -33,7 +28,7 @@ class UserHandler(Handler):
             :return:
             """
             if not request.is_json:
-                return Response(status=400)
+                abort(400)
 
             content = request.json
             name = content['name']
@@ -41,7 +36,6 @@ class UserHandler(Handler):
             password = content['password']
             print(name)
             self.user_service.create_user(name, email, password)
-            print('wut')
             return Response(status=201)
 
         @self.app.route('/login', methods=['POST'])
@@ -67,7 +61,7 @@ class UserHandler(Handler):
 
             token = self.user_service.create_user_token(email, password)
             if token is None:
-                return Response(status=401)
+                abort(401)
             else:
                 response = {"token": token}
                 return jsonify(response)
@@ -83,7 +77,8 @@ class UserHandler(Handler):
 
         # TODO need to be the same user
         @self.app.route('/users/<int:user_id>', methods=['DELETE'])
-        def delete_user(user_id):
+        @self.login_required
+        def delete_user(user):
             """
             Delete user at user_id
             :param user_id: user user_id

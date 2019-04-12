@@ -1,7 +1,7 @@
 import hashlib
 import uuid
+from typing import Optional
 
-from entities.user import User
 from services.repository import Repository
 from entities.user import User
 
@@ -18,7 +18,7 @@ class UserService:
         new_user = User(user_id, name, email, hashed_password, salt)
         self.repository.add_user(new_user)
 
-    def get_user_if_credentials_valid(self, email, password):
+    def get_user_if_credentials_valid(self, email, password) -> Optional[User]:
         user = self.repository.get_user_with_email(email)
         salt = user.salt
         hashed_password = hashlib.sha512((password + salt).encode('utf-8')).hexdigest()
@@ -36,8 +36,3 @@ class UserService:
         token = uuid.uuid4()
         self.repository.add_token(user, token)
         return token
-
-    def create_admin_token(self,token):
-        user = self.repository.get_user_with_email('admin@admin')
-        self.repository.add_token(user, token)
-
