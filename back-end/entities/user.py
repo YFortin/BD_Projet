@@ -1,47 +1,8 @@
 class User:
-    def __init__(self, uid, name, email, hashed_password, salt):
-        self._id = uid
-        self._name = name
-        self._email = email
-        self._hashed_password = hashed_password
-        self._salt = salt
-
-    @property
-    def id(self):
-        return self._id
-
-    @id.setter
-    def id(self, value):
-        self._id = value
-
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, value):
-        self._name = value
-
-    @property
-    def email(self):
-        return self._email
-
-    @email.setter
-    def email(self, value):
-        self._email = value
-
-    @property
-    def hashed_password(self):
-        return self._hashed_password
-
-    @hashed_password.setter
-    def hashed_password(self, value):
-        self.hashed_password = value
-
-    @property
-    def salt(self):
-        return self._salt
-
-    @salt.setter
-    def salt(self, value):
-        self._salt = value
+    def __init__(self, uid, name, avatar, email, hashed_password, salt):
+        self.id = uid
+        self.name = name
+        self.avatar = avatar
+        self.email = email
+        self.hashed_password = hashed_password
+        self.salt = salt

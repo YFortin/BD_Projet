@@ -41,16 +41,31 @@ for i in range(num_memes):
 
 # insert User
 
+user_urls = [
+	'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/220px-User_icon_2.svg.png',
+	'https://www.google.ca/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwiH57TNzcvhAhVkxFkKHS-cDnoQjRx6BAgBEAU&url=https%3A%2F%2Fnulm.gov.in%2FAuth%2FLogin.aspx&psig=AOvVaw1DNhz7Rh3pxakGQsqGfacu&ust=1555194543032456',
+	'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0WMIMCWCCZ8LxgACZMv3eO441cvSIsUIFH_8aR_e7JGy3UTiJTA',
+	'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb2AfQjrtZnNtqy4diFZNyTSH4peeJCqJgIUPvJo5dHSNjcB17',
+	'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTgBfhWZBJJNVWvyiyu4ZjtJWtUeJ3nrRcjCIvr0MXlasZmJEw',
+	'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVbs4YIhQrBTWQ-1pEj3mhyTOmFL2lVfsS37px81N1s7IazLG_',
+	'https://images-na.ssl-images-amazon.com/images/I/51bolC6rJHL.jpg',
+	'https://images-na.ssl-images-amazon.com/images/I/413oGxxoL4L._SX425_.jpg',
+	'https://cdn.shopify.com/s/files/1/1061/1924/products/Emoji_Icon_-_Smirk_face_large.png?v=1542436013',
+	'https://banner2.kisspng.com/20180202/coq/kisspng-smiley-anger-angry-expression-5a74670b4552c0.292907191517577995284.jpg',
+	'https://images.alphacoders.com/476/thumb-1920-4761.jpg'
+]
+
 num_user = 100
 user_ids = []
 for i in range(num_user):
 	id = uuid.uuid4()
 	user_ids.append(id)
 	username = lorem.sentence().split()[0]
+	avatar = random.choice(user_urls)
 	email = lorem.sentence().split()[0]
 	hashedPassword = random.randint(0, 1000)
 	salt = random.randint(0, 1000)
-	file.write(f'INSERT INTO Users (id, username, email, hashedPassword, salt) VALUES ("{id}", "{username}", "{email}", "{hashedPassword}", "{salt}");\n')
+	file.write(f'INSERT INTO Users (id, username, avatar, email, hashedPassword, salt) VALUES ("{id}", "{username}", "{avatar}", "{email}", "{hashedPassword}", "{salt}");\n')
 
 # Generate follow
 

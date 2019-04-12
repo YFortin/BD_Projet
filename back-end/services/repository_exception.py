@@ -1,0 +1,3 @@
+class RepositoryException(RuntimeError):
+    def __init__(self):
+        ...

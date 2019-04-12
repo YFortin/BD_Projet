@@ -1,11 +1,13 @@
 import datetime
 import sys
 
-from mysql.connector import MySQLConnection
+from mysql.connector import MySQLConnection, IntegrityError
 
 from entities.meme import Meme
 from entities.user import User
 from services.repository import Repository
+
+from services.repository_exception import RepositoryException
 
 
 class MySQLRepository(Repository):
@@ -35,8 +37,12 @@ class MySQLRepository(Repository):
         val = (token,)
         cursor.execute(query, val)
         res = cursor.fetchall()
-        user = User(res.id, res.username, res.email, res.hashed_password, res.salt)
+        user = self._res_to_user(res)
         return user
+
+    @staticmethod
+    def _res_to_user(res):
+        return User(res.id, res.username, res.avatar, res.email, res.hashed_password, res.salt)
 
     def get_user(self, user_id):
         cursor = self.db_connection.cursor()
@@ -45,7 +51,7 @@ class MySQLRepository(Repository):
                    WHERE u.id=%s"""
         cursor.execute(query, user_id)
         res = cursor.fetchall()
-        user = User(res.id, res.username, res.email, res.hashed_password, res.salt)
+        user = self._res_to_user(res)
         return user
 
     def get_user_with_email(self, email):
@@ -59,14 +65,16 @@ class MySQLRepository(Repository):
         if len(res) == 0:
             return None
         user_info = res[0]
-        user = User(user_info[0], user_info[1], user_info[2], user_info[3], user_info[4])
-        return user
+        return User(user_info[0], user_info[1], user_info[2], user_info[3], user_info[4], user_info[5])
 
     def add_user(self, user: User):
         cursor = self.db_connection.cursor()
         query = 'INSERT INTO Users (id, username, email, hashedPassword, salt) VALUES (%s, %s, %s, %s, %s)'
         data_tuple = str(user.id), user.name, user.email, user.hashed_password, user.salt
-        cursor.execute(query, data_tuple)
+        try:
+            cursor.execute(query, data_tuple)
+        except IntegrityError:
+            raise RepositoryException()
         self.db_connection.commit()
 
     def edit_user(self, user: User):

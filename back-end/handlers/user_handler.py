@@ -3,6 +3,7 @@ import sys
 
 from handlers.handler import Handler
 from services.repository import Repository
+from services.repository_exception import RepositoryException
 from services.user_service import UserService
 
 
@@ -37,7 +38,10 @@ class UserHandler(Handler):
             email = content['email']
             password = content['password']
 
-            self.user_service.create_user(name, email, password)
+            try:
+                self.user_service.create_user(name, email, password)
+            except RepositoryException:
+                abort(400)
             return Response(status=201)
 
         @self.app.route('/login', methods=['POST'])
@@ -67,6 +71,11 @@ class UserHandler(Handler):
             else:
                 response = {"token": token}
                 return jsonify(response)
+
+        @self.app.route('/validateToken', methods=['GET'])
+        @self.login_required
+        def validate_token(_):
+            return Response(status=200)
 
         @self.app.route('/users/<int:user_id>', methods=['GET'])
         def get_user(user_id):

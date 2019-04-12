@@ -27,8 +27,7 @@ class MemeHandler(Handler):
             """
             Get memes
             {
-                token
-                limit
+                limit (optional)
             }
             :return: array of memes
             """

@@ -8,6 +8,8 @@ from entities.user import User
 
 
 class UserService:
+    DEFAULT_USER_AVATAR = 'https://banner2.kisspng.com/20180722/gfc/kisspng-user-profile-2018-in-sight-user-conference-expo-5b554c0968c377.0307553315323166814291.jpg'
+
     def __init__(self, repository: Repository):
         self.repository = repository
 
@@ -16,7 +18,7 @@ class UserService:
         hashed_password = hashlib.sha512((password + salt).encode('utf-8')).hexdigest()
 
         user_id = uuid.uuid4()
-        new_user = User(user_id, name, email, hashed_password, salt)
+        new_user = User(user_id, name, self.DEFAULT_USER_AVATAR, email, hashed_password, salt)
 
         self.repository.add_user(new_user)
 
