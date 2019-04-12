@@ -12,20 +12,19 @@
                 <h3 class="headline font-weight-bold mb-2">Start Swiping!</h3>
               </v-card-title>
               <v-carousel
-                vertical
-                v-model="carouselIndex"
                 hide-delimiters
                 hide-controls
                 :cycle="false"
               >
-                <v-carousel-item contain v-for="(item,i) in items" :key="i" :src="item.src"></v-carousel-item>
+                <v-carousel-item contain v-for="(item,i) in items" :key="i" :src="item.URL"></v-carousel-item>
               </v-carousel>
+                <v-card-text v-for="(comment, i) in items[0].comments" :key="i"> {{ comment.comment }} -- {{comment.userName}}<v-divider></v-divider></v-card-text>
             </v-card>
           </v-flex>
         </v-layout>
         <v-layout justify-center row>
           <v-flex xs1>
-            <v-btn fab @click="thumbDown" :disabled="true">
+            <v-btn fab @click="thumbDown">
               <v-icon color="pink">thumb_down_alt</v-icon>
             </v-btn>
           </v-flex>
@@ -43,26 +42,42 @@
 <script>
 export default {
   data: () => ({
-    carouselIndex: 0,
     items: [
       {
-        src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg"
+        URL: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/NYCS-bull-trans-1.svg/1024px-NYCS-bull-trans-1.svg.png",
+              Title: 'Titre',
+              Category: 'Category',
+              id: '1233242342312',
+              comments: [{userName: 'Yan', comment: 'Jaime les pommes'}, {userName: 'Xav', comment: 'Jaime les poires'}],
       },
       {
-        src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg"
+        URL: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/NYCS-bull-trans-2.svg/1024px-NYCS-bull-trans-2.svg.png",
+              Title: 'Titre',
+              Category: 'Category',
+              id: '1233242342312',
+              comments: [{userName: 'Will', comment: 'Spa si pire java'}, {userName: 'MPP', comment: 'Je fais du théatre'}]
       },
       {
-        src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg"
+        URL: "https://i.redd.it/0cscovjonpi11.png",
+              Title: 'Titre',
+              Category: 'Category',
+              id: '1233242342312',
+              comments: [{userName: 'Yan', comment: 'Jaime les pommes'}, {userName: 'Xav', comment: 'Jaime les poires'}],
       },
       {
-        src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg"
+        URL: "http://mrconsultis.fr/wp-content/uploads/2016/09/4-13.jpeg",
+              Title: 'Titre',
+              Category: 'Category',
+              id: '1233242342312',
+              comments: [{userName: 'Will', comment: 'Spa si pire java'}, {userName: 'MPP', comment: 'Je fais du théatre'}]
       },
       {
-        src: "https://s.hdnux.com/photos/73/53/27/15644125/6/920x920.jpg"
+        URL: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/TV5_%28ABC5%29_Logo.svg/220px-TV5_%28ABC5%29_Logo.svg.png",
+              Title: 'Titre',
+              Category: 'Category',
+              id: '1233242342312',
+              comments: [{userName: 'Yan', comment: 'Jaime les pommes'}, {userName: 'Xav', comment: 'Jaime les poires'}],
       },
-      {
-        src: "https://img-9gag-fun.9cache.com/photo/aD1X1d7_700bwp.webp"
-      }
     ]
   }),
   methods: {
@@ -78,27 +93,40 @@ export default {
       if (this.items.length < 3) {
         this.items.push(
           {
-            src:
-              "https://pay.google.com/about/static/images/social/og_image.jpg"
-          },
-          {
-            src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg"
-          },
-          {
-            src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg"
-          },
-          {
-            src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg"
-          },
-          {
-            src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg"
-          },
-          {
-            src: "https://s.hdnux.com/photos/73/53/27/15644125/6/920x920.jpg"
-          },
-          {
-            src: "https://img-9gag-fun.9cache.com/photo/aD1X1d7_700bwp.webp"
-          }
+        URL: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/NYCS-bull-trans-1.svg/1024px-NYCS-bull-trans-1.svg.png",
+              Title: 'Titre',
+              Category: 'Category',
+              id: '1233242342312',
+              comments: [{userName: 'Yan', comment: 'Jaime les pommes'}, {userName: 'Xav', comment: 'Jaime les poires'}],
+      },
+      {
+        URL: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/NYCS-bull-trans-2.svg/1024px-NYCS-bull-trans-2.svg.png",
+              Title: 'Titre',
+              Category: 'Category',
+              id: '1233242342312',
+              comments: [{userName: 'Will', comment: 'Spa si pire java'}, {userName: 'MPP', comment: 'Je fais du théatre'}]
+      },
+      {
+        URL: "https://i.redd.it/0cscovjonpi11.png",
+              Title: 'Titre',
+              Category: 'Category',
+              id: '1233242342312',
+              comments: [{userName: 'Yan', comment: 'Jaime les pommes'}, {userName: 'Xav', comment: 'Jaime les poires'}],
+      },
+      {
+        URL: "http://mrconsultis.fr/wp-content/uploads/2016/09/4-13.jpeg",
+              Title: 'Titre',
+              Category: 'Category',
+              id: '1233242342312',
+              comments: [{userName: 'Will', comment: 'Spa si pire java'}, {userName: 'MPP', comment: 'Je fais du théatre'}]
+      },
+      {
+        URL: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/TV5_%28ABC5%29_Logo.svg/220px-TV5_%28ABC5%29_Logo.svg.png",
+              Title: 'Titre',
+              Category: 'Category',
+              id: '1233242342312',
+              comments: [{userName: 'Yan', comment: 'Jaime les pommes'}, {userName: 'Xav', comment: 'Jaime les poires'}],
+      },
         );
       }
     },
