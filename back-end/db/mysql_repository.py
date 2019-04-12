@@ -5,7 +5,6 @@ from mysql.connector import MySQLConnection
 from entities.meme import Meme
 from entities.user import User
 from services.repository import Repository
-import random
 
 
 class MySQLRepository(Repository):
@@ -65,7 +64,7 @@ class MySQLRepository(Repository):
         cursor.fetchall()
         users = []
         for user in cursor:
-            users.insert(User(user.id, user.username, user.email, user.hashed_password, user.salt))
+            users.append(User(user.id, user.username, user.email, user.hashed_password, user.salt))
         return users
 
     def add_user(self, user: User):
@@ -102,9 +101,9 @@ class MySQLRepository(Repository):
 
         return cursor.fetchall()
 
-    def get_unseen_memes(self, limit, token):
+    def get_unseen_memes(self, user: User, limit: int):
         cursor = self.db_connection.cursor()
-        user_id = self.get_userId_with_token(token)
+        user_id = user.id
 
         sql = """SELECT * FROM Memes m
                  WHERE 1 > (
@@ -119,10 +118,11 @@ class MySQLRepository(Repository):
         cursor.execute(sql, val)
         return cursor.fetchall()
 
-    def add_meme(self, meme: Meme, token, date):
+    # user: User, meme: Meme, token: uuid, date:datetime.datetime
+    def add_meme(self, user: User, meme: Meme, date):
         cursor = self.db_connection.cursor()
 
-        user_id = self.get_userId_with_token(token)
+        user_id = user.id
 
         sql = "INSERT INTO Memes (id, title, url, category) VALUES (%s, %s, %s, %s)"
         val = (meme.id, meme.title, meme.url, meme.category)
@@ -148,50 +148,42 @@ class MySQLRepository(Repository):
         cursor.execute(sql, val)
         self.db_connection.commit()
 
-    def upvote_meme(self, meme_id, token):
+    def upvote_meme(self, user: User, meme_id):
         cursor = self.db_connection.cursor()
-        user_id = self.get_userId_with_token(token)
+        user_id = user.id
         sql = "INSERT INTO Liked (userId, memeId) VALUES(%s, %s)"
         val = (user_id, meme_id)
         cursor.execute(sql, val)
 
-    def downvote_meme(self, meme_id, token):
+    def downvote_meme(self, user: User, meme_id):
         cursor = self.db_connection.cursor()
-        user_id = self.get_userId_with_token(token)
+        user_id = user.id
         sql = "INSERT INTO Disliked (userId, memeId) VALUES(%s, %s)"
         val = (user_id, meme_id)
         cursor.execute(sql, val)
 
     def seen_meme(self, meme_id, token, date):
         cursor = self.db_connection.cursor()
-        user_id = self.get_userId_with_token(token)
+        user_id = self.get_user_id_with_token(token)
         sql = "INSERT INTO Seen (userId, memeId, date) VALUES(%s, %s, %s)"
         val = (user_id, meme_id, date)
         cursor.execute(sql, val)
 
-    def comment_meme(self, comment_id, meme_id, token, date, text):
+    def comment_meme(self, user: User, meme_id, date, text):
         cursor = self.db_connection.cursor()
-        user_id = self.get_userId_with_token(token)
+        user_id = user.id
+        comment_id = 23123  # TODO change
         sql = "INSERT INTO Comment (commentId, userId, memeId , date, text) VALUES(%s, %s, %s, %s, %s)"
         val = (comment_id, user_id, meme_id, date, text)
         cursor.execute(sql, val)
 
-    def get_userId_with_token(self, token):
-        cursorToken = self.db_connection.cursor()
+    def get_user_id_with_token(self, token):
+        cursor_token = self.db_connection.cursor()
         sql = "SELECT * FROM Token t WHERE t.token = %s"
         val = (token,)
-        cursorToken.execute(sql, val)
+        cursor_token.execute(sql, val)
 
-        response = cursorToken.fetchall()
+        response = cursor_token.fetchall()
         token_response = response[0]
         user_id = token_response[1]
         return user_id
-
-    def get_number_element_in_a_table(self, table):
-        cursor = self.db_connection.cursor()
-        sql = "SELECT COUNT(*) FROM %s"
-        val = (table,)
-
-        cursor.execute(sql, val)
-        res = cursor.fetchall()
-        return int(res[0])

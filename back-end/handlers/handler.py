@@ -1,5 +1,6 @@
+from functools import wraps
 from abc import ABC, abstractmethod
-from flask import request
+from flask import request, abort
 
 from services.repository import Repository
 
@@ -16,3 +17,18 @@ class Handler(ABC):
         token = request.cookies.get('token')
         user = self._repository.get_user_from_token(token)
         return user
+
+    def login_required(self, route):
+        # inspired from http://flask.pocoo.org/docs/0.12/patterns/viewdecorators/
+        # and https://stackoverflow.com/questions/34495632/how-to-implement-login-required-decorator-in-flask
+        @wraps(route)
+        def function(*args, **kwargs):
+            if 'Authorization' not in request.headers:
+                abort(401)
+            token = request.headers['Authorization']
+            user = self._repository.get_user_from_token(token)
+            if user is None:
+                abort(401)
+            return route(user, *args, **kwargs)
+
+        return function

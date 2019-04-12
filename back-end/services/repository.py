@@ -1,6 +1,5 @@
 import datetime
 from abc import ABC, abstractmethod
-import uuid
 
 from entities.user import User
 from entities.meme import Meme
@@ -36,7 +35,7 @@ class Repository(ABC):
         ...
 
     @abstractmethod
-    def add_meme(self, meme: Meme, token: uuid, date:datetime.datetime):
+    def add_meme(self, user: User, meme: Meme, date: datetime.datetime):
         ...
 
     @abstractmethod
@@ -60,20 +59,25 @@ class Repository(ABC):
         ...
 
     @abstractmethod
-    def upvote_meme(self, meme_id, token):
+    def upvote_meme(self, user: User, meme_id):
         ...
 
     @abstractmethod
-    def downvote_meme(self,meme_id, token):
+    def downvote_meme(self, user: User, meme_id):
         ...
 
     @abstractmethod
-    def comment_meme(self, comment_id, meme_id, token, date, text):
+    def comment_meme(self, user: User, meme_id, date, text):
         ...
 
     @abstractmethod
-    def seen_meme(self,meme_id, token, date):
+    def seen_meme(self, user: User, meme_id, date):
         ...
 
-    def get_unseen_memes(self, limit, token):
+    @abstractmethod
+    def get_unseen_memes(self, user: User, limit):
+        ...
+
+    @abstractmethod
+    def get_user_id_with_token(self, token):
         ...

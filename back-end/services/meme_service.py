@@ -1,5 +1,6 @@
 from services.repository import Repository
 from entities.meme import Meme
+from entities.user import User
 
 import uuid
 import datetime
@@ -22,28 +23,28 @@ class MemeService:
     def delete_meme(self, meme_id):
         self.repository.remove_meme(meme_id)
 
-    def upload_meme(self, title, url, category, token):
-        id = str(uuid.uuid4())
-        meme = Meme(id, title, url, category)
+    def upload_meme(self, user, title, url, category):
+        meme_id = str(uuid.uuid4())
+        meme = Meme(meme_id, title, url, category)
         date = datetime.datetime.now()
-        self.repository.add_meme(meme, token, date)
+        self.repository.add_meme(user, meme, date)
 
-    def upvote_meme(self, meme_id, token):
+    def upvote_meme(self, user: User, meme_id):
         date = datetime.datetime.now()
-        self.repository.seen_meme(meme_id, token, date)
-        self.repository.upvote_meme(meme_id, token)
+        self.repository.seen_meme(user, meme_id, date)
+        self.repository.upvote_meme(user, meme_id)
 
     def downvote_meme(self, meme_id, token):
         date = datetime.datetime.now()
         self.repository.seen_meme(meme_id, token, date)
         self.repository.downvote_meme(meme_id, token)
 
-    def comment_meme(self, token, meme_id, text):
+    def comment_meme(self, user: User, meme_id, text):
         date = datetime.datetime.now()
-        id = str(uuid.uuid4())
+        meme_id = str(uuid.uuid4())
 
-        self.repository.comment_meme(id, meme_id, token, date, text)
+        self.repository.comment_meme(user, meme_id, date, text)
 
-    def get_unseen_meme(self,limit, token):
-        memes = self.repository.get_unseen_memes(limit,token)
+    def get_unseen_meme(self, user: User, limit: int):
+        memes = self.repository.get_unseen_memes(user, limit)
         return memes

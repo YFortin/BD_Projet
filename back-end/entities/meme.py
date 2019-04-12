@@ -1,6 +1,6 @@
 class Meme:
-    def __init__(self, id, title, url, category):
-        self._id = id
+    def __init__(self, meme_id, title, url, category):
+        self._id = meme_id
         self._title = title
         self._url = url
         self._category = category
