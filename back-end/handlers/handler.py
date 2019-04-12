@@ -1,6 +1,7 @@
 from functools import wraps
 from abc import ABC, abstractmethod
 from flask import request, abort
+import sys
 
 from services.repository import Repository
 
@@ -24,10 +25,12 @@ class Handler(ABC):
         @wraps(route)
         def function(*args, **kwargs):
             if 'AuthorizationMemer' not in request.headers:
+                print("Not in resquest.headers", file=sys.stderr)
                 abort(401)
             token = request.headers['AuthorizationMemer']
             user = self._repository.get_user_from_token(token)
             if user is None:
+                print(f'user is: {user}', file=sys.stderr)
                 abort(401)
             return route(user, *args, **kwargs)
 

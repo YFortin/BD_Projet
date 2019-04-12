@@ -62,7 +62,6 @@ class UserHandler(Handler):
             password = content['password']
 
             token = self.user_service.create_user_token(email, password)
-            print(f'token: {token}', file=sys.stderr)
             if token is None:
                 abort(401)
             else:
