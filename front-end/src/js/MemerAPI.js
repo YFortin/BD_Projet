@@ -12,7 +12,7 @@ export default class MemerAPI {
         );
         return {
           headers: {
-            Authorization: token
+            AuthorizationMemer: token
           }
         };
       }

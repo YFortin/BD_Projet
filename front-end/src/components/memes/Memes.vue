@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import MemberAPI from '../../js/MemerAPI';
+
 export default {
   data: () => ({
     items: [
@@ -132,7 +134,9 @@ export default {
     },
 
     setup() {
+      const response = MemberAPI.Memes.getUnseenMemes();
       console.log('getMemes');
+      console.log(response);
     }
   },
 
