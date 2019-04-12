@@ -29,10 +29,7 @@ memes_urls = [
 
 memes_categories = ['dank', 'classic', '2009', 'catz', '2meirl4meirl', 'holdmybeer']
 
-file.write("""INSERT INTO Memes (id, title, url, category) 
-VALUES""")
-
-num_memes = 200
+num_memes = 100
 meme_ids = []
 for i in range(num_memes):
 	id = uuid.uuid4()
@@ -40,14 +37,9 @@ for i in range(num_memes):
 	title = lorem.sentence()
 	url = random.choice(memes_urls)
 	category = random.choice(memes_categories)
-	file.write(f'("{id}", "{title}", "{url}", "{category}")')
-	if i != num_memes - 1:
-		file.write(',\n')
-file.write(';\n\n')
+	file.write(f'INSERT INTO Memes (id, title, url, category) VALUES ("{id}", "{title}", "{url}", "{category}");\n')
 
 # insert User
-file.write("""INSERT INTO Users (id, username, email, hashedPassword, salt) 
-VALUES""")
 
 num_user = 100
 user_ids = []
@@ -58,110 +50,69 @@ for i in range(num_user):
 	email = lorem.sentence().split()[0]
 	hashedPassword = random.randint(0, 1000)
 	salt = random.randint(0, 1000)
-	file.write(f'("{id}", "{username}", "{email}", "{hashedPassword}", "{salt}")')
-	if i != num_user - 1:
-		file.write(',\n')
-file.write(';\n\n')
+	file.write(f'INSERT INTO Users (id, username, email, hashedPassword, salt) VALUES ("{id}", "{username}", "{email}", "{hashedPassword}", "{salt}");\n')
 
 # Generate follow
-file.write("""INSERT INTO Follow (followee, follower) 
-VALUES""")
-num_follow = 200
+
+num_follow = 100
 for i in range(num_follow):
 	followee = random.choice(user_ids)
 	follower = random.choice(user_ids)
-	file.write(f'("{followee}", "{follower}")')
-	if i != num_follow - 1:
-		file.write(',\n')
-file.write(';\n\n')
+	file.write(f'INSERT INTO Follow (followee, follower) VALUES ("{followee}", "{follower}");\n')
 
 # Seen
-file.write("""INSERT INTO Seen (userId, memeId, date) 
-VALUES""")
-num_seen = 200
+num_seen = 100
 for i in range(num_follow):
 	userId = random.choice(user_ids)
 	memeId = random.choice(meme_ids)
 	date = (datetime.datetime.now() + datetime.timedelta(days=-random.randint(0, 1000))).date().isoformat()
-	file.write(f'("{userId}", "{memeId}", "{date}")')
-	if i != num_seen - 1:
-		file.write(',\n')
-file.write(';\n\n')
+	file.write(f'INSERT INTO Seen (userId, memeId, date) VALUES ("{userId}", "{memeId}", "{date}");\n')
 
 # Liked
-file.write("""INSERT INTO Liked (userId, memeId) 
-VALUES""")
-num_liked = 200
+num_liked = 100
 for i in range(num_follow):
 	userId = random.choice(user_ids)
 	memeId = random.choice(meme_ids)
-	file.write(f'("{userId}", "{memeId}")')
-	if i != num_liked - 1:
-		file.write(',\n')
-file.write(';\n\n')
+	file.write(f'INSERT INTO Liked (userId, memeId) VALUES ("{userId}", "{memeId}");\n')
 
 # Disliked
-file.write("""INSERT INTO Disliked (userId, memeId) 
-VALUES""")
-num_disliked = 200
+num_disliked = 100
 for i in range(num_follow):
 	userId = random.choice(user_ids)
 	memeId = random.choice(meme_ids)
-	file.write(f'("{userId}", "{memeId}")')
-	if i != num_disliked - 1:
-		file.write(',\n')
-file.write(';\n\n')
+	file.write(f'INSERT INTO Disliked (userId, memeId) VALUES ("{userId}", "{memeId}");\n')
 
 # Uploaded
-file.write("""INSERT INTO Uploaded (userId, memeId) 
-VALUES""")
 for i, memeId in enumerate(meme_ids):
 	userId = random.choice(user_ids)
-	file.write(f'("{userId}", "{memeId}")')
-	if i != num_memes - 1:
-		file.write(',\n')
-file.write(';\n\n')
+	file.write(f'INSERT INTO Uploaded (userId, memeId) VALUES ("{userId}", "{memeId}");\n')
 
 # Comment
-file.write("""INSERT INTO Comment (commentId, userId, memeId, date, text) 
-VALUES""")
-num_comment = 250
+num_comment = 100
 for i in range(num_comment):
 	commentId = uuid.uuid4()
 	userId = random.choice(user_ids)
 	memeId = random.choice(meme_ids)
 	date = (datetime.datetime.now() + datetime.timedelta(days=-random.randint(0, 1000))).date().isoformat()
 	text = lorem.sentence()
-	file.write(f'("{commentId}", "{userId}", "{memeId}", "{date}", "{text}")')
-	if i != num_comment - 1:
-		file.write(',\n')
-file.write(';\n\n')
+	file.write(f'INSERT INTO Comment (commentId, userId, memeId, date, text) VALUES ("{commentId}", "{userId}", "{memeId}", "{date}", "{text}");\n')
 
 # Token
-file.write("""INSERT INTO Token (userId, token, expiredDate) 
-VALUES""")
 num_token = 100
 for i in range(num_token):
 	userId = random.choice(user_ids)
 	token = uuid.uuid4()
 	expiredDate = (datetime.datetime.now() + datetime.timedelta(days=-random.randint(0, 30))).date().isoformat()
 	
-	file.write(f'("{userId}", "{token}", "{expiredDate}")')
-	if i != num_token - 1:
-		file.write(',\n')
-file.write(';\n\n')
+	file.write(f'INSERT INTO Token (userId, token, expiredDate) VALUES ("{userId}", "{token}", "{expiredDate}");\n')
 
 # Top
-file.write("""INSERT INTO Top (memeId, date) 
-VALUES""")
-num_top = 100
+num_top = 10
 for i in range(num_top):
-	userId = random.choice(user_ids)
+	memeId = random.choice(meme_ids)
+	meme_ids.remove(memeId)
 	date = (datetime.datetime.now() + datetime.timedelta(days=-random.randint(0, 1000))).date().isoformat()
-	file.write(f'("{userId}", "{date}")')
-	if i != num_top - 1:
-		file.write(',\n')
-file.write(';\n\n')
+	file.write(f'INSERT INTO Top (memeId, date) VALUES ("{memeId}", "{date}");\n')
 
 file.close()
 
