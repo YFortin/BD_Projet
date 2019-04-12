@@ -1,6 +1,7 @@
 import hashlib
 import uuid
 from typing import Optional
+import sys
 
 from services.repository import Repository
 from entities.user import User
@@ -16,27 +17,35 @@ class UserService:
 
         user_id = uuid.uuid4()
         new_user = User(user_id, name, email, hashed_password, salt)
+
+        print(f'when signup: {new_user.__dict__}', file=sys.stderr)
+        print(f'when signup hash: {hashed_password}', file=sys.stderr)
+        print(f'when signup salt: {salt}', file=sys.stderr)
+
         self.repository.add_user(new_user)
 
     def get_user_if_credentials_valid(self, email, password) -> Optional[User]:
         user = self.repository.get_user_with_email(email)
-        print(f'get_user_if_credentials_valid: {user}')
 
         if user is None:
-            print('fuck off')
             return None
         salt = user.salt
         hashed_password = hashlib.sha512((password + salt).encode('utf-8')).hexdigest()
 
+        print(f'user: {user.__dict__}', file=sys.stderr)
+        print(f'user.ads: {user.hashed_password}', file=sys.stderr)
+        print(f'new hash: {hashed_password}', file=sys.stderr)
+        print(f'salt: {salt}', file=sys.stderr)
+
         if user.hashed_password == hashed_password:
             return user
         else:
-            print('password is invalid')
+            print('password is invalid', file=sys.stderr)
             return None
 
     def create_user_token(self, email, password):
         user = self.get_user_if_credentials_valid(email, password)
-        print(f'user: {user}')
+        print(f'user: {user}', file=sys.stderr)
         if user is None:
             return None
 

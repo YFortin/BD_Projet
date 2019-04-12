@@ -1,4 +1,5 @@
 from flask import Flask, Response, request, jsonify, abort
+import sys
 
 from handlers.handler import Handler
 from services.repository import Repository
@@ -61,7 +62,7 @@ class UserHandler(Handler):
             password = content['password']
 
             token = self.user_service.create_user_token(email, password)
-            print(f'token: {token}')
+            print(f'token: {token}', file=sys.stderr)
             if token is None:
                 abort(401)
             else:
