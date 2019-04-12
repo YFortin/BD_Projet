@@ -63,6 +63,6 @@ print(__name__)
 
 if __name__ == '__main__':
     print(f"Listening")
-    # app.run('0.0.0.0')
-    http = WSGIServer(('', 5000), app)
-    http.serve_forever()
+    app.run('0.0.0.0')
+    # http = WSGIServer(('', 5000), app)
+    # http.serve_forever()

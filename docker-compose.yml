@@ -23,5 +23,6 @@ services:
     build: ./front-end
     ports:
       - "8080:8080"
+    command: npm run serve
     depends_on:
       - app
