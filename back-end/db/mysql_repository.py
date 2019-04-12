@@ -35,8 +35,12 @@ class MySQLRepository(Repository):
         val = (token,)
         cursor.execute(query, val)
         res = cursor.fetchall()
-        user = User(res.id, res.username, res.email, res.hashed_password, res.salt)
+        user = self._res_to_user(res)
         return user
+
+    @staticmethod
+    def _res_to_user(res):
+        return User(res.id, res.username, res.avatar, res.email, res.hashed_password, res.salt)
 
     def get_user(self, user_id):
         cursor = self.db_connection.cursor()
@@ -45,7 +49,7 @@ class MySQLRepository(Repository):
                    WHERE u.id=%s"""
         cursor.execute(query, user_id)
         res = cursor.fetchall()
-        user = User(res.id, res.username, res.email, res.hashed_password, res.salt)
+        user = self._res_to_user(res)
         return user
 
     def get_user_with_email(self, email):
@@ -57,11 +61,9 @@ class MySQLRepository(Repository):
         cursor.execute(query, val)
         res = cursor.fetchall()
         if len(res) == 0:
-            print('Not found in mysql', file=sys.stderr)
             return None
         user_info = res[0]
-        user = User(user_info[0], user_info[1], user_info[2], user_info[3], user_info[4])
-        return user
+        return User(user_info[0], user_info[1], user_info[2], user_info[3], user_info[4], user_info[5])
 
     def add_user(self, user: User):
         cursor = self.db_connection.cursor()
