@@ -29,7 +29,7 @@ memes_urls = [
 
 memes_categories = ['dank', 'classic', '2009', 'catz', '2meirl4meirl', 'holdmybeer']
 
-num_memes = 100
+num_memes = 200
 meme_ids = []
 for i in range(num_memes):
 	id = uuid.uuid4()
@@ -54,14 +54,14 @@ for i in range(num_user):
 
 # Generate follow
 
-num_follow = 100
+num_follow = 500
 for i in range(num_follow):
 	followee = random.choice(user_ids)
 	follower = random.choice(user_ids)
 	file.write(f'INSERT INTO Follow (followee, follower) VALUES ("{followee}", "{follower}");\n')
 
 # Seen
-num_seen = 100
+num_seen = 1000
 for i in range(num_follow):
 	userId = random.choice(user_ids)
 	memeId = random.choice(meme_ids)
@@ -69,14 +69,14 @@ for i in range(num_follow):
 	file.write(f'INSERT INTO Seen (userId, memeId, date) VALUES ("{userId}", "{memeId}", "{date}");\n')
 
 # Liked
-num_liked = 100
+num_liked = 500
 for i in range(num_follow):
 	userId = random.choice(user_ids)
 	memeId = random.choice(meme_ids)
 	file.write(f'INSERT INTO Liked (userId, memeId) VALUES ("{userId}", "{memeId}");\n')
 
 # Disliked
-num_disliked = 100
+num_disliked = 500
 for i in range(num_follow):
 	userId = random.choice(user_ids)
 	memeId = random.choice(meme_ids)
@@ -88,7 +88,7 @@ for i, memeId in enumerate(meme_ids):
 	file.write(f'INSERT INTO Uploaded (userId, memeId) VALUES ("{userId}", "{memeId}");\n')
 
 # Comment
-num_comment = 100
+num_comment = 250
 for i in range(num_comment):
 	commentId = uuid.uuid4()
 	userId = random.choice(user_ids)
@@ -107,7 +107,7 @@ for i in range(num_token):
 	file.write(f'INSERT INTO Token (userId, token, expiredDate) VALUES ("{userId}", "{token}", "{expiredDate}");\n')
 
 # Top
-num_top = 10
+num_top = 100
 for i in range(num_top):
 	memeId = random.choice(meme_ids)
 	meme_ids.remove(memeId)

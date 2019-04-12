@@ -20,6 +20,7 @@ class MySQLRepository(Repository):
         sql = 'INSERT INTO Token (userId, token, expiredDate) VALUES (%s, %s, %s)'
         val = (user_id, str(token), expire_date)
         cursor.execute(sql, val)
+        self.db_connection.commit()
 
     @staticmethod
     def _datetime_to_str(date: datetime.datetime):
@@ -55,6 +56,7 @@ class MySQLRepository(Repository):
         cursor.execute(query, val)
         res = cursor.fetchall()
         if len(res) == 0:
+            print('Not found in mysql')
             return None
         user_info = res[0]
         user = User(user_info[0], user_info[1], user_info[2], user_info[3], user_info[4])
@@ -65,6 +67,7 @@ class MySQLRepository(Repository):
         query = 'INSERT INTO Users (id, username, email, hashedPassword, salt) VALUES (%s, %s, %s, %s, %s)'
         data_tuple = str(user.id), user.name, user.email, user.hashed_password, user.salt
         cursor.execute(query, data_tuple)
+        self.db_connection.commit()
 
     def edit_user(self, user: User):
         cursor = self.db_connection.cursor()
@@ -134,6 +137,7 @@ class MySQLRepository(Repository):
         sql = "INSERT INTO Liked (userId, memeId) VALUES(%s, %s)"
         val = (user_id, meme_id)
         cursor.execute(sql, val)
+        self.db_connection.commit()
 
     def downvote_meme(self, user: User, meme_id):
         cursor = self.db_connection.cursor()
@@ -141,6 +145,7 @@ class MySQLRepository(Repository):
         sql = "INSERT INTO Disliked (userId, memeId) VALUES(%s, %s)"
         val = (user_id, meme_id)
         cursor.execute(sql, val)
+        self.db_connection.commit()
 
     def seen_meme(self, meme_id, token, date):
         cursor = self.db_connection.cursor()
@@ -148,6 +153,7 @@ class MySQLRepository(Repository):
         sql = "INSERT INTO Seen (userId, memeId, date) VALUES(%s, %s, %s)"
         val = (user_id, meme_id, date)
         cursor.execute(sql, val)
+        self.db_connection.commit()
 
     def comment_meme(self, user: User, meme_id, date, text):
         cursor = self.db_connection.cursor()
@@ -156,6 +162,7 @@ class MySQLRepository(Repository):
         sql = "INSERT INTO Comment (commentId, userId, memeId , date, text) VALUES(%s, %s, %s, %s, %s)"
         val = (comment_id, user_id, meme_id, date, text)
         cursor.execute(sql, val)
+        self.db_connection.commit()
 
     def get_user_id_with_token(self, token):
         cursor_token = self.db_connection.cursor()

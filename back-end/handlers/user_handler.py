@@ -31,10 +31,11 @@ class UserHandler(Handler):
                 abort(400)
 
             content = request.json
+            # TODO try catch
             name = content['name']
             email = content['email']
             password = content['password']
-            print(name)
+
             self.user_service.create_user(name, email, password)
             return Response(status=201)
 
@@ -60,6 +61,7 @@ class UserHandler(Handler):
             password = content['password']
 
             token = self.user_service.create_user_token(email, password)
+            print(f'token: {token}')
             if token is None:
                 abort(401)
             else:
