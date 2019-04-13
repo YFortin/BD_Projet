@@ -44,7 +44,6 @@ for i in range(num_memes):
 
 user_urls = [
 	'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/220px-User_icon_2.svg.png',
-	'https://www.google.ca/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwiH57TNzcvhAhVkxFkKHS-cDnoQjRx6BAgBEAU&url=https%3A%2F%2Fnulm.gov.in%2FAuth%2FLogin.aspx&psig=AOvVaw1DNhz7Rh3pxakGQsqGfacu&ust=1555194543032456',
 	'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0WMIMCWCCZ8LxgACZMv3eO441cvSIsUIFH_8aR_e7JGy3UTiJTA',
 	'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb2AfQjrtZnNtqy4diFZNyTSH4peeJCqJgIUPvJo5dHSNjcB17',
 	'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTgBfhWZBJJNVWvyiyu4ZjtJWtUeJ3nrRcjCIvr0MXlasZmJEw',
