@@ -24,7 +24,7 @@ def connect_to_database() -> MySQLRepository:
         'password': 'root',
         'host': 'db',
         'port': '3306',
-        'database': 'Memeber'
+        'database': 'Memer'
     }
     database_connection = mysql.connector.connect(**database_config)
     return MySQLRepository(database_connection)

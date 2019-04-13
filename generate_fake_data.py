@@ -3,6 +3,7 @@ import random
 import uuid
 import lorem
 import datetime
+import string
 
 parser = argparse.ArgumentParser(description='Process some integers.')
 parser.add_argument('--output', help='output file', required=True)
@@ -62,7 +63,8 @@ for i in range(num_user):
 	user_ids.append(id)
 	username = lorem.sentence().split()[0]
 	avatar = random.choice(user_urls)
-	email = lorem.sentence().split()[0]
+	# https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits
+	email = ''.join(random.choices(string.ascii_uppercase + string.digits, k=50))
 	hashedPassword = random.randint(0, 1000)
 	salt = random.randint(0, 1000)
 	file.write(f'INSERT INTO Users (id, username, avatar, email, hashedPassword, salt) VALUES ("{id}", "{username}", "{avatar}", "{email}", "{hashedPassword}", "{salt}");\n')
