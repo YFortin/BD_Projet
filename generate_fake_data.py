@@ -61,7 +61,7 @@ user_ids = []
 for i in range(num_user):
 	id = uuid.uuid4()
 	user_ids.append(id)
-	username = lorem.sentence().split()[0]
+	username = ''.join(random.choices(string.ascii_uppercase + string.digits, k=30))
 	avatar = random.choice(user_urls)
 	# https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits
 	email = ''.join(random.choices(string.ascii_uppercase + string.digits, k=50))
