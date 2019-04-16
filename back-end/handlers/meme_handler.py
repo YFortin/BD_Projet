@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, abort
 from flask import request
 from flask import Response
 from flask import jsonify
@@ -8,6 +8,7 @@ import json
 from handlers.handler import Handler
 from services.meme_service import MemeService
 from services.repository import Repository
+from services.repository_exception import RepositoryException
 
 
 class MemeHandler(Handler):
@@ -31,8 +32,11 @@ class MemeHandler(Handler):
             }
             :return: array of memes
             """
-            content = json.loads(request.data)
-            limit = content.get('limit', self.DEFAULT_LIMIT)
+            if not request.is_json:
+                limit = self.DEFAULT_LIMIT
+            else:
+                content = json.loads(request.data)
+                limit = content.get('limit', self.DEFAULT_LIMIT)
 
             memes = self.meme_service.get_unseen_meme(user, limit)
             return jsonify([m.__dict__ for m in memes])
@@ -56,7 +60,6 @@ class MemeHandler(Handler):
                 offset -> return memes starting at offset
             :return: array of memes
             """
-
             raise NotImplementedError
 
         @self.app.route('/memes', methods=['POST'])
@@ -72,7 +75,14 @@ class MemeHandler(Handler):
             }
             :return:
             """
+            if not request.is_json:
+                abort(400)
+
             content = json.loads(request.data)
+
+            if 'title' not in content or 'url' not in content or 'category' not in content:
+                abort(400)
+
             title = content['title']
             url = content['url']
             category = content['category']
@@ -93,7 +103,10 @@ class MemeHandler(Handler):
             }
             :return:
             """
-            self.meme_service.upvote_meme(user, meme_id)
+            try:
+                self.meme_service.upvote_meme(user, meme_id)
+            except RepositoryException:
+                abort(404)
             return Response(status=200)
 
         @self.app.route('/memes/<meme_id>/downvote', methods=['POST'])
@@ -109,7 +122,10 @@ class MemeHandler(Handler):
             }
             :return:
             """
-            self.meme_service.downvote_meme(user, meme_id)
+            try:
+                self.meme_service.downvote_meme(user, meme_id)
+            except RepositoryException:
+                abort(404)
             return Response(status=200)
 
         @self.app.route('/memes/<meme_id>/comment', methods=['POST'])
@@ -125,7 +141,14 @@ class MemeHandler(Handler):
             :param meme_id: meme meme_id
             :return:
             """
+            if not request.is_json:
+                abort(400)
+
             content = json.loads(request.data)
+
+            if 'contents' not in content:
+                abort(400)
+
             text = content['contents']
 
             self.meme_service.comment_meme(user, meme_id, text)
