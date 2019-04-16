@@ -48,8 +48,9 @@ export default {
     items: []
   }),
   methods: {
-    thumbUp() {
-      MemberAPI.Memes.upvote(this.items[0].id);
+    async thumbUp() {
+      console.log(this.items[0].id);
+      await MemberAPI.Memes.upvote(this.items[0].id);
       this.items.shift();
       this.addImage();
     },
