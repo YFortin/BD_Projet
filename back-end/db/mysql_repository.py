@@ -169,7 +169,6 @@ class MySQLRepository(Repository):
         memes = self._res_to_memes(memes_tuples)
         return memes
 
-    @staticmethod
     def _res_to_memes(self, memes_tuples):
         memes = []
         for meme_tuple in memes_tuples:
