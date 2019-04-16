@@ -260,3 +260,13 @@ class MySQLRepository(Repository):
         except Exception:
             raise RepositoryException
         return cursor.fetchone()[0] == 0
+
+    def is_email_free(self, email):
+        cursor = self.db_connection.cursor()
+        sql = "SELECT COUNT(*) FROM Users u WHERE u.email = %s"
+        params = (email,)
+        try:
+            cursor.execute(sql, params)
+        except Exception:
+            raise RepositoryException
+        return cursor.fetchone()[0] == 0

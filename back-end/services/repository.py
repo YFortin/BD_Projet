@@ -74,3 +74,7 @@ class Repository(ABC):
     @abstractmethod
     def is_username_free(self, username):
         ...
+
+    @abstractmethod
+    def is_email_free(self, email):
+        ...

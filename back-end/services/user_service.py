@@ -75,3 +75,6 @@ class UserService:
         user.email = email
 
         self.repository.edit_user(user)
+
+    def check_email(self, email):
+        return self.repository.is_email_free(email)
