@@ -3,7 +3,8 @@ module.exports = {
         proxy: {
             '^/*': {
                 target: 'http://app:5000',
-                changeOrigin: true
+                changeOrigin: true,
+                ws: false,
             },
         }
     }

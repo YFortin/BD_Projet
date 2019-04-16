@@ -34,7 +34,10 @@ export default {
   watch: {
     search(val) {
       val && val !== this.select && this.querySelections(val);
-    }
+    },
+    select(val) {
+      this.$router.push({path: `/Nav/UserProfile/${val.id}`});
+    },
   },
   methods: {
     async querySelections(input) {
