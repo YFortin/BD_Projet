@@ -3,6 +3,7 @@ import sys
 
 from mysql.connector import MySQLConnection, IntegrityError
 
+from entities.comment import Comment
 from entities.meme import Meme
 from entities.user import User
 from services.repository import Repository
@@ -172,31 +173,18 @@ class MySQLRepository(Repository):
         cursor.execute(sql, val)
         self.db_connection.commit()
 
-    def seen_meme(self, meme_id, token, date):
+    def seen_meme(self, user: User, meme_id, date):
         cursor = self.db_connection.cursor()
-        user_id = self.get_user_id_with_token(token)
+        user_id = user.id
         sql = "INSERT INTO Seen (userId, memeId, date) VALUES(%s, %s, %s)"
         val = (user_id, meme_id, date)
         cursor.execute(sql, val)
         self.db_connection.commit()
 
-    def comment_meme(self, user: User, meme_id, date, text):
+    def comment_meme(self, user: User, meme_id, comment: Comment, date, text):
         cursor = self.db_connection.cursor()
         user_id = user.id
-        comment_id = 23123  # TODO change
         sql = "INSERT INTO Comment (commentId, userId, memeId , date, text) VALUES(%s, %s, %s, %s, %s)"
-        val = (comment_id, user_id, meme_id, date, text)
+        val = (comment.id, user_id, meme_id, date, comment.text)
         cursor.execute(sql, val)
         self.db_connection.commit()
-
-    def get_user_id_with_token(self, token):
-        cursor_token = self.db_connection.cursor()
-
-        sql = "SELECT * FROM Token t WHERE t.token = %s"
-        val = (token,)
-        cursor_token.execute(sql, val)
-
-        response = cursor_token.fetchall()
-        token_response = response[0]
-        user_id = token_response[1]
-        return user_id

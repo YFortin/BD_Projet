@@ -1,6 +1,6 @@
 class Comment:
-    def __init__(self, comment_id, username, comment, date):
+    def __init__(self, comment_id, username, text, date):
         self.comment_id = comment_id
         self.username = username
-        self.comment = comment
+        self.text = text
         self.date = date
