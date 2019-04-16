@@ -104,6 +104,7 @@
 
 <script>
 import isImageUrl from "is-image-url";
+import MemerAPI from "../../js/MemerAPI";
 
 export default {
   data: () => ({
@@ -198,7 +199,24 @@ export default {
         this.avatar.oldURL = this.avatar.newURL;
         // TODO submit new email
       }
+    },
+
+    async setup() {
+
+      const response = await MemerAPI.User.getMyAccount();
+
+      console.log(response);
+
+      this.avatar.oldURL = response.data.avatar;
+      this.email.email = response.data.email;
+      this.username.username = response.data.username;
+
     }
+  },
+
+  created() {
+    this.setup();
   }
+
 };
 </script>
