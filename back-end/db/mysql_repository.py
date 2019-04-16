@@ -59,6 +59,8 @@ class MySQLRepository(Repository):
         val = (user_id,)
         cursor.execute(query, val)
         res = cursor.fetchall()
+        if len(res) == 0:
+            return []
         user = self._res_to_user(res[0])
         return user
 
