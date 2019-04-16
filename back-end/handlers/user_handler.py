@@ -158,7 +158,28 @@ class UserHandler(Handler):
             """
 
             content = request.json
-            user_id = content['username']
+            username = content['username']
+            user_id = self.user_service.get_userid_with_username(username)
+            nb_follows = self.user_service.get_user_follows(user_id)
+            nb_likes = self.user_service.get_user_likes(user_id)
+            user = self.user_service.get_user_at_id(user_id)
+            memes = self.user_service.get_user_uploadedmemes(user_id)
+            memes_tuples = []
+
+            for meme in memes:
+                comments = []
+                for comment in meme.comments:
+                    commentResult = {'id': comment.id, 'user_id': comment.user_id, 'meme_id': comment.meme_id,
+                                     'text': comment.text, 'date': comment.date, 'user_name': comment.user_name}
+                    comments.append(commentResult)
+
+                result = {'id': meme.id, 'title': meme.title, 'url': meme.url, 'category': meme.category,
+                          'comments': comments}
+                memes_tuples.append(result)
+
+            userprofile = {'username': user.name, 'avatar': user.avatar, 'followers': nb_follows, 'likes': nb_likes,
+                           'memes': memes_tuples}
+            return jsonify(userprofile)
 
         @self.app.route('/myaccount', methods=['PUT'])
         @self.login_required
@@ -187,7 +208,6 @@ class UserHandler(Handler):
                 abort(400)
 
             self.user_service.update_user(user, username, email, password, avatar)
-
 
         @self.app.route('/users/<int:user_id>/follow', methods=['POST'])
         def follow_user(user_id):

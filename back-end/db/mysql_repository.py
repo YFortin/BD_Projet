@@ -56,7 +56,8 @@ class MySQLRepository(Repository):
         query = """SELECT * 
                    FROM Users u 
                    WHERE u.id=%s"""
-        cursor.execute(query, (user_id,))
+        val = (user_id,)
+        cursor.execute(query, val)
         res = cursor.fetchall()
         user = self._res_to_user(res[0])
         return user
@@ -85,7 +86,7 @@ class MySQLRepository(Repository):
         if len(res) == 0:
             return None
         user_id = res[0]
-        return user_id
+        return user_id[0]
 
     def autocomplete_username(self, name_input, limit):
         cursor = self.db_connection.cursor()
