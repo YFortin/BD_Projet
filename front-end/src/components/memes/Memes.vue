@@ -9,7 +9,8 @@
           <v-flex xs8 align-self-center>
             <v-card color="#FAFAFA" flat>
               <v-card-title primary-title>
-                <h3 class="headline font-weight-bold mb-2">{{ items[0].title }}</h3>
+                <h3 class="headline font-weight-bold mb-2">Category: {{ items[0].category }}</h3>
+                <h3 class="headline font-weight-bold mb-2">Title: {{ items[0].title }}</h3>
               </v-card-title>
               <v-carousel
                 hide-delimiters
@@ -18,7 +19,7 @@
               >
                 <v-carousel-item contain v-for="(item,i) in items" :key="i" :src="item.url"></v-carousel-item>
               </v-carousel>
-                <v-card-text v-for="(comment, i) in items[0].comments" :key="i"> {{ comment.comment }} -- {{comment.userName}}<v-divider></v-divider></v-card-text>
+                <v-card-text v-for="(comment, i) in items[0].comments" :key="i"> {{ comment.text }} -- {{comment.user_name}}<v-divider></v-divider></v-card-text>
             </v-card>
           </v-flex>
         </v-layout>
@@ -47,22 +48,23 @@ export default {
     items: []
   }),
   methods: {
-    thumbUp() {
+    async thumbUp() {
+      await MemberAPI.Memes.upvote(this.items[0].id);
       this.items.shift();
       this.addImage();
     },
     thumbDown() {
+      MemberAPI.Memes.downvote(this.items[0].id);
       this.items.shift();
       this.addImage();
     },
     async addImage() {
       if (this.items.length < 3) {
         const response = await MemberAPI.Memes.getUnseenMemes();
-        console.log("Ajout de memes");
         console.log(response.data);
-        response.data.forEach(memes => {
-          console.log(memes.comments);
-          this.items.push(memes);
+        response.data.unseen_memes.forEach(meme => {
+          console.log(meme.comments);
+          this.items.push(meme);
         });
       }
     },

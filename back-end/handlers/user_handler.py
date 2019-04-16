@@ -76,20 +76,18 @@ class UserHandler(Handler):
         def validate_token(_):
             return Response(status=200)
 
-        @self.app.route('/users/<int:user_id>', methods=['GET'])
+        @self.app.route('/users/<user_id>', methods=['GET'])
         def get_user(user_id):
             """
             Get user at user_id
             :param user_id: user user_id
             :return: user
             """
-            
-            content = request.json
-            userId = content['userId']
-            
-            user = self.user_service.get_user_at_id(user_id)
 
-            return jsonify(user)
+            user = self.user_service.get_user_at_id(user_id)
+            user_json = {'id': user.id, 'username': user.name, 'avatar': user.avatar, 'email': user.email}
+
+            return jsonify(user_json)
 
         # TODO need to be the same user
         @self.app.route('/users', methods=['DELETE'])
@@ -130,7 +128,7 @@ class UserHandler(Handler):
             """
             raise NotImplementedError
 
-        @self.app.route('/users/autocomplete', methods=['GET'])
+        @self.app.route('/users/autocomplete', methods=['POST'])
         def autocomplete_username():
             """
             Autocomplete username

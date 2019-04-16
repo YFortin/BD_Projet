@@ -108,20 +108,22 @@ class MemeHandler(Handler):
             self.meme_service.upload_meme(user, title, url, category)
             return Response(status=201)
 
-        @self.app.route('/memes/<meme_id>/upvote', methods=['POST'])
+        @self.app.route('/memes/upvote', methods=['POST'])
         @self.login_required
-        def upvote_meme(user, meme_id):
+        def upvote_meme(user):
             """
             Upvote the meme
             :param user: user
-            :param meme_id: meme meme_id
             JSON input
             {
-
+                "meme_id = "" :string
             }
             :return:
             """
             try:
+                content = request.json
+                meme_id = content['meme_id']
+
                 self.meme_service.upvote_meme(user, meme_id)
             except RepositoryException:
                 abort(404)

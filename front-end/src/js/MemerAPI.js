@@ -40,17 +40,27 @@ export default class MemerAPI {
         }
 
         static upvote(id) {
-            return axios.post(`${this.MEMES_URL}/${id}/upvote`, MemerAPI.AUTH_HEADER);
+
+            const params = {
+                "meme_id": id
+            }
+
+            return axios.post(`${this.MEMES_URL}/upvote`, params, MemerAPI.AUTH_HEADER);
         }
 
         static downvote(id) {
-            return axios.post(`${this.MEMES_URL}/${id}/downvote`, MemerAPI.AUTH_HEADER);
+
+            const params = {
+                "meme_id": id
+            }
+
+            return axios.post(`${this.MEMES_URL}/downvote`, params, MemerAPI.AUTH_HEADER);
         }
 
         static comment(comment, id) {
             
             const params = {
-                contents: comment 
+                "content": comment
             }
 
             return axios.post(`${this.MEMES_URL}/${id}/comment`, params, MemerAPI.AUTH_HEADER);
@@ -59,6 +69,10 @@ export default class MemerAPI {
     }
 
     static User = class {
+
+        static get USERS_URL() {
+            return `${MemerAPI.BASE_URL}/users`;
+        }
 
         static signup(name, email, password) {
 
@@ -79,6 +93,17 @@ export default class MemerAPI {
             }
 
             return axios.post(`${MemerAPI.BASE_URL}/login`, params);
+        }
+
+        static autocomplete_username(input) {
+
+            const params = {
+                "input": input,
+                "limit": 10
+            }
+
+            return axios.post(`${MemerAPI.User.USERS_URL}/autocomplete`, params);
+
         }
 
     }
