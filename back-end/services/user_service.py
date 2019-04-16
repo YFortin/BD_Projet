@@ -35,6 +35,12 @@ class UserService:
         else:
             return None
 
+    def get_user_at_id(self, user_Id):
+
+        user = self.repository.get_user(user_Id)
+
+        return user
+
     def create_user_token(self, email, password):
         user = self.get_user_if_credentials_valid(email, password)
         if user is None:

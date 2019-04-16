@@ -84,7 +84,13 @@ class UserHandler(Handler):
             :param user_id: user user_id
             :return: user
             """
-            raise NotImplementedError
+            
+            content = request.json
+            userId = content['userId']
+            
+            user = self.user_service.get_user_at_id(user_id)
+
+            return jsonify(user)
 
         # TODO need to be the same user
         @self.app.route('/users', methods=['DELETE'])

@@ -59,6 +59,7 @@ export default {
       if (this.items.length < 3) {
         const response = await MemberAPI.Memes.getUnseenMemes();
         console.log("Ajout de memes");
+        console.log(response.data);
         response.data.forEach(memes => {
           console.log(memes.comments);
           this.items.push(memes);

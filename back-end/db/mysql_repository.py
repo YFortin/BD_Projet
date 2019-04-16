@@ -49,7 +49,7 @@ class MySQLRepository(Repository):
     @staticmethod
     def _res_to_user(res):
         return User(res.id, res.username, res.avatar, res.email, res.hashed_password, res.salt)
-
+    
     def get_user(self, user_id):
         cursor = self.db_connection.cursor()
         query = """SELECT * 

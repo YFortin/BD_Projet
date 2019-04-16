@@ -52,11 +52,21 @@ export default {
         this.followColor = "info";
         this.numberOfFollowers--;
       }
+    },
+
+    setup() {
+      
+
     }
+
   },
   components: {
     MemesVisualizer
-  }
+  },
+
+  beforeMount() {
+    this.setup();
+  },
 };
 </script>
 
