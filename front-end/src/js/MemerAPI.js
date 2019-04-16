@@ -70,6 +70,10 @@ export default class MemerAPI {
 
     static User = class {
 
+        static get USERS_URL() {
+            return `${MemerAPI.BASE_URL}/users`;
+        }
+
         static signup(name, email, password) {
 
             const params = {
@@ -89,6 +93,17 @@ export default class MemerAPI {
             }
 
             return axios.post(`${MemerAPI.BASE_URL}/login`, params);
+        }
+
+        static autocomplete_username(input) {
+
+            const params = {
+                "input": input,
+                "limit": 10
+            }
+
+            return axios.post(`${MemerAPI.User.USERS_URL}/autocomplete`, params);
+
         }
 
     }

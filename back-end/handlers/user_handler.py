@@ -128,7 +128,7 @@ class UserHandler(Handler):
             """
             raise NotImplementedError
 
-        @self.app.route('/users/autocomplete', methods=['GET'])
+        @self.app.route('/users/autocomplete', methods=['POST'])
         def autocomplete_username():
             """
             Autocomplete username
