@@ -132,8 +132,8 @@ num_top = 100
 for i in range(num_top):
 	memeId = random.choice(meme_ids)
 	meme_ids.remove(memeId)
-	date = (datetime.datetime.now() + datetime.timedelta(days=-random.randint(0, 1000))).date().isoformat()
-	file.write(f'INSERT INTO Top (memeId, date) VALUES ("{memeId}", "{date}");\n')
+	# date = (datetime.datetime.now() + datetime.timedelta(days=-random.randint(0, 1000))).date().isoformat()
+	file.write(f'INSERT INTO Top (memeId) VALUES ("{memeId}");\n')
 
 file.close()
 

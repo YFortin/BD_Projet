@@ -136,6 +136,36 @@ VALUES ('admin', 'admin', '2021-01-01');
 -- TODO trigger verify username validity
 -- TODO trigger remove old token
 
+-- TOP TRIGGER
+DROP TRIGGER IF EXISTS move_to_top;
+DELIMITER //
+CREATE TRIGGER move_to_top
+    AFTER INSERT ON Liked
+    FOR EACH ROW BEGIN
+        DECLARE c INT;
+        DECLARE alreadyIn BOOL;
+        SET alreadyIn = (SELECT COUNT (*) FROM Top t WHERE t.memeId = NEW.memeId) > 0;
+        IF NOT alreadyIn THEN
+            SET c = (SELECT COUNT (*) FROM Liked likes WHERE likes.memeId = NEW.memeId);
+            IF c >= 100 THEN
+                  INSERT INTO Top (memeId, date) VALUES (NEW.memeId);
+            END IF;
+        END IF;
+END ; //
+DELIMITER ;
+
+-- Username not empty
+DELIMITER //
+CREATE TRIGGER username_empty
+BEFORE INSERT ON Users
+FOR EACH ROW
+BEGIN
+    IF (NEW.username = '') THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'User name cannot be empty';
+    END IF;
+END;
+DELIMITER ;
+
 INSERT INTO Memes (id, title, url, category) VALUES ("7be594d1-3820-45aa-ae1e-ff101734acc7", "Quaerat quisquam tempora non.", "https://preview.redd.it/m82pxbpaaur21.jpg?width=640&crop=smart&auto=webp&s=14de48af47c9e10080256a0805e764a8fbca7745", "dank");
 INSERT INTO Memes (id, title, url, category) VALUES ("936d29c0-05ee-479b-9f33-937b0d45eae9", "Adipisci modi labore voluptatem dolore dolor.", "https://i.redd.it/f26bi9089ur21.jpg", "2009");
 INSERT INTO Memes (id, title, url, category) VALUES ("737e6a37-7c2a-4c4f-aa58-5160f6ca0bc1", "Velit tempora magnam labore amet.", "https://preview.redd.it/tkbusgmmotr21.jpg?width=960&crop=smart&auto=webp&s=131994de6ebdf657687451229853be42b143da2b", "catz");
