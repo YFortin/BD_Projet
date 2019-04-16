@@ -1,7 +1,7 @@
-from functools import wraps
 from abc import ABC, abstractmethod
+from functools import wraps
+
 from flask import request, abort
-import sys
 
 from services.repository import Repository
 

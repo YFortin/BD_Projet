@@ -1,5 +1,4 @@
 import datetime
-import sys
 
 from mysql.connector import MySQLConnection, IntegrityError
 
@@ -7,7 +6,6 @@ from entities.comment import Comment
 from entities.meme import Meme
 from entities.user import User
 from services.repository import Repository
-
 from services.repository_exception import RepositoryException
 
 
@@ -73,7 +71,7 @@ class MySQLRepository(Repository):
         user_info = res[0]
         return User(user_info[0], user_info[1], user_info[2], user_info[3], user_info[4], user_info[5])
 
-    def autocomplete_username(self, input, limit):
+    def autocomplete_username(self, name_input, limit):
         cursor = self.db_connection.cursor()
         sql = """
                 SELECT u.id, u.username FROM Users u
@@ -81,7 +79,7 @@ class MySQLRepository(Repository):
                 LIMIT %s
              """
 
-        val = (('%' + input + '%'), int(limit))
+        val = (('%' + name_input + '%'), int(limit))
         cursor.execute(sql, val)
         return cursor.fetchall()
 
@@ -123,19 +121,41 @@ class MySQLRepository(Repository):
               """
         val = (user_id, int(limit))
 
-        cursor.execute(sql, val)
+        try:
+            cursor.execute(sql, val)
+        except:
+            raise RepositoryException
+
         memes_tuples = cursor.fetchall()
         memes = []
         for meme_tuple in memes_tuples:
-            memes.append(self.tuple_to_meme(meme_tuple))
+            meme = self.tuple_to_meme(meme_tuple)
+            meme.comments = self.get_meme_comment(meme.id)
+            memes.append(meme)
 
         return memes
 
+    def get_meme_comment(self, meme_id):
+        cursor = self.db_connection.cursor()
+        query = """SELECT * 
+                   FROM Comment c
+                   WHERE u.memeId=%s"""
+        val = (meme_id,)
+        try:
+            cursor.execute(query, val)
+        except Exception:
+            raise RepositoryException
+        comments = [self._tuple_to_comment(c) for c in cursor.fetchall()]
+        return comments
+
     @staticmethod
-    def tuple_to_meme(meme_tuple):
+    def _tuple_to_comment(c):
+        return Comment(c[4], c[3], c[0], c[1], c[2])
+
+    @staticmethod
+    def tuple_to_meme(meme_tuple) -> Meme:
         return Meme(meme_tuple[0], meme_tuple[1], meme_tuple[2], meme_tuple[3])
 
-    # user: User, meme: Meme, token: uuid, date:datetime.datetime
     def add_meme(self, user: User, meme: Meme, date):
         cursor = self.db_connection.cursor()
 
@@ -209,4 +229,3 @@ class MySQLRepository(Repository):
         except Exception:
             raise RepositoryException
         self.db_connection.commit()
-

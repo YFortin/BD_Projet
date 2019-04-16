@@ -64,5 +64,9 @@ class Repository(ABC):
         ...
 
     @abstractmethod
-    def autocomplete_username(self, input, limit):
+    def autocomplete_username(self, name_input, limit):
+        ...
+
+    @abstractmethod
+    def get_meme_comment(self, meme: Meme):
         ...

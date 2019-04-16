@@ -1,19 +1,16 @@
-from flask import Flask
-import mysql.connector
-
 import time
 
+import mysql.connector
 from flask import Flask
 from flask_cors import CORS
-from gevent.pywsgi import WSGIServer
 from gevent import monkey
+from gevent.pywsgi import WSGIServer
 
-from services.user_service import UserService
-from services.meme_service import MemeService
-
+from db.mysql_repository import MySQLRepository
 from handlers.meme_handler import MemeHandler
 from handlers.user_handler import UserHandler
-from db.mysql_repository import MySQLRepository
+from services.meme_service import MemeService
+from services.user_service import UserService
 
 monkey.patch_all()
 
