@@ -97,6 +97,16 @@ class UserHandler(Handler):
             """
             raise NotImplementedError
 
+        @self.app.route('/myaccount', methods=['GET'])
+        @self.login_required
+        def get_my_user(user):
+            """
+            Return my user
+            :return: user
+            """
+            result = {'id': user.id, 'username': user.name, 'avatar': user.name, 'email': user.email}
+            return jsonify(result)
+
         @self.app.route('/users/<int:user_id>/follow', methods=['POST'])
         def follow_user(user_id):
             """
