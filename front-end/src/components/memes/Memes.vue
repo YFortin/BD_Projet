@@ -9,14 +9,14 @@
           <v-flex xs8 align-self-center>
             <v-card color="#FAFAFA" flat>
               <v-card-title primary-title>
-                <h3 class="headline font-weight-bold mb-2">Start Swiping!</h3>
+                <h3 class="headline font-weight-bold mb-2">{{ items[0].title }}</h3>
               </v-card-title>
               <v-carousel
                 hide-delimiters
                 hide-controls
                 :cycle="false"
               >
-                <v-carousel-item contain v-for="(item,i) in items" :key="i" :src="item.URL"></v-carousel-item>
+                <v-carousel-item contain v-for="(item,i) in items" :key="i" :src="item.url"></v-carousel-item>
               </v-carousel>
                 <v-card-text v-for="(comment, i) in items[0].comments" :key="i"> {{ comment.comment }} -- {{comment.userName}}<v-divider></v-divider></v-card-text>
             </v-card>
@@ -44,43 +44,7 @@ import MemberAPI from '../../js/MemerAPI';
 
 export default {
   data: () => ({
-    items: [
-      {
-        URL: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/NYCS-bull-trans-1.svg/1024px-NYCS-bull-trans-1.svg.png",
-              Title: 'Titre',
-              Category: 'Category',
-              id: '1233242342312',
-              comments: [{userName: 'Yan', comment: 'Jaime les pommes'}, {userName: 'Xav', comment: 'Jaime les poires'}],
-      },
-      {
-        URL: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/NYCS-bull-trans-2.svg/1024px-NYCS-bull-trans-2.svg.png",
-              Title: 'Titre',
-              Category: 'Category',
-              id: '1233242342312',
-              comments: [{userName: 'Will', comment: 'Spa si pire java'}, {userName: 'MPP', comment: 'Je fais du théatre'}]
-      },
-      {
-        URL: "https://i.redd.it/0cscovjonpi11.png",
-              Title: 'Titre',
-              Category: 'Category',
-              id: '1233242342312',
-              comments: [{userName: 'Yan', comment: 'Jaime les pommes'}, {userName: 'Xav', comment: 'Jaime les poires'}],
-      },
-      {
-        URL: "http://mrconsultis.fr/wp-content/uploads/2016/09/4-13.jpeg",
-              Title: 'Titre',
-              Category: 'Category',
-              id: '1233242342312',
-              comments: [{userName: 'Will', comment: 'Spa si pire java'}, {userName: 'MPP', comment: 'Je fais du théatre'}]
-      },
-      {
-        URL: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/TV5_%28ABC5%29_Logo.svg/220px-TV5_%28ABC5%29_Logo.svg.png",
-              Title: 'Titre',
-              Category: 'Category',
-              id: '1233242342312',
-              comments: [{userName: 'Yan', comment: 'Jaime les pommes'}, {userName: 'Xav', comment: 'Jaime les poires'}],
-      },
-    ]
+    items: []
   }),
   methods: {
     thumbUp() {
@@ -91,52 +55,19 @@ export default {
       this.items.shift();
       this.addImage();
     },
-    addImage() {
+    async addImage() {
       if (this.items.length < 3) {
-        this.items.push(
-          {
-        URL: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/NYCS-bull-trans-1.svg/1024px-NYCS-bull-trans-1.svg.png",
-              Title: 'Titre',
-              Category: 'Category',
-              id: '1233242342312',
-              comments: [{userName: 'Yan', comment: 'Jaime les pommes'}, {userName: 'Xav', comment: 'Jaime les poires'}],
-      },
-      {
-        URL: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/NYCS-bull-trans-2.svg/1024px-NYCS-bull-trans-2.svg.png",
-              Title: 'Titre',
-              Category: 'Category',
-              id: '1233242342312',
-              comments: [{userName: 'Will', comment: 'Spa si pire java'}, {userName: 'MPP', comment: 'Je fais du théatre'}]
-      },
-      {
-        URL: "https://i.redd.it/0cscovjonpi11.png",
-              Title: 'Titre',
-              Category: 'Category',
-              id: '1233242342312',
-              comments: [{userName: 'Yan', comment: 'Jaime les pommes'}, {userName: 'Xav', comment: 'Jaime les poires'}],
-      },
-      {
-        URL: "http://mrconsultis.fr/wp-content/uploads/2016/09/4-13.jpeg",
-              Title: 'Titre',
-              Category: 'Category',
-              id: '1233242342312',
-              comments: [{userName: 'Will', comment: 'Spa si pire java'}, {userName: 'MPP', comment: 'Je fais du théatre'}]
-      },
-      {
-        URL: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/TV5_%28ABC5%29_Logo.svg/220px-TV5_%28ABC5%29_Logo.svg.png",
-              Title: 'Titre',
-              Category: 'Category',
-              id: '1233242342312',
-              comments: [{userName: 'Yan', comment: 'Jaime les pommes'}, {userName: 'Xav', comment: 'Jaime les poires'}],
-      },
-        );
+        const response = await MemberAPI.Memes.getUnseenMemes();
+        console.log("Ajout de memes");
+        response.data.forEach(memes => {
+          console.log(memes.comments);
+          this.items.push(memes);
+        });
       }
     },
 
     setup() {
-      const response = MemberAPI.Memes.getUnseenMemes();
-      console.log('getMemes');
-      console.log(response);
+      this.addImage();
     }
   },
 

@@ -2,11 +2,9 @@ from flask import Flask
 from flask import request
 from flask import Response
 from flask import jsonify
-import sys
 
 import json
 
-from entities.user import User
 from handlers.handler import Handler
 from services.meme_service import MemeService
 from services.repository import Repository
@@ -84,7 +82,7 @@ class MemeHandler(Handler):
 
         @self.app.route('/memes/<meme_id>/upvote', methods=['POST'])
         @self.login_required
-        def upvote_meme(user: User, meme_id):
+        def upvote_meme(user, meme_id):
             """
             Upvote the meme
             :param user: user

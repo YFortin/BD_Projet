@@ -172,9 +172,9 @@ class MySQLRepository(Repository):
         cursor.execute(sql, val)
         self.db_connection.commit()
 
-    def seen_meme(self, user: User, meme_id, date):
+    def seen_meme(self, meme_id, token, date):
         cursor = self.db_connection.cursor()
-        user_id = user.id
+        user_id = self.get_user_id_with_token(token)
         sql = "INSERT INTO Seen (userId, memeId, date) VALUES(%s, %s, %s)"
         val = (user_id, meme_id, date)
         cursor.execute(sql, val)
@@ -188,3 +188,15 @@ class MySQLRepository(Repository):
         val = (comment_id, user_id, meme_id, date, text)
         cursor.execute(sql, val)
         self.db_connection.commit()
+
+    def get_user_id_with_token(self, token):
+        cursor_token = self.db_connection.cursor()
+
+        sql = "SELECT * FROM Token t WHERE t.token = %s"
+        val = (token,)
+        cursor_token.execute(sql, val)
+
+        response = cursor_token.fetchall()
+        token_response = response[0]
+        user_id = token_response[1]
+        return user_id

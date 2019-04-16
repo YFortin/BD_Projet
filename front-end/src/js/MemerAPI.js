@@ -6,13 +6,13 @@ export default class MemerAPI {
     }
 
     static get AUTH_HEADER() {
-        const token = document.cookie.replace(
+        /*const token = document.cookie.replace(
           /(?:(?:^|.*;\s*)AuthorizationMemer\s*=\s*([^;]*).*$)|^.*$/,
           '$1'
-        );
+        );*/
         return {
           headers: {
-            AuthorizationMemer: token
+            AuthorizationMemer: 'admin'
           }
         };
       }
