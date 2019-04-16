@@ -103,7 +103,10 @@ export default class MemerAPI {
             }
 
             return axios.post(`${MemerAPI.User.USERS_URL}/autocomplete`, params);
+        }
 
+        static getMyAccount() {
+            return axios.get(`/myaccount`, MemerAPI.AUTH_HEADER);
         }
 
     }
