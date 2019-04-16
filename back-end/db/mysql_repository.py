@@ -31,14 +31,19 @@ class MySQLRepository(Repository):
 
     def get_user_from_token(self, token):
         cursor = self.db_connection.cursor()
-        query = """SELECT u 
-                   FROM Users u, Token t
-                   WHERE u.id=t.userId AND t.token=%s"""
+        query = """SELECT * 
+                   FROM Users u
+                   WHERE u.id IN (SELECT t.userId FROM Token t
+                   WHERE t.token=%s)"""
         val = (token,)
         cursor.execute(query, val)
         res = cursor.fetchall()
-        user = self._res_to_user(res)
+        user = self.tuple_to_user(res[0])
         return user
+
+    @staticmethod
+    def tuple_to_user(res):
+        return User(res[0], res[1], res[2], res[3], res[4], res[5])
 
     @staticmethod
     def _res_to_user(res):
@@ -66,6 +71,18 @@ class MySQLRepository(Repository):
             return None
         user_info = res[0]
         return User(user_info[0], user_info[1], user_info[2], user_info[3], user_info[4], user_info[5])
+
+    def autocomplete_username(self, input, limit):
+        cursor = self.db_connection.cursor()
+        sql = """
+                SELECT u.id, u.username FROM Users u
+                WHERE u.username LIKE %s
+                LIMIT %s
+             """
+
+        val = (('%' + input + '%'), int(limit))
+        cursor.execute(sql, val)
+        return cursor.fetchall()
 
     def add_user(self, user: User):
         cursor = self.db_connection.cursor()

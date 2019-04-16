@@ -114,3 +114,26 @@ class UserHandler(Handler):
             :return:
             """
             raise NotImplementedError
+
+        @self.app.route('/users/autocomplete', methods=['GET'])
+        def autocomplete_username():
+            """
+            Autocomplete username
+            Input:
+            {
+                "input" = "" : string
+                "limit" = "" : string
+            }
+            Output
+            {
+            List of
+                userId
+                username
+            }
+            """
+            content = request.json
+            input = content['input']
+            limit = content['limit']
+
+            usernames = self.user_service.autocomplete_username(input, limit)
+            return jsonify(usernames)

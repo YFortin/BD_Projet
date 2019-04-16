@@ -43,3 +43,6 @@ class UserService:
         token = uuid.uuid4()
         self.repository.add_token(user, token)
         return token
+
+    def autocomplete_username(self, input, limit):
+        return self.repository.autocomplete_username(input, limit)

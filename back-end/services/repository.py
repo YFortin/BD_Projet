@@ -65,3 +65,6 @@ class Repository(ABC):
     @abstractmethod
     def get_user_id_with_token(self, token):
         ...
+
+    def autocomplete_username(self, input, limit):
+        ...
