@@ -1,10 +1,9 @@
 import hashlib
 import uuid
 from typing import Optional
-import sys
 
-from services.repository import Repository
 from entities.user import User
+from services.repository import Repository
 
 
 class UserService:
@@ -44,5 +43,5 @@ class UserService:
         self.repository.add_token(user, token)
         return token
 
-    def autocomplete_username(self, input, limit):
-        return self.repository.autocomplete_username(input, limit)
+    def autocomplete_username(self, name_input, limit):
+        return self.repository.autocomplete_username(name_input, limit)

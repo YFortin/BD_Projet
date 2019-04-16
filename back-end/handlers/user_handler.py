@@ -1,5 +1,4 @@
 from flask import Flask, Response, request, jsonify, abort
-import sys
 
 from handlers.handler import Handler
 from services.repository import Repository
@@ -132,8 +131,8 @@ class UserHandler(Handler):
             }
             """
             content = request.json
-            input = content['input']
+            name_input = content['input']
             limit = content['limit']
 
-            usernames = self.user_service.autocomplete_username(input, limit)
+            usernames = self.user_service.autocomplete_username(name_input, limit)
             return jsonify(usernames)
