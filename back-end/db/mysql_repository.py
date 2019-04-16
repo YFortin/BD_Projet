@@ -180,6 +180,8 @@ class MySQLRepository(Repository):
             raise RepositoryException
 
         memes_tuples = cursor.fetchall()
+        if len(memes_tuples) == 0:
+            return []
         memes = self._res_to_memes(memes_tuples)
         return memes
 
