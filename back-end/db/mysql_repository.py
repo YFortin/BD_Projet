@@ -74,6 +74,19 @@ class MySQLRepository(Repository):
         user_info = res[0]
         return self._res_to_user(user_info)
 
+    def get_userid_with_username(self, username):
+        cursor = self.db_connection.cursor()
+        query = """SELECT u.id 
+                   FROM Users u 
+                   WHERE u.username=%s"""
+        val = (username,)
+        cursor.execute(query, val)
+        res = cursor.fetchall()
+        if len(res) == 0:
+            return None
+        user_id = res[0]
+        return user_id
+
     def autocomplete_username(self, name_input, limit):
         cursor = self.db_connection.cursor()
         sql = """
@@ -139,12 +152,12 @@ class MySQLRepository(Repository):
     def get_user_follows(self, user_id):
         cursor = self.db_connection.cursor()
         sql = """
-                                        SELECT COUNT(*) FROM Liked l
-                                        WHERE l.userId = %s
+                                        SELECT COUNT(*) FROM Follow f
+                                        WHERE f.followee = %s
                                      """
         val = (user_id,)
-
         cursor.execute(sql, val)
+        return str(cursor.fetchone()[0])
 
     def get_unseen_memes(self, user: User, limit: int):
         cursor = self.db_connection.cursor()

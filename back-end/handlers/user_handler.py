@@ -148,17 +148,17 @@ class UserHandler(Handler):
 
         @self.app.route('/users/userprofile', methods=['GET'])
         @self.login_required
-        def get_userprofile_by_id(user):
+        def get_userprofile_by_username(user):
             """
             Input:
             {
-                "user_id" = "" : string
+                "username" = "" : string
             }
             :return: userprofile
             """
 
             content = request.json
-            user_id = content['user_id']
+            user_id = content['username']
 
         @self.app.route('/myaccount', methods=['PUT'])
         @self.login_required
