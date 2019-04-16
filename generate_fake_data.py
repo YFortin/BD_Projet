@@ -57,13 +57,18 @@ user_urls = [
 
 num_user = 100
 user_ids = []
+count = 0
+names = ['will', 'yan', 'xavier', 'mpp', 'cpp', 'python', 'bob', 'alice', 'paul', 'hunter', 'patate', 'pomme', 'allo', 'hotdog', 'happy_dude', 
+		'sad_dude', 'lorem ispsum', 'mark', 'smiley_bob']
+email_hosts = ['hotmail.com', 'gmail.com', 'memer.ca', 'google.com', 'allo.ca', 'abc.uk', 'pfk.eu', 'notreDameDeParis.fr', 'blackHole.void', 'null.null']
 for i in range(num_user):
 	id = uuid.uuid4()
 	user_ids.append(id)
-	username = ''.join(random.choices(string.ascii_uppercase + string.digits, k=30))
+	username = ''.join([random.choice(names), str(count)])
+	count += 1
 	avatar = random.choice(user_urls)
 	# https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits
-	email = ''.join(random.choices(string.ascii_uppercase + string.digits, k=50))
+	email = ''.join([username, '@',random.choice(email_hosts)])
 	hashedPassword = random.randint(0, 1000)
 	salt = random.randint(0, 1000)
 	file.write(f'INSERT INTO Users (id, username, avatar, email, hashedPassword, salt) VALUES ("{id}", "{username}", "{avatar}", "{email}", "{hashedPassword}", "{salt}");\n')

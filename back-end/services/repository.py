@@ -78,3 +78,11 @@ class Repository(ABC):
     @abstractmethod
     def get_user_likes(self, user_id):
         ...
+
+    @abstractmethod
+    def is_username_free(self, username):
+        ...
+
+    @abstractmethod
+    def is_email_free(self, email):
+        ...

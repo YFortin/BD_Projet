@@ -46,7 +46,7 @@ class MemeHandler(Handler):
                     comments = []
                     for comment in meme.comments:
                         commentResult = {'id': comment.id, 'user_id': comment.user_id, 'meme_id': comment.meme_id,
-                                         'text': comment.text, 'date': comment.date}
+                                         'text': comment.text, 'date': comment.date, 'user_name': comment.user_name}
                         comments.append(commentResult)
 
                     result = {'id': meme.id, 'title': meme.title, 'url': meme.url, 'category': meme.category,

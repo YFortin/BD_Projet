@@ -1,4 +1,5 @@
 import datetime
+import sys
 
 from mysql.connector import MySQLConnection, IntegrityError
 
@@ -185,14 +186,32 @@ class MySQLRepository(Repository):
         val = (meme_id,)
         try:
             cursor.execute(query, val)
-        except Exception:
+        except Exception as e:
+            print(e, file=sys.stderr)
             raise RepositoryException
         comments = [self._tuple_to_comment(c) for c in cursor.fetchall()]
         return comments
 
-    @staticmethod
-    def _tuple_to_comment(c):
-        return Comment(c[4], c[3], c[0], c[1], c[2])
+    def _tuple_to_comment(self, c):
+        comment_id = c[0]
+        user_id = c[1]
+        meme_id = c[2]
+        date = c[3]
+        text = c[4]
+
+        cursor = self.db_connection.cursor()
+        query = """SELECT u.username
+                   FROM Users u
+                   WHERE u.id=%s"""
+        val = (user_id,)
+        try:
+            cursor.execute(query, val)
+            user_name = cursor.fetchall()[0][0]
+        except Exception as e:
+            print(e, file=sys.stderr)
+            raise RepositoryException
+
+        return Comment(text, date, comment_id, user_name, user_id, meme_id)
 
     @staticmethod
     def tuple_to_meme(meme_tuple) -> Meme:
@@ -271,3 +290,23 @@ class MySQLRepository(Repository):
         except Exception:
             raise RepositoryException
         self.db_connection.commit()
+
+    def is_username_free(self, username):
+        cursor = self.db_connection.cursor()
+        sql = "SELECT COUNT(*) FROM Users u WHERE u.username = %s"
+        params = (username,)
+        try:
+            cursor.execute(sql, params)
+        except Exception:
+            raise RepositoryException
+        return cursor.fetchone()[0] == 0
+
+    def is_email_free(self, email):
+        cursor = self.db_connection.cursor()
+        sql = "SELECT COUNT(*) FROM Users u WHERE u.email = %s"
+        params = (email,)
+        try:
+            cursor.execute(sql, params)
+        except Exception:
+            raise RepositoryException
+        return cursor.fetchone()[0] == 0
