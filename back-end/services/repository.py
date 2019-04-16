@@ -70,3 +70,19 @@ class Repository(ABC):
     @abstractmethod
     def get_meme_comment(self, meme: Meme):
         ...
+
+    @abstractmethod
+    def get_user_uploadedmemes(self, user_id):
+        ...
+
+    @abstractmethod
+    def get_user_likes(self, user_id):
+        ...
+
+    @abstractmethod
+    def is_username_free(self, username):
+        ...
+
+    @abstractmethod
+    def is_email_free(self, email):
+        ...

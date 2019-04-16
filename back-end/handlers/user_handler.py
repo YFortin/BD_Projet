@@ -13,6 +13,58 @@ class UserHandler(Handler):
         self.user_service = user_service
 
     def register_routes(self):
+        @self.app.route('/checkUserName', methods=['GET'])
+        def check_username():
+            """
+            Check if username is valid
+            :return: if username is free
+            Input
+            {
+                username
+            }
+            output
+            {
+                is_free
+            }
+            """
+            if not request.is_json:
+                abort(400)
+
+            content = request.json
+
+            try:
+                username = content['username']
+                is_free = self.user_service.check_username(username)
+                return jsonify({'is_free': is_free})
+            except Exception:
+                abort(400)
+
+        @self.app.route('/checkEmail', methods=['GET'])
+        def check_email():
+            """
+            Check if username is valid
+            :return: if username is free
+            Input
+            {
+                email
+            }
+            output
+            {
+                is_free
+            }
+            """
+            if not request.is_json:
+                abort(400)
+
+            content = request.json
+
+            try:
+                email = content['email']
+                is_free = self.user_service.check_email(email)
+                return jsonify({'is_free': is_free})
+            except Exception:
+                abort(400)
+
         @self.app.route('/signup', methods=['POST'])
         def signup():
             """
@@ -32,10 +84,13 @@ class UserHandler(Handler):
                 abort(400)
 
             content = request.json
-            # TODO try catch
-            name = content['name']
-            email = content['email']
-            password = content['password']
+
+            try:
+                name = content['name']
+                email = content['email']
+                password = content['password']
+            except Exception:
+                abort(400)
 
             try:
                 self.user_service.create_user(name, email, password)
@@ -60,9 +115,16 @@ class UserHandler(Handler):
             }
             :return: Set token cookie in client
             """
+            if not request.is_json:
+                abort(400)
+
             content = request.json
-            email = content['email']
-            password = content['password']
+
+            try:
+                email = content['email']
+                password = content['password']
+            except Exception:
+                abort(400)
 
             token = self.user_service.create_user_token(email, password)
             if token is None:
@@ -89,7 +151,6 @@ class UserHandler(Handler):
 
             return jsonify(user_json)
 
-        # TODO need to be the same user
         @self.app.route('/users', methods=['DELETE'])
         @self.login_required
         def delete_user(user):
@@ -109,6 +170,49 @@ class UserHandler(Handler):
             """
             result = {'id': user.id, 'username': user.name, 'avatar': user.avatar, 'email': user.email}
             return jsonify(result)
+
+        @self.app.route('/users/userprofile', methods=['GET'])
+        @self.login_required
+        def get_userprofile_by_id(user):
+            """
+            Input:
+            {
+                "user_id" = "" : string
+            }
+            :return: userprofile
+            """
+
+            content = request.json
+            user_id = content['user_id']
+
+        @self.app.route('/myaccount', methods=['PUT'])
+        @self.login_required
+        def update_my_account(user):
+            """
+            update
+            :return:
+            {
+                username
+                email
+                password (empty to not change it)
+                avatar
+            }
+            """
+            if not request.is_json:
+                abort(400)
+
+            content = request.json
+
+            try:
+                username = content['username']
+                email = content['email']
+                password = content['password']
+                avatar = content['avatar']
+            except Exception:
+                abort(400)
+
+            self.user_service.update_user(user, username, email, password, avatar)
+
 
         @self.app.route('/users/<int:user_id>/follow', methods=['POST'])
         def follow_user(user_id):

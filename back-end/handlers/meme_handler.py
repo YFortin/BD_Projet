@@ -129,20 +129,21 @@ class MemeHandler(Handler):
                 abort(404)
             return Response(status=200)
 
-        @self.app.route('/memes/<meme_id>/downvote', methods=['POST'])
+        @self.app.route('/memes/downvote', methods=['POST'])
         @self.login_required
-        def downvote_meme(user, meme_id):
+        def downvote_meme(user):
             """
             Downvote the meme
             :param user: user
-            :param meme_id: meme meme_id
             JSON input
             {
-
+                "meme_id = "" :string
             }
             :return:
             """
             try:
+                content = request.json
+                meme_id = content['meme_id']
                 self.meme_service.downvote_meme(user, meme_id)
             except RepositoryException:
                 abort(404)
