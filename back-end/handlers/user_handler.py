@@ -41,7 +41,7 @@ class UserHandler(Handler):
             return jsonify({'is_free': is_free})
 
         @self.app.route('/checkEmail', methods=['GET'])
-        def check_username():
+        def check_email():
             """
             Check if username is valid
             :return: if username is free

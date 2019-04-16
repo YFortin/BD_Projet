@@ -118,7 +118,6 @@ CREATE TABLE Token
 CREATE TABLE Top
 (
     memeId VARCHAR(36) NOT NULL,
-    date   DATE,
 
     PRIMARY KEY (memeId),
     FOREIGN KEY (memeId) REFERENCES Memes (id)
@@ -148,7 +147,7 @@ CREATE TRIGGER move_to_top
         IF NOT alreadyIn THEN
             SET c = (SELECT COUNT (*) FROM Liked likes WHERE likes.memeId = NEW.memeId);
             IF c >= 100 THEN
-                  INSERT INTO Top (memeId, date) VALUES (NEW.memeId);
+                  INSERT INTO Top (memeId) VALUES (NEW.memeId);
             END IF;
         END IF;
 END ; //
