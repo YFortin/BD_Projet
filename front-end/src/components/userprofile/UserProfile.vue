@@ -3,7 +3,7 @@
     <v-content>
       <v-container grid-list-md>
         <h1 class="display-1 black--text text-xs-center">
-          <span class="font-weight-bold">{{ userName }}'s</span> Profile
+          <span class="font-weight-bold">{{ username }}'s</span> Profile
         </h1>
         <v-layout align-center justify-center row wrap fill-height>
           <v-flex xs6>
@@ -37,8 +37,7 @@ import MemerAPI from "../../js/MemerAPI";
 
 export default {
   data: () => ({
-    userId: "",
-    userName: "MPP",
+    username: "MPP",
     numberOfFollowers: 0,
     follower: "Follow",
     followColor: "info"
@@ -56,10 +55,12 @@ export default {
       }
     },
 
-    setup() {
-      this.userId = this.$route.params.id;
-      const response = MemerAPI.User.getUserProfile(this.userId);
+    async setup() {
+      this.username = this.$route.params.username;
 
+      console.log(this.username);
+      const response = await MemerAPI.User.getUserProfile(this.username);
+      console.log("ici");
       console.log(response);
     }
 

@@ -36,7 +36,7 @@ export default {
       val && val !== this.select && this.querySelections(val);
     },
     select(val) {
-      this.$router.push({path: `/Nav/UserProfile/${val.id}`});
+      this.$router.push({path: `/Nav/UserProfile/${val.username}`});
     },
   },
   methods: {

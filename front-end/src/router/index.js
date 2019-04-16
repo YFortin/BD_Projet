@@ -25,7 +25,7 @@ const router = new Router({
       meta: { requiresAuth: true },
       children: [
         {
-          path: 'userprofile/:id',
+          path: 'userprofile/:username',
           name: 'UserProfile',
           component: UserProfile
         },
