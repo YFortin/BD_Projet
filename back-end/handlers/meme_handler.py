@@ -38,8 +38,11 @@ class MemeHandler(Handler):
                 content = json.loads(request.data)
                 limit = content.get('limit', self.DEFAULT_LIMIT)
 
-            memes = self.meme_service.get_unseen_meme(user, limit)
-            return jsonify([m.__dict__ for m in memes])
+            try:
+                memes = self.meme_service.get_unseen_meme(user, limit)
+                return jsonify([m.__dict__ for m in memes])
+            except RepositoryException:
+                abort(401)
 
         @self.app.route('/memes/<meme_id>', methods=['DELETE'])
         def delete_meme(meme_id):
@@ -48,7 +51,10 @@ class MemeHandler(Handler):
             :param meme_id: meme meme_id
             :return:
             """
-            self.meme_service.delete_meme(meme_id)
+            try:
+                self.meme_service.delete_meme(meme_id)
+            except RepositoryException:
+                abort(404)
             return Response(status=200)
 
         @self.app.route('/memes/top', methods=['GET'])
