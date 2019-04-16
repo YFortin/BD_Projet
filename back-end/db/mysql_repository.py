@@ -48,16 +48,16 @@ class MySQLRepository(Repository):
 
     @staticmethod
     def _res_to_user(res):
-        return User(res.id, res.username, res.avatar, res.email, res.hashed_password, res.salt)
+        return User(res[0], res[1], res[2], res[3], res[4], res[5])
 
     def get_user(self, user_id):
         cursor = self.db_connection.cursor()
         query = """SELECT * 
                    FROM Users u 
                    WHERE u.id=%s"""
-        cursor.execute(query, user_id)
+        cursor.execute(query, (user_id,))
         res = cursor.fetchall()
-        user = self._res_to_user(res)
+        user = self._res_to_user(res[0])
         return user
 
     def get_user_with_email(self, email):
@@ -71,7 +71,7 @@ class MySQLRepository(Repository):
         if len(res) == 0:
             return None
         user_info = res[0]
-        return User(user_info[0], user_info[1], user_info[2], user_info[3], user_info[4], user_info[5])
+        return self._res_to_user(user_info)
 
     def autocomplete_username(self, name_input, limit):
         cursor = self.db_connection.cursor()

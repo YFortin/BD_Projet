@@ -40,7 +40,12 @@ export default class MemerAPI {
         }
 
         static upvote(id) {
-            return axios.post(`${this.MEMES_URL}/${id}/upvote`, MemerAPI.AUTH_HEADER);
+
+            const params = {
+                "meme_id": id
+            }
+
+            return axios.post(`${this.MEMES_URL}/upvote`, params, MemerAPI.AUTH_HEADER);
         }
 
         static downvote(id) {
@@ -50,7 +55,7 @@ export default class MemerAPI {
         static comment(comment, id) {
             
             const params = {
-                contents: comment 
+                "content": comment
             }
 
             return axios.post(`${this.MEMES_URL}/${id}/comment`, params, MemerAPI.AUTH_HEADER);
