@@ -110,6 +110,42 @@ class MySQLRepository(Repository):
         values = user_id
         cursor.execute(query, values)
 
+    def get_user_uploadedmemes(self, user_id):
+        cursor = self.db_connection.cursor()
+        sql = """
+                        SELECT * FROM Memes m
+                        WHERE m.id IN (SELECT u.memeId FROM Uploaded u 
+                        WHERE u.userId = %s)
+                     """
+        val = (user_id,)
+
+        cursor.execute(sql, val)
+        memes_tuple = cursor.fetchall()
+        memes = self._res_to_memes(memes_tuple)
+        return memes
+
+    def get_user_likes(self, user_id):
+        cursor = self.db_connection.cursor()
+        sql = """
+                                SELECT COUNT(*) FROM Liked l
+                                WHERE l.userId = %s
+                             """
+        val = (user_id,)
+
+        cursor.execute(sql, val)
+
+        return str(cursor.fetchone()[0])
+
+    def get_user_follows(self, user_id):
+        cursor = self.db_connection.cursor()
+        sql = """
+                                        SELECT COUNT(*) FROM Liked l
+                                        WHERE l.userId = %s
+                                     """
+        val = (user_id,)
+
+        cursor.execute(sql, val)
+
     def get_unseen_memes(self, user: User, limit: int):
         cursor = self.db_connection.cursor()
         user_id = user.id
@@ -130,12 +166,15 @@ class MySQLRepository(Repository):
             raise RepositoryException
 
         memes_tuples = cursor.fetchall()
+        memes = self._res_to_memes(memes_tuples)
+        return memes
+
+    def _res_to_memes(self, memes_tuples):
         memes = []
         for meme_tuple in memes_tuples:
             meme = self.tuple_to_meme(meme_tuple)
             meme.comments = self.get_meme_comment(meme.id)
             memes.append(meme)
-
         return memes
 
     def get_meme_comment(self, meme_id):

@@ -34,11 +34,10 @@ class UserHandler(Handler):
 
             try:
                 username = content['username']
+                is_free = self.user_service.check_username(username)
+                return jsonify({'is_free': is_free})
             except Exception:
                 abort(400)
-
-            is_free = self.user_service.check_username(username)
-            return jsonify({'is_free': is_free})
 
         @self.app.route('/checkEmail', methods=['GET'])
         def check_email():
@@ -61,11 +60,10 @@ class UserHandler(Handler):
 
             try:
                 email = content['email']
+                is_free = self.user_service.check_email(email)
+                return jsonify({'is_free': is_free})
             except Exception:
                 abort(400)
-
-            is_free = self.user_service.check_email(email)
-            return jsonify({'is_free': is_free})
 
         @self.app.route('/signup', methods=['POST'])
         def signup():
@@ -170,8 +168,22 @@ class UserHandler(Handler):
             Return my user
             :return: user
             """
-            result = {'id': user.id, 'username': user.name, 'avatar': user.name, 'email': user.email}
+            result = {'id': user.id, 'username': user.name, 'avatar': user.avatar, 'email': user.email}
             return jsonify(result)
+
+        @self.app.route('/users/userprofile', methods=['GET'])
+        @self.login_required
+        def get_userprofile_by_id(user):
+            """
+            Input:
+            {
+                "user_id" = "" : string
+            }
+            :return: userprofile
+            """
+
+            content = request.json
+            user_id = content['user_id']
 
         @self.app.route('/myaccount', methods=['PUT'])
         @self.login_required

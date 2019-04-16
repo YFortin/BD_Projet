@@ -33,9 +33,11 @@
 
 <script>
 import MemesVisualizer from "./MemesVisualizer";
+import MemerAPI from "../../js/MemerAPI";
 
 export default {
   data: () => ({
+    userId: "",
     userName: "MPP",
     numberOfFollowers: 0,
     follower: "Follow",
@@ -55,8 +57,10 @@ export default {
     },
 
     setup() {
-      
+      this.userId = this.$route.params.id;
+      const response = MemerAPI.User.getUserProfile(this.userId);
 
+      console.log(response);
     }
 
   },

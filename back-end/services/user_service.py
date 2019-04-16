@@ -60,6 +60,11 @@ class UserService:
     def get_user_by_id(self, user_id):
         return self.repository.get_user(user_id)
 
+    def get_userprofile_by_id(self, user_id):
+        self.repository.get_user(user_id)
+        self.repository.get_user_uploadedmemes(user_id)
+        self.repository.get_user_likes(user_id)
+
     def check_username(self, username):
         return self.repository.is_username_free(username)
 
@@ -78,3 +83,4 @@ class UserService:
 
     def check_email(self, email):
         return self.repository.is_email_free(email)
+

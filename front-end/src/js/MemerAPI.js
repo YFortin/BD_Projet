@@ -109,5 +109,15 @@ export default class MemerAPI {
             return axios.get(`/myaccount`, MemerAPI.AUTH_HEADER);
         }
 
+        static getUserProfile(id) {
+
+            const params = {
+                "user_id": id,
+            }
+
+            return axios.get(`${MemerAPI.User.USERS_URL}/userprofile`, params);
+
+        }
+
     }
 }
