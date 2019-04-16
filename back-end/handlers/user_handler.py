@@ -34,11 +34,36 @@ class UserHandler(Handler):
 
             try:
                 username = content['username']
+                is_free = self.user_service.check_username(username)
+                return jsonify({'is_free': is_free})
             except Exception:
                 abort(400)
 
-            is_free = self.user_service.check_username(username)
-            return jsonify({'is_free': is_free})
+        @self.app.route('/checkEmail', methods=['GET'])
+        def check_email():
+            """
+            Check if username is valid
+            :return: if username is free
+            Input
+            {
+                email
+            }
+            output
+            {
+                is_free
+            }
+            """
+            if not request.is_json:
+                abort(400)
+
+            content = request.json
+
+            try:
+                email = content['email']
+                is_free = self.user_service.check_email(email)
+                return jsonify({'is_free': is_free})
+            except Exception:
+                abort(400)
 
         @self.app.route('/signup', methods=['POST'])
         def signup():
