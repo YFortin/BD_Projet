@@ -49,7 +49,12 @@ export default class MemerAPI {
         }
 
         static downvote(id) {
-            return axios.post(`${this.MEMES_URL}/${id}/downvote`, MemerAPI.AUTH_HEADER);
+
+            const params = {
+                "meme_id": id
+            }
+
+            return axios.post(`${this.MEMES_URL}/downvote`, params, MemerAPI.AUTH_HEADER);
         }
 
         static comment(comment, id) {
