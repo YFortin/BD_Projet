@@ -135,5 +135,11 @@ class UserHandler(Handler):
             input = content['input']
             limit = content['limit']
 
-            usernames = self.user_service.autocomplete_username(input, limit)
-            return jsonify(usernames)
+            res = self.user_service.autocomplete_username(input, limit)
+            a = []
+            for x in res:
+                a.append({'id': x[0], 'username': x[1]})
+
+            results = {'results': a}
+
+            return jsonify(results)
