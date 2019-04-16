@@ -250,3 +250,13 @@ class MySQLRepository(Repository):
         except Exception:
             raise RepositoryException
         self.db_connection.commit()
+
+    def is_username_free(self, username):
+        cursor = self.db_connection.cursor()
+        sql = "SELECT COUNT(*) FROM Users u WHERE u.username = %s"
+        params = (username,)
+        try:
+            cursor.execute(sql, params)
+        except Exception:
+            raise RepositoryException
+        return cursor.fetchone()[0] == 0

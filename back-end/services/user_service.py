@@ -13,13 +13,18 @@ class UserService:
         self.repository = repository
 
     def create_user(self, name, email, password):
-        salt = uuid.uuid4().hex
-        hashed_password = hashlib.sha512((password + salt).encode('utf-8')).hexdigest()
+        hashed_password, salt = self.get_hash_and_salt(password)
 
         user_id = uuid.uuid4()
         new_user = User(user_id, name, self.DEFAULT_USER_AVATAR, email, hashed_password, salt)
 
         self.repository.add_user(new_user)
+
+    @staticmethod
+    def get_hash_and_salt(password):
+        salt = uuid.uuid4().hex
+        hashed_password = hashlib.sha512((password + salt).encode('utf-8')).hexdigest()
+        return hashed_password, salt
 
     def get_user_if_credentials_valid(self, email, password) -> Optional[User]:
         user = self.repository.get_user_with_email(email)
@@ -54,3 +59,19 @@ class UserService:
 
     def get_user_by_id(self, user_id):
         return self.repository.get_user(user_id)
+
+    def check_username(self, username):
+        return self.repository.is_username_free(username)
+
+    def update_user(self, user, username, email, password, avatar):
+        if password != '':
+            # update password
+            hash, salt = self.get_hash_and_salt(password)
+            user.hashed_password = hash
+            user.salt = salt
+
+        user.avatar = avatar
+        user.name = username
+        user.email = email
+
+        self.repository.edit_user(user)
