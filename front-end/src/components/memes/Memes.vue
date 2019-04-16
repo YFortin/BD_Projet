@@ -72,7 +72,7 @@ export default {
     }
   },
 
-  beforeMount() {
+  created() {
     this.setup();
   }
 };

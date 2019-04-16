@@ -8,6 +8,8 @@ from entities.user import User
 from services.repository import Repository
 from services.repository_exception import RepositoryException
 
+from flask import jsonify
+
 
 class MySQLRepository(Repository):
 
@@ -47,7 +49,7 @@ class MySQLRepository(Repository):
     @staticmethod
     def _res_to_user(res):
         return User(res.id, res.username, res.avatar, res.email, res.hashed_password, res.salt)
-    
+
     def get_user(self, user_id):
         cursor = self.db_connection.cursor()
         query = """SELECT * 
@@ -138,7 +140,7 @@ class MySQLRepository(Repository):
     def get_meme_comment(self, meme_id):
         cursor = self.db_connection.cursor()
         query = """SELECT * 
-                   FROM Comment c
+                   FROM Comment u
                    WHERE u.memeId=%s"""
         val = (meme_id,)
         try:

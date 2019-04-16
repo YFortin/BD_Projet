@@ -12,7 +12,6 @@ from services.repository_exception import RepositoryException
 
 
 class MemeHandler(Handler):
-
     DEFAULT_LIMIT = 10
     DEFAULT_OFFSET = 0
 
@@ -40,7 +39,20 @@ class MemeHandler(Handler):
 
             try:
                 memes = self.meme_service.get_unseen_meme(user, limit)
-                return jsonify([m.__dict__ for m in memes])
+
+                results = []
+
+                for meme in memes:
+                    comments = []
+                    for comment in meme.comments:
+                        commentResult = {'id': comment.id, 'user_id': comment.user_id, 'meme_id': comment.meme_id,
+                                         'text': comment.text, 'date': comment.date}
+                        comments.append(commentResult)
+
+                    result = {'id': meme.id, 'title': meme.title, 'url': meme.url, 'category': meme.category,
+                              'comments': comments}
+                    results.append(result)
+                return jsonify({'unseen_memes': results})
             except RepositoryException:
                 abort(401)
 
