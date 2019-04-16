@@ -52,7 +52,7 @@ class Repository(ABC):
         ...
 
     @abstractmethod
-    def comment_meme(self, user: User, meme_id, comment: Comment, date, text):
+    def comment_meme(self, comment: Comment):
         ...
 
     @abstractmethod
@@ -63,5 +63,6 @@ class Repository(ABC):
     def get_unseen_memes(self, user: User, limit):
         ...
 
+    @abstractmethod
     def autocomplete_username(self, input, limit):
         ...

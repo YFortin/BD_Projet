@@ -1,3 +1,4 @@
+from entities.comment import Comment
 from services.repository import Repository
 from entities.meme import Meme
 from entities.user import User
@@ -31,7 +32,8 @@ class MemeService:
 
     def comment_meme(self, user: User, meme_id, text):
         date = datetime.datetime.now()
-        self.repository.comment_meme(user, meme_id, date, text)
+        comment = Comment(text, date, str(uuid.uuid4()), user.name, user.id, meme_id)
+        self.repository.comment_meme(comment)
 
     def get_unseen_meme(self, user: User, limit: int):
         memes = self.repository.get_unseen_memes(user, limit)

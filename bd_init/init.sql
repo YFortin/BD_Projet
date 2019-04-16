@@ -64,8 +64,6 @@ CREATE TABLE Liked
 
     FOREIGN KEY (userId) REFERENCES Users (id),
     FOREIGN KEY (memeId) REFERENCES Memes (id)
-
-
 );
 
 CREATE TABLE Disliked
@@ -76,7 +74,6 @@ CREATE TABLE Disliked
 
     FOREIGN KEY (userId) REFERENCES Users (id),
     FOREIGN KEY (memeId) REFERENCES Memes (id)
-
 );
 
 

@@ -181,11 +181,12 @@ class MySQLRepository(Repository):
         cursor.execute(sql, val)
         self.db_connection.commit()
 
-    def comment_meme(self, user: User, meme_id, comment: Comment, date, text):
+    def comment_meme(self, comment: Comment):
         cursor = self.db_connection.cursor()
-        user_id = user.id
+        user_id = comment.user_id
+        meme_id = comment.meme_id
         sql = "INSERT INTO Comment (commentId, userId, memeId , date, text) VALUES(%s, %s, %s, %s, %s)"
-        val = (comment.id, user_id, meme_id, date, comment.text)
+        val = (comment.id, user_id, meme_id, comment.date, comment.text)
         cursor.execute(sql, val)
         self.db_connection.commit()
 
