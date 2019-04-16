@@ -1,6 +1,7 @@
 import datetime
 from abc import ABC, abstractmethod
 
+from entities.comment import Comment
 from entities.user import User
 from entities.meme import Meme
 
@@ -51,7 +52,7 @@ class Repository(ABC):
         ...
 
     @abstractmethod
-    def comment_meme(self, user: User, meme_id, date, text):
+    def comment_meme(self, user: User, meme_id, comment: Comment, date, text):
         ...
 
     @abstractmethod
