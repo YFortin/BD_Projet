@@ -188,3 +188,4 @@ class MySQLRepository(Repository):
         val = (comment.id, user_id, meme_id, date, comment.text)
         cursor.execute(sql, val)
         self.db_connection.commit()
+
