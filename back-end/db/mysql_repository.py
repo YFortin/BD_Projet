@@ -147,14 +147,22 @@ class MySQLRepository(Repository):
 
         sql = "INSERT INTO Uploaded (userId, memeId, date) VALUES (%s, %s, %s)"
         val = (user_id, meme.id, date)
-        cursor.execute(sql, val)
+
+        try:
+            cursor.execute(sql, val)
+        except Exception:
+            raise RepositoryException
+
         self.db_connection.commit()
 
     def remove_meme(self, meme_id):
         cursor = self.db_connection.cursor()
         sql = "DELETE FROM Memes WHERE id = %s"
         val = (meme_id,)
-        cursor.execute(sql, val)
+        try:
+            cursor.execute(sql, val)
+        except Exception:
+            raise RepositoryException
         self.db_connection.commit()
 
     def upvote_meme(self, user: User, meme_id):
@@ -162,7 +170,10 @@ class MySQLRepository(Repository):
         user_id = user.id
         sql = "INSERT INTO Liked (userId, memeId) VALUES(%s, %s)"
         val = (user_id, meme_id)
-        cursor.execute(sql, val)
+        try:
+            cursor.execute(sql, val)
+        except Exception:
+            raise RepositoryException
         self.db_connection.commit()
 
     def downvote_meme(self, user: User, meme_id):
@@ -170,7 +181,10 @@ class MySQLRepository(Repository):
         user_id = user.id
         sql = "INSERT INTO Disliked (userId, memeId) VALUES(%s, %s)"
         val = (user_id, meme_id)
-        cursor.execute(sql, val)
+        try:
+            cursor.execute(sql, val)
+        except Exception:
+            raise RepositoryException
         self.db_connection.commit()
 
     def seen_meme(self, user: User, meme_id, date):
@@ -178,7 +192,10 @@ class MySQLRepository(Repository):
         user_id = user.id
         sql = "INSERT INTO Seen (userId, memeId, date) VALUES(%s, %s, %s)"
         val = (user_id, meme_id, date)
-        cursor.execute(sql, val)
+        try:
+            cursor.execute(sql, val)
+        except Exception:
+            raise RepositoryException
         self.db_connection.commit()
 
     def comment_meme(self, comment: Comment):
@@ -187,6 +204,9 @@ class MySQLRepository(Repository):
         meme_id = comment.meme_id
         sql = "INSERT INTO Comment (commentId, userId, memeId , date, text) VALUES(%s, %s, %s, %s, %s)"
         val = (comment.id, user_id, meme_id, comment.date, comment.text)
-        cursor.execute(sql, val)
+        try:
+            cursor.execute(sql, val)
+        except Exception:
+            raise RepositoryException
         self.db_connection.commit()
 
