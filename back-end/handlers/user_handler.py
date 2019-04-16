@@ -107,7 +107,7 @@ class UserHandler(Handler):
             Return my user
             :return: user
             """
-            result = {'id': user.id, 'username': user.name, 'avatar': user.name, 'email': user.email}
+            result = {'id': user.id, 'username': user.name, 'avatar': user.avatar, 'email': user.email}
             return jsonify(result)
 
         @self.app.route('/users/<int:user_id>/follow', methods=['POST'])
