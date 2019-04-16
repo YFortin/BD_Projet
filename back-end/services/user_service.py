@@ -54,3 +54,6 @@ class UserService:
 
     def get_user_by_id(self, user_id):
         return self.repository.get_user(user_id)
+
+    def get_userprofile_by_id(self):
+        ...

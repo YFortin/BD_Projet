@@ -110,6 +110,21 @@ class UserHandler(Handler):
             result = {'id': user.id, 'username': user.name, 'avatar': user.name, 'email': user.email}
             return jsonify(result)
 
+        @self.app.route('/users/userprofile', methods=['GET'])
+        @self.login_required
+        def get_userprofile_by_id(user):
+            """
+            Input:
+            {
+                "user_id" = "" : string
+            }
+            :return: userprofile
+            """
+
+            content = request.json
+            user_id = content['user_id']
+
+
         @self.app.route('/users/<int:user_id>/follow', methods=['POST'])
         def follow_user(user_id):
             """
