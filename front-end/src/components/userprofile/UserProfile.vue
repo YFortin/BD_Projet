@@ -99,8 +99,13 @@
 
         },
 
-        beforeMount() {
-            this.setup();
+        async beforeMount() {
+            this.username = this.$route.params.username;
+            const response = await MemerAPI.User.getUserProfile(this.username);
+            this.avatarUrl = response.data.avatar;
+            this.numberOfFollowers = response.data.followers;
+            this.numberOfLikes = response.data.likes;
+            this.items = response.data.memes;
         },
     };
 </script>
