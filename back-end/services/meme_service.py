@@ -38,3 +38,6 @@ class MemeService:
     def get_unseen_meme(self, user: User, limit: int):
         memes = self.repository.get_unseen_memes(user, limit)
         return memes
+
+    def get_top_memes(self):
+        return self.repository.get_top_meme()

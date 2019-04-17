@@ -365,6 +365,17 @@ class MySQLRepository(Repository):
         self.db_connection.commit()
         cursor.close()
 
+    def get_top_meme(self):
+        cursor = self.db_connection.cursor()
+        sql = """
+                SELECT * FROM Memes m
+                WHERE m.id in (SELECT t.memeId FROM Top t)
+        """
+        cursor.execute(sql)
+        memes_tuples = cursor.fetchall()
+        memes = self._res_to_memes(memes_tuples)
+        return memes
+
     def comment_meme(self, comment: Comment):
         cursor = self.db_connection.cursor()
         user_id = comment.user_id

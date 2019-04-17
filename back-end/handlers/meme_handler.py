@@ -69,17 +69,6 @@ class MemeHandler(Handler):
                 abort(404)
             return Response(status=200)
 
-        @self.app.route('/memes/top', methods=['GET'])
-        def get_top_memes():
-            """
-            Get top memes
-            Query params:
-                limit -> maximum number of memes to return
-                offset -> return memes starting at offset
-            :return: array of memes
-            """
-            raise NotImplementedError
-
         @self.app.route('/memes', methods=['POST'])
         @self.login_required
         def upload_meme(user):
@@ -179,3 +168,27 @@ class MemeHandler(Handler):
             self.meme_service.comment_meme(user, meme_id, text)
 
             return Response(status=201)
+
+        @self.app.route('/memes/top', methods=['GET'])
+        @self.login_required
+        def get_top_meme(user):
+            """
+            get top meme
+            :return: top meme
+            """
+            memes = self.meme_service.get_top_memes()
+
+            results = []
+
+            for meme in memes:
+                comments = []
+                for comment in meme.comments:
+                    commentResult = {'id': comment.id, 'user_id': comment.user_id, 'meme_id': comment.meme_id,
+                                     'text': comment.text, 'date': comment.date, 'user_name': comment.user_name}
+                    comments.append(commentResult)
+
+                result = {'id': meme.id, 'title': meme.title, 'url': meme.url, 'category': meme.category,
+                          'comments': comments}
+                results.append(result)
+            return jsonify({'top_memes': results})
+
