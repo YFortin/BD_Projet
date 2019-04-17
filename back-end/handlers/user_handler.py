@@ -134,9 +134,12 @@ class UserHandler(Handler):
                 return jsonify(response)
 
         @self.app.route('/validateToken', methods=['GET'])
-        @self.login_required
-        def validate_token(_):
-            return Response(status=200)
+        def validate_token():
+            user = self.get_user_if_authenticated()
+
+            response = {'valid': user is not None}
+
+            return jsonify(response)
 
         @self.app.route('/users/<user_id>', methods=['GET'])
         def get_user(user_id):

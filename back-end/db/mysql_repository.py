@@ -42,6 +42,9 @@ class MySQLRepository(Repository):
         cursor.execute(query, val)
         res = cursor.fetchall()
 
+        if len(res) == 0:
+            return None
+
         user = self.tuple_to_user(res[0])
         cursor.close()
 
