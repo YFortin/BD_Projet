@@ -67,9 +67,6 @@
                     const emailValid = await MemerAPI.User.checkEmail(this.email);
                     const usernameValide = await MemerAPI.User.checkUsername(this.username);
 
-                    console.log(emailValid.data.is_free);
-                    console.log(usernameValide.data.is_free);
-
                     if (emailValid.data.is_free) {
                         if (usernameValide.data.is_free) {
                             await MemerAPI.User.signup(this.username, this.email, this.password);
