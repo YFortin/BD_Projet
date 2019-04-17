@@ -17,7 +17,7 @@ CREATE TABLE Memes
 (
     id       VARCHAR(36) UNIQUE NOT NULL,
     title    VARCHAR(100),
-    url      VARCHAR(200),
+    url      VARCHAR(500),
     category VARCHAR(100),
 
     PRIMARY KEY (id)
@@ -27,7 +27,7 @@ CREATE TABLE Users
 (
     id             VARCHAR(36) UNIQUE NOT NULL,
     username       VARCHAR(30) UNIQUE,
-	avatar		   VARCHAR(200),
+	avatar		   VARCHAR(500),
     email          VARCHAR(50) UNIQUE,
     hashedPassword VARCHAR(128),
     salt           VARCHAR(36),
