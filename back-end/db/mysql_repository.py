@@ -263,7 +263,6 @@ class MySQLRepository(Repository):
         try:
             cursor.execute(query, val)
         except Exception as e:
-            print(e, file=sys.stderr)
             raise RepositoryException
         comments = [self._tuple_to_comment(c) for c in cursor.fetchall()]
         cursor.close()
@@ -285,7 +284,6 @@ class MySQLRepository(Repository):
             cursor.execute(query, val)
             user_name = cursor.fetchall()[0][0]
         except Exception as e:
-            print(e, file=sys.stderr)
             cursor.close()
             raise RepositoryException
         cursor.close()
@@ -408,7 +406,6 @@ class MySQLRepository(Repository):
         return res
 
     def delete_old_token(self):
-        print('DELETE', file=sys.stderr)
         cursor = self.db_connection.cursor()
         sql = "CALL remove_old_token()"
         try:

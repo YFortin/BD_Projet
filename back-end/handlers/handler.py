@@ -31,12 +31,10 @@ class Handler(ABC):
     def get_user_if_authenticated(self):
 
         if 'AuthorizationMemer' not in request.headers:
-            print('header not present', file=sys.stderr)
             return None
         token = request.headers['AuthorizationMemer']
         user = self._repository.get_user_from_token(token)
         if user is None:
-            print('User is none', file=sys.stderr)
             return None
 
         return user

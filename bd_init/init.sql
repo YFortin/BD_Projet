@@ -138,15 +138,10 @@ CREATE TABLE Top
         ON DELETE CASCADE
 );
 
--- TODO add ONE DELETE and ON UPDATE
--- TODO trigger on Liked to Top
--- TODO trigger verify username validity
--- TODO trigger remove old token
-
 -- User
 DROP USER IF EXISTS 'memer_api';
 CREATE USER 'memer_api' IDENTIFIED BY '4215Hello!@';
-GRANT SELECT, INSERT, UPDATE, DELETE ON Memer.* TO 'memer_api';
+GRANT SELECT, INSERT, UPDATE, DELETE, EXECUTE ON Memer.* TO 'memer_api';
 GRANT Trigger ON *.* TO 'memer_api';
 
 -- Triggers
@@ -158,11 +153,6 @@ GRANT EXECUTE ON PROCEDURE Memer.remove_old_token TO 'memer_api';
 -- Username not empty
 DROP TRIGGER IF EXISTS  username_not_empty;
 CREATE DEFINER = 'memer_api' TRIGGER username_not_empty BEFORE INSERT ON Users FOR EACH ROW IF NEW.username = '' THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Username cannot be empty'; END IF ;
-
--- Top
--- DROP TRIGGER IF EXISTS  move_meme_to_top;
--- CREATE DEFINER = 'memer_api' TRIGGER move_meme_to_top BEFORE INSERT ON Liked FOR EACH ROW IF NOT (SELECT COUNT (*) FROM Top t WHERE t.memeId = NEW.memeId) > 0 THEN IF (SELECT COUNT (*) FROM LIKED likes WHERE Likes.memeId = NEW.memeId) >= 100 THEN INSERT INTO TOP (memeId) VALUES (NEW.memeId); END IF; END IF;
-
 
 -- Indexes
 CREATE UNIQUE INDEX token_index ON Token (token) USING HASH;
