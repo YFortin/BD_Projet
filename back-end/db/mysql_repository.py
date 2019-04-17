@@ -2,6 +2,7 @@ import datetime
 import sys
 
 from mysql.connector import MySQLConnection, IntegrityError
+from mysqlx import DatabaseError
 
 from entities.comment import Comment
 from entities.meme import Meme
@@ -121,7 +122,7 @@ class MySQLRepository(Repository):
         data_tuple = str(user.id), user.name, user.email, user.hashed_password, user.salt
         try:
             cursor.execute(query, data_tuple)
-        except IntegrityError:
+        except IntegrityError or DatabaseError:
             raise RepositoryException()
         self.db_connection.commit()
         cursor.close()
