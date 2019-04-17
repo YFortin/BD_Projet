@@ -211,7 +211,7 @@ class UserHandler(Handler):
                            'memes': memes_tuples}
             return jsonify(userprofile)
 
-        @self.app.route('/myaccount', methods=['PUT'])
+        @self.app.route('/myaccount', methods=['POST'])
         @self.login_required
         def update_my_account(user):
             """
