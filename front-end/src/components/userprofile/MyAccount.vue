@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <v-content>
-            <v-container grid-list-xl fluid v-if="username.username">
+            <v-container grid-list-xl fluid v-if="username.oldUserName">
                 <h1 class="display-1 black--text text-xs-center">
                     My
                     <span class="font-weight-bold">Account</span>
