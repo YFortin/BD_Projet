@@ -17,7 +17,7 @@ CREATE TABLE Memes
 (
     id       VARCHAR(36) UNIQUE NOT NULL,
     title    VARCHAR(100),
-    url      VARCHAR(200),
+    url      VARCHAR(500),
     category VARCHAR(100),
 
     PRIMARY KEY (id)
@@ -27,7 +27,7 @@ CREATE TABLE Users
 (
     id             VARCHAR(36) UNIQUE NOT NULL,
     username       VARCHAR(30) UNIQUE,
-	avatar		   VARCHAR(200),
+	avatar		   VARCHAR(500),
     email          VARCHAR(50) UNIQUE,
     hashedPassword VARCHAR(128),
     salt           VARCHAR(36),
@@ -3087,3 +3087,4 @@ INSERT INTO Top (memeId) VALUES ("f4824577-61ff-43b6-994d-66d2d91efc7c");
 INSERT INTO Top (memeId) VALUES ("4b03e70b-b47f-494c-93bf-70771b4569d9");
 INSERT INTO Top (memeId) VALUES ("a8c5fdc0-8bfb-45d1-8c9d-a421503a018c");
 INSERT INTO Top (memeId) VALUES ("6551a895-bf30-4024-a3df-d1771f655f81");
+>>>>>>> YF_frontend

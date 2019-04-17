@@ -33,28 +33,23 @@
                                     </v-btn>
                                 </v-flex>
                             </v-layout>
-
                             <v-layout justify-center row>
                                 <v-flex xs6>
                                     <v-textarea
                                             outline
                                             v-model="inputComment"
                                             label="Comment"
+                                            counter="999"
                                     ></v-textarea>
-                                    <v-btn @click ="comment" >
+                                    <v-btn @click="comment">
                                         Submit
                                     </v-btn>
                                 </v-flex>
                             </v-layout>
-
-
-
-                                <v-card-text v-for="(comment, i) in items[0].comments" :key="i"> {{ comment.text }} --
-                                    {{comment.user_name}}
-                                    <v-divider></v-divider>
-                                </v-card-text>
-
-
+                            <v-card-text v-for="(comment, i) in items[0].comments" :key="i"> {{ comment.text }} --
+                                {{comment.user_name}}
+                                <v-divider></v-divider>
+                            </v-card-text>
                         </v-card>
                     </v-flex>
                 </v-layout>
@@ -100,15 +95,16 @@
                     this.likeDislikeDisable = true;
                 }
             },
-            async comment(){
-                let comment = this.inputComment;
-                this.inputComment = '';
-                const res = await MemberAPI.User.getMyAccount()
-                const commentToInsert = {"user_name": res.data.username, "text" : comment}
-                this.items[0].comments.push(commentToInsert)
+            async comment() {
+                if (!!this.inputComment && this.inputComment.length < 1000) {
+                    let comment = this.inputComment;
+                    this.inputComment = '';
+                    const res = await MemberAPI.User.getMyAccount()
+                    const commentToInsert = {"user_name": res.data.username, "text": comment}
+                    this.items[0].comments.push(commentToInsert)
 
-                MemberAPI.Memes.comment(comment, this.items[0].id);
-
+                    MemberAPI.Memes.comment(comment, this.items[0].id);
+                }
             }
         },
 
