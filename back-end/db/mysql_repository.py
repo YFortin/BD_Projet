@@ -2,7 +2,7 @@ import datetime
 import sys
 
 from mysql.connector import MySQLConnection, IntegrityError
-from mysqlx import DatabaseError
+from mysql.connector.errors import DatabaseError
 
 from entities.comment import Comment
 from entities.meme import Meme
