@@ -30,7 +30,8 @@
                     <v-flex xs8 align-self-center>
                         <v-card color="#FAFAFA" flat v-if="items">
 
-                            <h3 class="headline font-weight-bold mb-2">Category: {{ items[carouselIndex].category }}</h3>
+                            <h3 class="headline font-weight-bold mb-2">Category: {{ items[carouselIndex].category
+                                }}</h3>
                             <v-card-title primary-title>
                                 <h3 class="headline font-weight-bold mb-2">Title: {{ items[carouselIndex].title }}</h3>
                             </v-card-title>
@@ -40,7 +41,8 @@
                                 <v-carousel-item contain v-for="(item,i) in items" :key="i"
                                                  :src="item.url"></v-carousel-item>
                             </v-carousel>
-                            <v-card-text v-for="(comment, i) in items[carouselIndex].comments" :key="i"> {{ comment.text }} --
+                            <v-card-text v-for="(comment, i) in items[carouselIndex].comments" :key="i"> {{ comment.text
+                                }} --
                                 {{comment.user_name}}
                                 <v-divider></v-divider>
                             </v-card-text>
@@ -96,7 +98,6 @@
                 console.log(response.data.memes);
                 this.items = response.data.memes;
             }
-
         },
 
         async created() {
@@ -106,6 +107,13 @@
             this.numberOfFollowers = response.data.followers;
             this.numberOfLikes = response.data.likes;
             this.items = response.data.memes;
+            if (!response.data.following) {
+                this.follower = "Follow";
+                this.followColor = "info";
+            } else {
+                this.follower = "Unfollow";
+                this.followColor = "error";
+            }
         },
     };
 </script>
