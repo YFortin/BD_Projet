@@ -91,14 +91,10 @@
             async addImage() {
                 if (this.items.length < 3) {
                     const response = await MemberAPI.Memes.getUnseenMemes();
-                    console.log(response.data);
                     response.data.unseen_memes.forEach(meme => {
-                        console.log(meme.comments);
                         this.items.push(meme);
                     });
                 }
-
-                console.log(this.items);
 
                 if (this.items.length == 0) {
                     this.likeDislikeDisable = true;
@@ -108,10 +104,8 @@
                 let comment = this.inputComment;
                 this.inputComment = '';
                 const res = await MemberAPI.User.getMyAccount()
-                console.log(res.data)
                 const commentToInsert = {"user_name": res.data.username, "text" : comment}
                 this.items[0].comments.push(commentToInsert)
-                console.log(this.items[0].comments)
 
                 MemberAPI.Memes.comment(comment, this.items[0].id);
 

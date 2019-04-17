@@ -232,14 +232,11 @@
                     "avatar": this.avatar.oldURL,
                 }
                 await MemerAPI.User.updateMyAccount(user);
-
             }
         },
 
         async created() {
             const response = await MemerAPI.User.getMyAccount();
-
-            console.log(response);
 
             this.avatar.oldURL = response.data.avatar;
             this.email.email = response.data.email;
