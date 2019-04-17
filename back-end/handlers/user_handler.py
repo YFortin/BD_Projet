@@ -171,7 +171,7 @@ class UserHandler(Handler):
             result = {'id': user.id, 'username': user.name, 'avatar': user.avatar, 'email': user.email}
             return jsonify(result)
 
-        @self.app.route('/users/userprofile', methods=['GET'])
+        @self.app.route('/users/userprofile', methods=['POST'])
         @self.login_required
         def get_userprofile_by_username(user):
             """
