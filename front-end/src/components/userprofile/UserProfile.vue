@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <v-content>
-            <v-container grid-list-md>
+            <v-container grid-list-md v-if="items">
                 <h1 class="display-1 black--text text-xs-center">
                     <span class="font-weight-bold">{{ username }}'s</span> Profile
                 </h1>
@@ -61,13 +61,13 @@
 
     export default {
         data: () => ({
-            username: "",
-            numberOfFollowers: 0,
+            username: null,
+            numberOfFollowers: null,
             follower: "Follow",
             followColor: "info",
             avatarUrl: "",
-            numberOfLikes: 0,
-            items: []
+            numberOfLikes: null,
+            items: null
         }),
         watch: {
             '$route.params.username': function update() {
@@ -99,7 +99,7 @@
 
         },
 
-        async beforeMount() {
+        async created() {
             this.username = this.$route.params.username;
             const response = await MemerAPI.User.getUserProfile(this.username);
             this.avatarUrl = response.data.avatar;

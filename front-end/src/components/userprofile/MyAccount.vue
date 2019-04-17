@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <v-content>
-            <v-container grid-list-xl fluid>
+            <v-container grid-list-xl fluid v-if="username.username">
                 <h1 class="display-1 black--text text-xs-center">
                     My
                     <span class="font-weight-bold">Account</span>
@@ -110,7 +110,7 @@
     export default {
         data: () => ({
             username: {
-                username: "",
+                username: null,
                 editButton: "edit",
                 enableEdit: true,
                 usernameRules: [
