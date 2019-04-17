@@ -1,0 +1,28 @@
+version: "2"
+services:
+  app:
+    build: ./app/back-end
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    links:
+      - db
+
+  db:
+    image: mysql:5.7
+    ports:
+      - "32000:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    command: --init-file /docker-entrypoint-initdb.d/init.sql
+    volumes:
+        - ./bd_init:/docker-entrypoint-initdb.d/
+        
+  web:
+    build: ./app/front-end
+    ports:
+      - "8080:8080"
+    command: npm run serve
+    depends_on:
+      - app
