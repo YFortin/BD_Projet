@@ -151,10 +151,10 @@ VALUES ('admin', 'admin', '2021-01-01');
 -- TODO trigger remove old token
 
 -- Triggers
-delimiter //
+-- delimiter //
 DROP PROCEDURE IF EXISTS remove_old_token;
 CREATE PROCEDURE remove_old_token() DELETE FROM Token WHERE expiredDate <= CURRENT_DATE();
-delimiter ;
+-- delimiter ;
 
 -- Indexes
 CREATE UNIQUE INDEX token_index ON Token (token) USING HASH;
@@ -164,6 +164,7 @@ CREATE FULLTEXT INDEX username_index ON Users (username);
 DROP USER IF EXISTS 'memer_api';
 CREATE USER 'memer_api' IDENTIFIED BY '4215Hello!@';
 GRANT SELECT, INSERT, UPDATE, DELETE ON Memer.* TO 'memer_api';
+GRANT EXECUTE ON PROCEDURE Memer.remove_old_token TO 'memer_api';
 
 -- Insert data
 INSERT INTO Memes (id, title, url, category) VALUES ("e95aea07-6493-4cbe-85dd-d59241536559", "Dolor dolore etincidunt ut velit porro.", "https://i.redd.it/00pwop4bjsy11.jpg", "holdmybeer");

@@ -353,9 +353,12 @@ class MySQLRepository(Repository):
         return cursor.fetchone()[0] == 0
 
     def delete_old_token(self):
+        print('DELETE', file=sys.stderr)
         cursor = self.db_connection.cursor()
         sql = "CALL remove_old_token()"
         try:
             cursor.execute(sql)
         except Exception:
             raise RepositoryException
+        finally:
+            cursor.close()

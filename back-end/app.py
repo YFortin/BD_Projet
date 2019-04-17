@@ -56,9 +56,10 @@ meme_service = MemeService(repository)
 meme_handler = MemeHandler(app, meme_service, repository)
 meme_handler.register_routes()
 
+# Remove expired token periodically
 scheduler = BackgroundScheduler()
-
 scheduler.add_job(lambda: repository.delete_old_token(), trigger='interval', seconds=5)
+scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
 
 print(__name__)
