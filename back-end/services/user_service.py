@@ -90,3 +90,12 @@ class UserService:
 
     def check_email(self, email):
         return self.repository.is_email_free(email)
+
+    def i_am_following(self, user_id_me, user_id_other):
+        return self.repository.is_following(user_id_me, user_id_other)
+
+    def follow(self, user_id_me, user_id_other):
+        if self.repository.is_following(user_id_me, user_id_other):
+            self.repository.unfollow(user_id_me, user_id_other)
+        else:
+            self.repository.follow(user_id_me, user_id_other)

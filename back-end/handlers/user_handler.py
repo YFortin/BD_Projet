@@ -185,6 +185,7 @@ class UserHandler(Handler):
             content = request.json
             username = content['username']
             user_id = self.user_service.get_userid_with_username(username)
+            is_follow = self.user_service.i_am_following(user.id, user_id)
             nb_follows = self.user_service.get_user_follows(user_id)
             nb_likes = self.user_service.get_user_likes(user_id)
             user = self.user_service.get_user_at_id(user_id)
@@ -202,7 +203,8 @@ class UserHandler(Handler):
                           'comments': comments}
                 memes_tuples.append(result)
 
-            userprofile = {'username': user.name, 'avatar': user.avatar, 'followers': nb_follows, 'likes': nb_likes,
+            userprofile = {'username': user.name, 'avatar': user.avatar, 'followers': nb_follows,
+                           'following': is_follow, 'likes': nb_likes,
                            'memes': memes_tuples}
             return jsonify(userprofile)
 
@@ -234,23 +236,22 @@ class UserHandler(Handler):
 
             self.user_service.update_user(user, username, email, password, avatar)
 
-        @self.app.route('/users/<int:user_id>/follow', methods=['POST'])
-        def follow_user(user_id):
-            """
-            The current user follow the user with user_id
-            :param user_id: user to follow user_id
-            :return:
-            """
-            raise NotImplementedError
-
-        @self.app.route('/users/<int:user_id>/unfollow', methods=['POST'])
-        def unfollow_user(user_id):
+        @self.app.route('/users/follow', methods=['POST'])
+        @self.login_required
+        def follow_user(user):
             """
             The current user unfollow the user with user_id
-            :param user_id: user to unfollow user_id
-            :return:
-            """
-            raise NotImplementedError
+           {
+               username = "" : string
+           }
+           :return:
+           """
+            content = request.json
+            username = content['username']
+            user_id = self.user_service.get_userid_with_username(username)
+            self.user_service.follow(user.id, user_id)
+
+            return Response(status=200)
 
         @self.app.route('/users/autocomplete', methods=['POST'])
         def autocomplete_username():
@@ -268,14 +269,18 @@ class UserHandler(Handler):
                 username
             }
             """
-            content = request.json
-            name_input = content['input']
-            limit = content['limit']
-            res = self.user_service.autocomplete_username(name_input, limit)
-            a = []
-            for x in res:
-                a.append({'id': x[0], 'username': x[1]})
 
-            results = {'results': a}
+            try:
+                content = request.json
+                name_input = content['input']
+                limit = content['limit']
+                res = self.user_service.autocomplete_username(name_input, limit)
+                a = []
+                for x in res:
+                    a.append({'id': x[0], 'username': x[1]})
+
+                results = {'results': a}
+            except:
+                abort(400)
 
             return jsonify(results)

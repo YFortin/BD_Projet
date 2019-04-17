@@ -160,6 +160,32 @@ class MySQLRepository(Repository):
         cursor.execute(sql, val)
         return str(cursor.fetchone()[0])
 
+    def is_following(self, user_id_follower, user_id_followee):
+        cursor = self.db_connection.cursor()
+        sql = """
+                                                SELECT COUNT(*) FROM Follow f
+                                                WHERE f.followee = %s AND f.follower = %s
+                                             """
+        val = (user_id_followee, user_id_follower)
+        cursor.execute(sql, val)
+        return cursor.fetchone()[0] != 0
+
+    def follow(self, user_id_follower, user_id_followee):
+        cursor = self.db_connection.cursor()
+        sql = """
+                                                INSERT INTO Follow (followee, follower) VALUES (%s, %s)
+                                             """
+        val = (user_id_followee, user_id_follower)
+        cursor.execute(sql, val)
+
+    def unfollow(self, user_id_follower, user_id_followee):
+        cursor = self.db_connection.cursor()
+        sql = """
+                                                DELETE FROM Follow WHERE %s = followee AND %s = follower
+                                             """
+        val = (user_id_followee, user_id_follower)
+        cursor.execute(sql, val)
+
     def get_unseen_memes(self, user: User, limit: int):
         cursor = self.db_connection.cursor()
         user_id = user.id
