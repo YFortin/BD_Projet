@@ -130,5 +130,20 @@ export default class MemerAPI {
             return await axios.get(`/validateToken`, MemerAPI.AUTH_HEADER);
         }
 
+        static checkUsername(username) {
+            const params = {
+                "username": username
+            }
+
+            return axios.post(`/checkUserName`, params);
+        }
+
+        static checkEmail(email) {
+            const params = {
+                "email": email
+            }
+            return axios.post(`/checkEmail`, params);
+        }
+
     }
 }
