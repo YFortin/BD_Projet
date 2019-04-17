@@ -60,7 +60,7 @@ meme_handler.register_routes()
 # Remove expired token periodically
 print('setting up scheduler', file=sys.stderr)
 scheduler = BackgroundScheduler()
-scheduler.add_job(lambda: repository.delete_old_token(), trigger='interval', seconds=5)
+scheduler.add_job(func=lambda: repository.delete_old_token(), trigger='interval', seconds=5)
 scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
 

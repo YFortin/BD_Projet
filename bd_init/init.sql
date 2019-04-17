@@ -138,33 +138,30 @@ CREATE TABLE Top
         ON DELETE CASCADE
 );
 
--- TODO remove before deposit
-INSERT INTO Users (id, username, avatar, email, hashedPassword, salt)
-VALUES ('admin', 'admin', 'https://store.playstation.com/store/api/chihiro/00_09_000/container/FR/fr/999/EP0149-CUSA09988_00-AV00000000000001/1553560094000/image?w=240&h=240&bg_color=000000&opacity=100&_version=00_09_000', 'admin@admin.com', 'admin', 'admin');
-
-INSERT INTO Token (userId, token, expiredDate)
-VALUES ('admin', 'admin', '2021-01-01');
-
 -- TODO add ONE DELETE and ON UPDATE
 -- TODO trigger on Liked to Top
 -- TODO trigger verify username validity
 -- TODO trigger remove old token
 
--- Triggers
--- delimiter //
-DROP PROCEDURE IF EXISTS remove_old_token;
-CREATE DEFINER = 'memer_api' PROCEDURE remove_old_token() DELETE FROM Token WHERE expiredDate <= CURRENT_DATE();
--- delimiter ;
-
--- Indexes
-CREATE UNIQUE INDEX token_index ON Token (token) USING HASH;
-CREATE FULLTEXT INDEX username_index ON Users (username);
-
 -- User
 DROP USER IF EXISTS 'memer_api';
 CREATE USER 'memer_api' IDENTIFIED BY '4215Hello!@';
 GRANT SELECT, INSERT, UPDATE, DELETE ON Memer.* TO 'memer_api';
+GRANT Trigger ON *.* TO 'memer_api';
+
+-- Triggers
+-- Remove old token
+DROP PROCEDURE IF EXISTS remove_old_token;
+CREATE DEFINER = 'memer_api' PROCEDURE remove_old_token() DELETE FROM Token WHERE expiredDate <= CURRENT_DATE();
 GRANT EXECUTE ON PROCEDURE Memer.remove_old_token TO 'memer_api';
+
+-- Username not empty
+DROP TRIGGER IF EXISTS  username_not_empty;
+CREATE DEFINER = 'memer_api' TRIGGER username_not_empty BEFORE INSERT ON Users FOR EACH ROW IF NEW.username = '' THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Username cannot be empty'; END IF ;
+
+-- Indexes
+CREATE UNIQUE INDEX token_index ON Token (token) USING HASH;
+CREATE FULLTEXT INDEX username_index ON Users (username);
 
 -- Insert data
 INSERT INTO Memes (id, title, url, category) VALUES ("a882eab7-5952-4a61-b482-46647ff559be", "Est magnam ipsum dolor aliquam ut voluptatem est.", "https://i.redd.it/00pwop4bjsy11.jpg", "classic");
