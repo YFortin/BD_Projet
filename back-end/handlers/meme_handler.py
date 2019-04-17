@@ -149,9 +149,9 @@ class MemeHandler(Handler):
                 abort(404)
             return Response(status=200)
 
-        @self.app.route('/memes/<meme_id>/comment', methods=['POST'])
+        @self.app.route('/memes/comment', methods=['POST'])
         @self.login_required
-        def comment_meme(user, meme_id):
+        def comment_meme(user):
             """
             Comment the meme
             JSON input
@@ -159,7 +159,10 @@ class MemeHandler(Handler):
                 contents:
             }
             :param user: user
-            :param meme_id: meme meme_id
+            Json
+            {
+                meme_id = "" : string
+            }
             :return:
             """
             if not request.is_json:
@@ -171,6 +174,7 @@ class MemeHandler(Handler):
                 abort(400)
 
             text = content['contents']
+            meme_id = content['meme_id']
 
             self.meme_service.comment_meme(user, meme_id, text)
 

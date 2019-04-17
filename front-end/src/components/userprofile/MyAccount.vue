@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <v-content>
-            <v-container grid-list-xl fluid v-if="username.username">
+            <v-container grid-list-xl fluid v-if="username.oldUserName">
                 <h1 class="display-1 black--text text-xs-center">
                     My
                     <span class="font-weight-bold">Account</span>
@@ -104,13 +104,13 @@
 </template>
 
 <script>
-    import isImageUrl from "is-image-url";
     import MemerAPI from "../../js/MemerAPI";
 
     export default {
         data: () => ({
             username: {
                 username: null,
+                oldUserName: null,
                 editButton: "edit",
                 enableEdit: true,
                 usernameRules: [
@@ -120,6 +120,7 @@
             },
             email: {
                 email: "",
+                oldEmail: "",
                 editButton: "edit",
                 enableEdit: true,
                 emailRules: [
@@ -149,16 +150,25 @@
                     this.username.enableEdit = false;
                 } else if (this.usernameValidation()) {
                     this.username.editButton = "edit";
+                    this.username.oldUserName = this.username.username;
                     this.username.enableEdit = true;
-                    // TODO send new username to server
+                    this.submit();
                 }
             },
-            usernameValidation() {
-                if (
+            async usernameValidation() {
+
+                if (this.username.username === this.username.oldUserName) {
+                    return true;
+                } else if (
                     !!this.username.username &&
                     String(this.username.username).length <= 30
                 ) {
-                    return true;
+                    const usernameValide = await MemerAPI.User.checkUsername(this.username.username);
+                    if (usernameValide.data.is_free) {
+                        return true;
+                    } else if (!usernameValide.data.is_free) {
+                        alert("Username already in use");
+                    }
                 } else {
                     return false;
                 }
@@ -170,7 +180,7 @@
                 } else if (this.password.password) {
                     this.password.editButton = "edit";
                     this.password.enableEdit = true;
-                    // TODO submit new password
+                    this.submit();
                 }
             },
             emailEdit() {
@@ -179,14 +189,26 @@
                     this.email.enableEdit = false;
                 } else if (this.emailValidation()) {
                     this.email.editButton = "edit";
+                    this.email.oldEmail = this.email.email;
                     this.email.enableEdit = true;
-                    // TODO submit new email
+                    this.submit();
                 }
             },
-            emailValidation() {
-                if (/.+@.+/.test(this.email.email)) {
+            async emailValidation() {
+
+                if (this.email.email === this.email.oldEmail) {
                     return true;
-                } else if (!/.+@.+/.test(this.email.email)) {
+                } else if (/.+@.+/.test(this.email.email)) {
+
+                    const emailValid = await MemerAPI.User.checkEmail(this.email.email);
+                    if (emailValid.data.is_free) {
+                        return true;
+                    } else if (!emailValid.data.is_free) {
+                        alert("Email already in use");
+                    }
+                } else if (!(/.+@.+/.test(this.email.email))) {
+                    return false;
+                } else {
                     return false;
                 }
             },
@@ -194,23 +216,35 @@
                 if (this.avatar.enableEdit) {
                     this.avatar.editButton = "submit changes";
                     this.avatar.enableEdit = false;
-                } else if (isImageUrl(this.avatar.newURL)) {
+                } else {
                     this.avatar.editButton = "edit";
                     this.avatar.enableEdit = true;
                     this.avatar.oldURL = this.avatar.newURL;
-                    // TODO submit new email
+                    this.submit();
                 }
             },
+
+            async submit() {
+                const user = {
+                    "username": this.username.username,
+                    "email": this.email.email,
+                    "password": this.password.password,
+                    "avatar": this.avatar.oldURL,
+                }
+                await MemerAPI.User.updateMyAccount(user);
+            }
         },
 
         async created() {
             const response = await MemerAPI.User.getMyAccount();
 
-            console.log(response);
-
             this.avatar.oldURL = response.data.avatar;
+            this.avatar.newURL = response.data.avatar;
             this.email.email = response.data.email;
+            this.email.oldEmail = response.data.email;
             this.username.username = response.data.username;
+            this.username.oldUserName = response.data.username;
+
         }
 
     };

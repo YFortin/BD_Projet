@@ -86,16 +86,15 @@
                     this.followColor = "info";
                     this.numberOfFollowers--;
                 }
+                MemerAPI.User.followUser(this.username);
             },
 
             async setup() {
                 this.username = this.$route.params.username;
                 const response = await MemerAPI.User.getUserProfile(this.username);
-                console.log(response);
                 this.avatarUrl = response.data.avatar;
                 this.numberOfFollowers = response.data.followers;
                 this.numberOfLikes = response.data.likes;
-                console.log(response.data.memes);
                 this.items = response.data.memes;
             }
         },

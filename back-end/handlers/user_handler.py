@@ -13,7 +13,7 @@ class UserHandler(Handler):
         self.user_service = user_service
 
     def register_routes(self):
-        @self.app.route('/checkUserName', methods=['GET'])
+        @self.app.route('/checkUserName', methods=['POST'])
         def check_username():
             """
             Check if username is valid
@@ -39,7 +39,7 @@ class UserHandler(Handler):
             except Exception:
                 abort(400)
 
-        @self.app.route('/checkEmail', methods=['GET'])
+        @self.app.route('/checkEmail', methods=['POST'])
         def check_email():
             """
             Check if username is valid
@@ -134,9 +134,12 @@ class UserHandler(Handler):
                 return jsonify(response)
 
         @self.app.route('/validateToken', methods=['GET'])
-        @self.login_required
-        def validate_token(_):
-            return Response(status=200)
+        def validate_token():
+            user = self.get_user_if_authenticated()
+
+            response = {'valid': user is not None}
+
+            return jsonify(response)
 
         @self.app.route('/users/<user_id>', methods=['GET'])
         def get_user(user_id):
@@ -235,6 +238,7 @@ class UserHandler(Handler):
                 abort(400)
 
             self.user_service.update_user(user, username, email, password, avatar)
+            return Response(status=200)
 
         @self.app.route('/users/follow', methods=['POST'])
         @self.login_required
