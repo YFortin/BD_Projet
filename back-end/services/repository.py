@@ -93,3 +93,7 @@ class Repository(ABC):
     @abstractmethod
     def is_email_free(self, email):
         ...
+
+    @abstractmethod
+    def is_following(self, user_id_follower, user_id_followee):
+        ...
