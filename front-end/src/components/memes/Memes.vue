@@ -23,12 +23,12 @@
                             </v-carousel>
                             <v-layout justify-center row>
                                 <v-flex xs1>
-                                    <v-btn fab :disabled="likeDislikeEnable" @click="thumbDown">
+                                    <v-btn fab :disabled="likeDislikeDisable" @click="thumbDown">
                                         <v-icon color="pink">thumb_down_alt</v-icon>
                                     </v-btn>
                                 </v-flex>
                                 <v-flex xs1>
-                                    <v-btn fab :disabled="likeDislikeEnable" @click="thumbUp">
+                                    <v-btn fab :disabled="likeDislikeDisable" @click="thumbUp">
                                         <v-icon color="pink">thumb_up_alt</v-icon>
                                     </v-btn>
                                 </v-flex>
@@ -51,18 +51,22 @@
 
     export default {
         data: () => ({
-            likeDislikeEnable: false,
+            likeDislikeDisable: false,
             items: null
         }),
         methods: {
             async thumbUp() {
+                this.likeDislikeDisable = true;
                 await MemberAPI.Memes.upvote(this.items[0].id);
                 this.items.shift();
+                this.likeDislikeDisable = false;
                 this.addImage();
             },
             thumbDown() {
+                this.likeDislikeDisable = true;
                 MemberAPI.Memes.downvote(this.items[0].id);
                 this.items.shift();
+                this.likeDislikeDisable = false;
                 this.addImage();
             },
             async addImage() {
@@ -78,7 +82,7 @@
                 console.log(this.items);
 
                 if (this.items.length == 0) {
-                    this.likeDislikeEnable = true;
+                    this.likeDislikeDisable = true;
                 }
             },
         },

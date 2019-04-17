@@ -28,21 +28,21 @@
 
                 <v-layout align-space-around justify-center row wrap fill-height>
                     <v-flex xs8 align-self-center>
-                        <v-card color="#FAFAFA" flat>
+                        <v-card color="#FAFAFA" flat v-if="items">
 
-                            <h3 class="headline font-weight-bold mb-2">Category: {{ items[0].category }}</h3>
+                            <h3 class="headline font-weight-bold mb-2">Category: {{ items[carouselIndex].category
+                                }}</h3>
                             <v-card-title primary-title>
-                                <h3 class="headline font-weight-bold mb-2">Title: {{ items[0].title }}</h3>
+                                <h3 class="headline font-weight-bold mb-2">Title: {{ items[carouselIndex].title }}</h3>
                             </v-card-title>
                             <v-carousel
-                                    hide-delimiters
-                                    hide-controls
-                                    :cycle="false"
+                                    v-model="carouselIndex"
                             >
                                 <v-carousel-item contain v-for="(item,i) in items" :key="i"
                                                  :src="item.url"></v-carousel-item>
                             </v-carousel>
-                            <v-card-text v-for="(comment, i) in items[0].comments" :key="i"> {{ comment.text }} --
+                            <v-card-text v-for="(comment, i) in items[carouselIndex].comments" :key="i"> {{ comment.text
+                                }} --
                                 {{comment.user_name}}
                                 <v-divider></v-divider>
                             </v-card-text>
@@ -61,6 +61,7 @@
 
     export default {
         data: () => ({
+            carouselIndex: 0,
             username: null,
             numberOfFollowers: null,
             follower: "Follow",
@@ -90,13 +91,13 @@
             async setup() {
                 this.username = this.$route.params.username;
                 const response = await MemerAPI.User.getUserProfile(this.username);
+                console.log(response);
                 this.avatarUrl = response.data.avatar;
                 this.numberOfFollowers = response.data.followers;
                 this.numberOfLikes = response.data.likes;
                 console.log(response.data.memes);
                 this.items = response.data.memes;
             }
-
         },
 
         async created() {
@@ -106,6 +107,13 @@
             this.numberOfFollowers = response.data.followers;
             this.numberOfLikes = response.data.likes;
             this.items = response.data.memes;
+            if (!response.data.following) {
+                this.follower = "Follow";
+                this.followColor = "info";
+            } else {
+                this.follower = "Unfollow";
+                this.followColor = "error";
+            }
         },
     };
 </script>
