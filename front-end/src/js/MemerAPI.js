@@ -118,5 +118,17 @@ export default class MemerAPI {
 
         }
 
+        static followUser(username) {
+            const params = {
+                "username": username
+            }
+
+            return axios.post(`${MemerAPI.User.USERS_URL}/follow`, params, MemerAPI.AUTH_HEADER);
+        }
+
+        static async validateToken() {
+            return await axios.get(`/validateToken`, MemerAPI.AUTH_HEADER);
+        }
+
     }
 }

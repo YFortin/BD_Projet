@@ -40,6 +40,7 @@ class MySQLRepository(Repository):
         val = (token,)
         cursor.execute(query, val)
         res = cursor.fetchall()
+
         user = self.tuple_to_user(res[0])
         return user
 

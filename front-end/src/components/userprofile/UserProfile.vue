@@ -86,6 +86,7 @@
                     this.followColor = "info";
                     this.numberOfFollowers--;
                 }
+                MemerAPI.User.followUser(this.username);
             },
 
             async setup() {
