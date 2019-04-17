@@ -60,10 +60,17 @@ class UserService:
     def get_user_by_id(self, user_id):
         return self.repository.get_user(user_id)
 
-    def get_userprofile_by_id(self, user_id):
-        self.repository.get_user(user_id)
-        self.repository.get_user_uploadedmemes(user_id)
-        self.repository.get_user_likes(user_id)
+    def get_userid_with_username(self, username):
+        return self.repository.get_userid_with_username(username)
+
+    def get_user_uploadedmemes(self, user_id):
+        return self.repository.get_user_uploadedmemes(user_id)
+
+    def get_user_likes(self, user_id):
+        return self.repository.get_user_likes(user_id)
+
+    def get_user_follows(self, user_id):
+        return self.repository.get_user_follows(user_id)
 
     def check_username(self, username):
         return self.repository.is_username_free(username)
@@ -84,3 +91,11 @@ class UserService:
     def check_email(self, email):
         return self.repository.is_email_free(email)
 
+    def i_am_following(self, user_id_me, user_id_other):
+        return self.repository.is_following(user_id_me, user_id_other)
+
+    def follow(self, user_id_me, user_id_other):
+        if self.repository.is_following(user_id_me, user_id_other):
+            self.repository.unfollow(user_id_me, user_id_other)
+        else:
+            self.repository.follow(user_id_me, user_id_other)

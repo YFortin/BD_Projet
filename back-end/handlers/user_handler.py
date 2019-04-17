@@ -134,9 +134,12 @@ class UserHandler(Handler):
                 return jsonify(response)
 
         @self.app.route('/validateToken', methods=['GET'])
-        @self.login_required
-        def validate_token(_):
-            return Response(status=200)
+        def validate_token():
+            user = self.get_user_if_authenticated()
+
+            response = {'valid': user is not None}
+
+            return jsonify(response)
 
         @self.app.route('/users/<user_id>', methods=['GET'])
         def get_user(user_id):
@@ -171,19 +174,42 @@ class UserHandler(Handler):
             result = {'id': user.id, 'username': user.name, 'avatar': user.avatar, 'email': user.email}
             return jsonify(result)
 
-        @self.app.route('/users/userprofile', methods=['GET'])
+        @self.app.route('/users/userprofile', methods=['POST'])
         @self.login_required
-        def get_userprofile_by_id(user):
+        def get_userprofile_by_username(user):
             """
             Input:
             {
-                "user_id" = "" : string
+                "username" = "" : string
             }
             :return: userprofile
             """
 
             content = request.json
-            user_id = content['user_id']
+            username = content['username']
+            user_id = self.user_service.get_userid_with_username(username)
+            is_follow = self.user_service.i_am_following(user.id, user_id)
+            nb_follows = self.user_service.get_user_follows(user_id)
+            nb_likes = self.user_service.get_user_likes(user_id)
+            user = self.user_service.get_user_at_id(user_id)
+            memes = self.user_service.get_user_uploadedmemes(user_id)
+            memes_tuples = []
+
+            for meme in memes:
+                comments = []
+                for comment in meme.comments:
+                    commentResult = {'id': comment.id, 'user_id': comment.user_id, 'meme_id': comment.meme_id,
+                                     'text': comment.text, 'date': comment.date, 'user_name': comment.user_name}
+                    comments.append(commentResult)
+
+                result = {'id': meme.id, 'title': meme.title, 'url': meme.url, 'category': meme.category,
+                          'comments': comments}
+                memes_tuples.append(result)
+
+            userprofile = {'username': user.name, 'avatar': user.avatar, 'followers': nb_follows,
+                           'following': is_follow, 'likes': nb_likes,
+                           'memes': memes_tuples}
+            return jsonify(userprofile)
 
         @self.app.route('/myaccount', methods=['PUT'])
         @self.login_required
@@ -213,24 +239,22 @@ class UserHandler(Handler):
 
             self.user_service.update_user(user, username, email, password, avatar)
 
-
-        @self.app.route('/users/<int:user_id>/follow', methods=['POST'])
-        def follow_user(user_id):
-            """
-            The current user follow the user with user_id
-            :param user_id: user to follow user_id
-            :return:
-            """
-            raise NotImplementedError
-
-        @self.app.route('/users/<int:user_id>/unfollow', methods=['POST'])
-        def unfollow_user(user_id):
+        @self.app.route('/users/follow', methods=['POST'])
+        @self.login_required
+        def follow_user(user):
             """
             The current user unfollow the user with user_id
-            :param user_id: user to unfollow user_id
-            :return:
-            """
-            raise NotImplementedError
+           {
+               username = "" : string
+           }
+           :return:
+           """
+            content = request.json
+            username = content['username']
+            user_id = self.user_service.get_userid_with_username(username)
+            self.user_service.follow(user.id, user_id)
+
+            return Response(status=200)
 
         @self.app.route('/users/autocomplete', methods=['POST'])
         def autocomplete_username():
@@ -248,14 +272,18 @@ class UserHandler(Handler):
                 username
             }
             """
-            content = request.json
-            name_input = content['input']
-            limit = content['limit']
-            res = self.user_service.autocomplete_username(name_input, limit)
-            a = []
-            for x in res:
-                a.append({'id': x[0], 'username': x[1]})
 
-            results = {'results': a}
+            try:
+                content = request.json
+                name_input = content['input']
+                limit = content['limit']
+                res = self.user_service.autocomplete_username(name_input, limit)
+                a = []
+                for x in res:
+                    a.append({'id': x[0], 'username': x[1]})
+
+                results = {'results': a}
+            except:
+                abort(400)
 
             return jsonify(results)

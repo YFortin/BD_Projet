@@ -68,12 +68,9 @@ export default {
     async login() {
       if (this.$refs.form.validate()) {
         try {
-          //const response = await MemerAPI.User.login(this.email, this.password);
-          //document.cookie = `AuthorizationMemer=${response.data.token}`;
-          //MemerAPI.userId = response.data.token;
-
-          document.cookie = `AuthorizationMemer=admin`;
-          MemerAPI.userId = 'admin';
+          const response = await MemerAPI.User.login(this.email, this.password);
+          document.cookie = `AuthorizationMemer=${response.data.token}`;
+          MemerAPI.userId = response.data.token;
           this.$router.push({path: '/Nav/Memes'});
         } catch (error) {
           alert(error.message + "\n Username or password is invalid");
