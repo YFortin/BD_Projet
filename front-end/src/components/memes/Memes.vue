@@ -7,9 +7,9 @@
                 </h1>
                 <v-layout align-space-around justify-center row wrap fill-height>
                     <v-flex xs8 align-self-center>
-                        <v-card color="#FAFAFA" flat>
+                        <v-card color="#FAFAFA" flat v-if="items">
 
-                                <h3 class="headline font-weight-bold mb-2">Category: {{ items[0].category }}</h3>
+                            <h3 class="headline font-weight-bold mb-2">Category: {{ items[0].category }}</h3>
                             <v-card-title primary-title>
                                 <h3 class="headline font-weight-bold mb-2">Title: {{ items[0].title }}</h3>
                             </v-card-title>
@@ -52,7 +52,7 @@
     export default {
         data: () => ({
             likeDislikeEnable: false,
-            items: []
+            items: null
         }),
         methods: {
             async thumbUp() {
@@ -81,14 +81,14 @@
                     this.likeDislikeEnable = true;
                 }
             },
-
-            setup() {
-                this.addImage();
-            }
         },
 
-        created() {
-            this.setup();
+        async created() {
+            const response = await MemberAPI.Memes.getUnseenMemes();
+            this.items = [];
+            response.data.unseen_memes.forEach(meme => {
+                this.items.push(meme);
+            });
         }
     };
 </script>

@@ -109,7 +109,7 @@ import MemerAPI from "../../js/MemerAPI";
 export default {
   data: () => ({
     username: {
-      username: "MyUsername",
+      username: "",
       editButton: "edit",
       enableEdit: true,
       usernameRules: [
@@ -118,7 +118,7 @@ export default {
       ]
     },
     email: {
-      email: "johndoe@hotmail.com",
+      email: "",
       editButton: "edit",
       enableEdit: true,
       emailRules: [
@@ -134,7 +134,7 @@ export default {
     },
     avatar: {
       oldURL:
-        "https://scontent.fyhu2-1.fna.fbcdn.net/v/t1.0-9/12195929_10207762342233419_5750346653754879508_n.jpg?_nc_cat=110&_nc_ht=scontent.fyhu2-1.fna&oh=da05239e577d1b8e690b20c90f0e4c38&oe=5D4CA965",
+        "",
       newURL: "",
       editButton: "edit",
       enableEdit: true

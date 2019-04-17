@@ -14,7 +14,6 @@
       item-text='username'
       return-object
       :loading="loading"
-      cache-items
     ></v-autocomplete>
   </v-toolbar>
 </template>

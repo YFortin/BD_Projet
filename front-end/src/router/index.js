@@ -94,7 +94,7 @@ router.beforeEach((to, from, next) => {
   if (!autorization) {
     next()
   } else {
-    router.push({path: '/Nav/UserProfile'});
+    router.push({path: '/Nav/UserProfile/'});
   }
 }
 });

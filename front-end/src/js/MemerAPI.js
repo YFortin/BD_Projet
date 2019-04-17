@@ -112,10 +112,8 @@ export default class MemerAPI {
         static getUserProfile(username) {
 
             const params = {
-                "username": "admin"
+                "username": username
             }
-            console.log("this is the getuserprofile call");
-            console.log(params.username);
             return axios.post(`${MemerAPI.User.USERS_URL}/userprofile`, params, MemerAPI.AUTH_HEADER);
 
         }
