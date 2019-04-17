@@ -8,6 +8,7 @@ import UserProfile from '@/components/userprofile/UserProfile';
 import Memes from '@/components/memes/Memes';
 import NotLoginNavigation from '@/components/navigation/NotLoginNavigation';
 import MyAccount from '@/components/userprofile/MyAccount';
+import MemerAPI from "../js/MemerAPI";
 
 Vue.use(Router);
 
@@ -78,23 +79,35 @@ const router = new Router({
 
 export default router;
 
-router.beforeEach((to, from, next) => {
+router.beforeEach( async(to, from, next) => {
 
   const autorization = document.cookie
   .split(';')
   .filter(item => item.trim().startsWith('AuthorizationMemer=')).length;
 
+  // const validation = await MemerAPI.User.validateToken();
+
+  const validation = {
+    'status': 200
+  }
+
+  console.log(validation);
+
   if (to.matched.some(route => route.meta.requiresAuth)) {
     if (!autorization) {
       router.push({path: '/NotSignedIn/Login'})
-    } else {
+    } else if(validation.status == 200) {
       next()
+    } else {
+      router.push({path: '/NotSignedIn/Login'})
     }
 } else if (to.matched.some(route => route.meta.unsigned)) {
   if (!autorization) {
     next()
+  } else if (validation.status == 200) {
+    router.push({path: '/Nav/memes'});
   } else {
-    router.push({path: '/Nav/UserProfile/'});
+    router.push({path: '/NotSignedIn/Login'})
   }
 }
 });
