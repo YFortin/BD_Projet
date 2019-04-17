@@ -16,7 +16,7 @@ const router = new Router({
     routes: [
         {
             path: '/',
-            redirect: '/Nav/UserProfile'
+            redirect: '/Nav/Memes'
         },
         {
             path: '/nav',
@@ -87,15 +87,11 @@ router.beforeEach(async (to, from, next) => {
 
     const response = await MemerAPI.User.validateToken();
 
-    console.log(response.data.valid);
-
     let validation;
 
     if (!response.data.valid) {
-        console.log("validation is false");
         validation = false;
     } else {
-        console.log("validation is true");
         validation = true;
     }
 

@@ -39,29 +39,12 @@ export default {
     },
   },
   methods: {
-
-    async go() {
-
-      try {
-
-        //await MemerAPI.User.autocomplete_username(this.select);
-
-        this.$router.push({path: `/Nav/UserProfile/${val.username}`});
-
-      } catch (e) {
-        console.log()
-      }
-
-    },
-
     async querySelections(input) {
       this.loading = true;
 
       try {
 
         const response = await MemerAPI.User.autocomplete_username(input);
-
-        console.log(response);
 
         this.items = response.data.results;
       } catch (e) {

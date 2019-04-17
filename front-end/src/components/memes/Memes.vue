@@ -33,10 +33,28 @@
                                     </v-btn>
                                 </v-flex>
                             </v-layout>
-                            <v-card-text v-for="(comment, i) in items[0].comments" :key="i"> {{ comment.text }} --
-                                {{comment.user_name}}
-                                <v-divider></v-divider>
-                            </v-card-text>
+
+                            <v-layout justify-center row>
+                                <v-flex xs6>
+                                    <v-textarea
+                                            outline
+                                            v-model="inputComment"
+                                            label="Comment"
+                                    ></v-textarea>
+                                    <v-btn @click ="comment" >
+                                        Submit
+                                    </v-btn>
+                                </v-flex>
+                            </v-layout>
+
+
+
+                                <v-card-text v-for="(comment, i) in items[0].comments" :key="i"> {{ comment.text }} --
+                                    {{comment.user_name}}
+                                    <v-divider></v-divider>
+                                </v-card-text>
+
+
                         </v-card>
                     </v-flex>
                 </v-layout>
@@ -52,7 +70,8 @@
     export default {
         data: () => ({
             likeDislikeDisable: false,
-            items: null
+            items: null,
+            inputComment: '',
         }),
         methods: {
             async thumbUp() {
@@ -72,19 +91,25 @@
             async addImage() {
                 if (this.items.length < 3) {
                     const response = await MemberAPI.Memes.getUnseenMemes();
-                    console.log(response.data);
                     response.data.unseen_memes.forEach(meme => {
-                        console.log(meme.comments);
                         this.items.push(meme);
                     });
                 }
-
-                console.log(this.items);
 
                 if (this.items.length == 0) {
                     this.likeDislikeDisable = true;
                 }
             },
+            async comment(){
+                let comment = this.inputComment;
+                this.inputComment = '';
+                const res = await MemberAPI.User.getMyAccount()
+                const commentToInsert = {"user_name": res.data.username, "text" : comment}
+                this.items[0].comments.push(commentToInsert)
+
+                MemberAPI.Memes.comment(comment, this.items[0].id);
+
+            }
         },
 
         async created() {

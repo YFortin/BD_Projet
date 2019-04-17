@@ -13,7 +13,7 @@ class UserHandler(Handler):
         self.user_service = user_service
 
     def register_routes(self):
-        @self.app.route('/checkUserName', methods=['GET'])
+        @self.app.route('/checkUserName', methods=['POST'])
         def check_username():
             """
             Check if username is valid
@@ -39,7 +39,7 @@ class UserHandler(Handler):
             except Exception:
                 abort(400)
 
-        @self.app.route('/checkEmail', methods=['GET'])
+        @self.app.route('/checkEmail', methods=['POST'])
         def check_email():
             """
             Check if username is valid
@@ -238,6 +238,7 @@ class UserHandler(Handler):
                 abort(400)
 
             self.user_service.update_user(user, username, email, password, avatar)
+            return Response(status=200)
 
         @self.app.route('/users/follow', methods=['POST'])
         @self.login_required

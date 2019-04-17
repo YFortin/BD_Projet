@@ -60,10 +60,11 @@ export default class MemerAPI {
         static comment(comment, id) {
 
             const params = {
-                "content": comment
+                "contents": comment,
+                "meme_id": id,
             }
 
-            return axios.post(`${this.MEMES_URL}/${id}/comment`, params, MemerAPI.AUTH_HEADER);
+            return axios.post(`${this.MEMES_URL}/comment`, params, MemerAPI.AUTH_HEADER);
         }
 
     }
@@ -129,6 +130,34 @@ export default class MemerAPI {
         static async validateToken() {
             return await axios.get(`/validateToken`, MemerAPI.AUTH_HEADER);
         }
+
+        static checkUsername(username) {
+            const params = {
+                "username": username
+            }
+
+            return axios.post(`/checkUserName`, params);
+        }
+
+        static checkEmail(email) {
+            const params = {
+                "email": email
+            }
+            return axios.post(`/checkEmail`, params);
+        }
+
+        static updateMyAccount(user) {
+            const params = {
+                "username": user.username,
+                "email": user.email,
+                "password": user.password,
+                "avatar": user.avatar
+            }
+
+            return axios.put(`/myaccount`, params, MemerAPI.AUTH_HEADER);
+
+        }
+
 
     }
 }
