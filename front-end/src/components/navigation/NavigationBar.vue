@@ -34,6 +34,7 @@
                                 type="text"
                                 v-model="memeTitle"
                                 single-line
+                                counter="199"
                         ></v-text-field>
                     </v-flex>
                 </v-layout>
@@ -44,6 +45,7 @@
                                 type="text"
                                 v-model="memeCategory"
                                 single-line
+                                counter="199"
                         ></v-text-field>
                     </v-flex>
                 </v-layout>
@@ -54,6 +56,7 @@
                                 type="text"
                                 v-model="memeUrl"
                                 single-line
+                                counter="499"
                         ></v-text-field>
                     </v-flex>
                 </v-layout>
@@ -88,15 +91,16 @@
 
             submitMeme() {
 
-                const meme = {
-                    'title': this.memeTitle,
-                    'url': this.memeUrl,
-                    'category': this.memeCategory
+                if (!!this.memeTitle && !!this.memeUrl && !!this.memeCategory && this.memeTitle.length < 200 && this.memeUrl.length < 500 && this.memeCategory.length < 200) {
+                    const meme = {
+                        'title': this.memeTitle,
+                        'url': this.memeUrl,
+                        'category': this.memeCategory
+                    }
+                    MemerAPI.Memes.addMeme(meme);
+                    this.sheet = false;
+                    alert("Meme has been uploaded!");
                 }
-
-                MemerAPI.Memes.addMeme(meme);
-                this.sheet = false;
-                alert("Meme has been uploaded!");
             },
 
             signout() {

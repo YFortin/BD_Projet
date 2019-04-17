@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <v-content>
-            <v-container grid-list-md v-if="items">
+            <v-container grid-list-md v-if="numberOfFollowers">
                 <h1 class="display-1 black--text text-xs-center">
                     <span class="font-weight-bold">{{ username }}'s</span> Profile
                 </h1>
@@ -92,20 +92,63 @@
             async setup() {
                 this.username = this.$route.params.username;
                 const response = await MemerAPI.User.getUserProfile(this.username);
-                this.avatarUrl = response.data.avatar;
+                console.log(response.data.avatar);
+
+                if (response.data.avatar === null) {
+                    this.avatarUrl = "https://cdn4.iconfinder.com/data/icons/user-avatar-flat-icons/512/User_Avatar-04-512.png";
+                } else {
+                    this.avatarUrl = response.data.avatar;
+                }
+
                 this.numberOfFollowers = response.data.followers;
                 this.numberOfLikes = response.data.likes;
-                this.items = response.data.memes;
+
+                if (response.data.memes.length === 0) {
+                    this.items = [{
+                        "category": 'No memes',
+                        "title": 'this user never uploaded a meme!',
+                        "comments": [],
+                        "url": "https://i.imgur.com/DKUR9Tk.png",
+                    }]
+                } else {
+                    this.items = response.data.memes;
+                }
+
+                if (!response.data.following) {
+                    this.follower = "Follow";
+                    this.followColor = "info";
+                } else {
+                    this.follower = "Unfollow";
+                    this.followColor = "error";
+                }
             }
         },
 
         async created() {
             this.username = this.$route.params.username;
             const response = await MemerAPI.User.getUserProfile(this.username);
-            this.avatarUrl = response.data.avatar;
+            console.log(response.data.avatar);
+
+            if (response.data.avatar === null) {
+                this.avatarUrl = "https://cdn4.iconfinder.com/data/icons/user-avatar-flat-icons/512/User_Avatar-04-512.png";
+            } else {
+                this.avatarUrl = response.data.avatar;
+            }
+
             this.numberOfFollowers = response.data.followers;
             this.numberOfLikes = response.data.likes;
-            this.items = response.data.memes;
+
+            if (response.data.memes.length === 0) {
+                this.items = [{
+                    "category": 'No memes',
+                    "title": 'this user never uploaded a meme!',
+                    "comments": [],
+                    "url": "https://i.imgur.com/DKUR9Tk.png",
+                }]
+            } else {
+                this.items = response.data.memes;
+            }
+
             if (!response.data.following) {
                 this.follower = "Follow";
                 this.followColor = "info";
