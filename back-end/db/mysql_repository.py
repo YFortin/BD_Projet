@@ -2,6 +2,7 @@ import datetime
 import sys
 
 from mysql.connector import MySQLConnection, IntegrityError
+from mysql.connector.errors import DatabaseError
 
 from entities.comment import Comment
 from entities.meme import Meme
@@ -40,11 +41,11 @@ class MySQLRepository(Repository):
         cursor.execute(query, val)
         res = cursor.fetchall()
 
+        cursor.close()
         if len(res) == 0:
             return None
 
         user = self.tuple_to_user(res[0])
-        cursor.close()
 
         return user
 
@@ -64,10 +65,10 @@ class MySQLRepository(Repository):
         val = (user_id,)
         cursor.execute(query, val)
         res = cursor.fetchall()
+        cursor.close()
         if len(res) == 0:
             return []
         user = self._res_to_user(res[0])
-        cursor.close()
 
         return user
 
@@ -79,10 +80,10 @@ class MySQLRepository(Repository):
         val = (email,)
         cursor.execute(query, val)
         res = cursor.fetchall()
+        cursor.close()
         if len(res) == 0:
             return None
         user_info = res[0]
-        cursor.close()
 
         return self._res_to_user(user_info)
 
@@ -94,10 +95,10 @@ class MySQLRepository(Repository):
         val = (username,)
         cursor.execute(query, val)
         res = cursor.fetchall()
+        cursor.close()
         if len(res) == 0:
             return None
         user_id = res[0]
-        cursor.close()
 
         return user_id[0]
 
@@ -121,7 +122,8 @@ class MySQLRepository(Repository):
         data_tuple = str(user.id), user.name, user.email, user.hashed_password, user.salt
         try:
             cursor.execute(query, data_tuple)
-        except IntegrityError:
+        except IntegrityError or DatabaseError:
+            cursor.close()
             raise RepositoryException()
         self.db_connection.commit()
         cursor.close()
@@ -234,6 +236,7 @@ class MySQLRepository(Repository):
         try:
             cursor.execute(sql, val)
         except:
+            cursor.close()
             raise RepositoryException
 
         memes_tuples = cursor.fetchall()
@@ -283,6 +286,7 @@ class MySQLRepository(Repository):
             user_name = cursor.fetchall()[0][0]
         except Exception as e:
             print(e, file=sys.stderr)
+            cursor.close()
             raise RepositoryException
         cursor.close()
         return Comment(text, date, comment_id, user_name, user_id, meme_id)
@@ -306,6 +310,7 @@ class MySQLRepository(Repository):
         try:
             cursor.execute(sql, val)
         except Exception:
+            cursor.close()
             raise RepositoryException
 
         self.db_connection.commit()
@@ -318,6 +323,7 @@ class MySQLRepository(Repository):
         try:
             cursor.execute(sql, val)
         except Exception:
+            cursor.close()
             raise RepositoryException
         self.db_connection.commit()
         cursor.close()
@@ -330,6 +336,7 @@ class MySQLRepository(Repository):
         try:
             cursor.execute(sql, val)
         except Exception:
+            cursor.close()
             raise RepositoryException
         self.db_connection.commit()
         cursor.close()
@@ -342,6 +349,7 @@ class MySQLRepository(Repository):
         try:
             cursor.execute(sql, val)
         except Exception:
+            cursor.close()
             raise RepositoryException
         self.db_connection.commit()
         cursor.close()
@@ -354,6 +362,7 @@ class MySQLRepository(Repository):
         try:
             cursor.execute(sql, val)
         except Exception:
+            cursor.close()
             raise RepositoryException
         self.db_connection.commit()
         cursor.close()
@@ -378,6 +387,7 @@ class MySQLRepository(Repository):
         try:
             cursor.execute(sql, val)
         except Exception:
+            cursor.close()
             raise RepositoryException
         self.db_connection.commit()
         cursor.close()
@@ -389,6 +399,7 @@ class MySQLRepository(Repository):
         try:
             cursor.execute(sql, params)
         except Exception:
+            cursor.close()
             raise RepositoryException
         res = cursor.fetchone()[0] == 0
         cursor.close()
