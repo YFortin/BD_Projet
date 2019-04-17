@@ -145,5 +145,18 @@ export default class MemerAPI {
             return axios.post(`/checkEmail`, params);
         }
 
+        static updateMyAccount(user) {
+            const params = {
+                "username": user.username,
+                "email": user.email,
+                "password": user.password,
+                "avatar": user.avatarUrl
+            }
+
+            return axios.put(`/myaccount`, params);
+
+        }
+
+
     }
 }
