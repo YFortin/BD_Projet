@@ -154,7 +154,7 @@ export default class MemerAPI {
                 "avatar": user.avatar
             }
 
-            return axios.post(`/myaccount`, params, MemerAPI.AUTH_HEADER);
+            return axios.put(`/myaccount`, params, MemerAPI.AUTH_HEADER);
 
         }
 

@@ -131,9 +131,9 @@ class MySQLRepository(Repository):
     def edit_user(self, user: User):
         cursor = self.db_connection.cursor()
         query = """UPDATE Users 
-                   SET id = %s, username = %s, email = %s, hashedPassword = %s, salt = %s
-                   WHERE u.id = %s"""
-        values = (user.id, user.name, user.email, user.hashed_password, user.salt, user.id)
+                   SET id = %s, username = %s, email = %s, hashedPassword = %s, salt = %s, avatar = %s
+                   WHERE id = %s"""
+        values = (user.id, user.name, user.email, user.hashed_password, user.salt, user.avatar, user.id)
         cursor.execute(query, values)
         self.db_connection.commit()
         cursor.close()

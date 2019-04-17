@@ -242,6 +242,7 @@
             console.log(response);
 
             this.avatar.oldURL = response.data.avatar;
+            this.avatar.newURL = response.data.avatar;
             this.email.email = response.data.email;
             this.email.oldEmail = response.data.email;
             this.username.username = response.data.username;
