@@ -362,9 +362,9 @@ class MySQLRepository(Repository):
         cursor = self.db_connection.cursor()
         sql = """
                 SELECT * FROM Memes m
-                WHERE m.id in (SELECT t.memeId FROM Top)
+                WHERE m.id in (SELECT t.memeId FROM Top t)
         """
-
+        cursor.execute(sql)
         memes_tuples = cursor.fetchall()
         memes = self._res_to_memes(memes_tuples)
         return memes

@@ -169,13 +169,13 @@ class MemeHandler(Handler):
 
             return Response(status=201)
 
-            @self.app.route('/top', methods=['GET'])
-            @self.login_required
-            def get_top_meme(user):
-                """
-                get top meme
-                :return: top meme
-                """
+        @self.app.route('/memes/top', methods=['GET'])
+        @self.login_required
+        def get_top_meme(user):
+            """
+            get top meme
+            :return: top meme
+            """
             memes = self.meme_service.get_top_memes()
 
             results = []
