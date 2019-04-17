@@ -436,6 +436,7 @@ INSERT INTO Users (id, username, avatar, email, hashedPassword, salt) VALUES ("1
 INSERT INTO Users (id, username, avatar, email, hashedPassword, salt) VALUES ("a1f87834-c7da-49ee-bc6f-c3968254eb75", "sad_dude97", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0WMIMCWCCZ8LxgACZMv3eO441cvSIsUIFH_8aR_e7JGy3UTiJTA", "sad_dude97@gmail.com", "329", "960");
 INSERT INTO Users (id, username, avatar, email, hashedPassword, salt) VALUES ("ccd948f2-81f4-4683-8cab-6474e2c7edbf", "mpp98", "https://images.alphacoders.com/476/thumb-1920-4761.jpg", "mpp98@google.com", "776", "879");
 INSERT INTO Users (id, username, avatar, email, hashedPassword, salt) VALUES ("55f3b453-7668-4b3c-b4e2-f1de04aee399", "allo99", "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/220px-User_icon_2.svg.png", "allo99@gmail.com", "994", "779");
+INSERT INTO Follow (followee, follower) VALUES ("969d99be-ad20-4efa-aa37-d34e317abd12", "admin");
 INSERT INTO Follow (followee, follower) VALUES ("dca34985-584c-4ca1-b0df-491a0edf5d93", "8483adaa-7b58-47c8-a9b5-e799a23f94a8");
 INSERT INTO Follow (followee, follower) VALUES ("98d415b7-6bde-4086-9dbd-b7c809611c48", "fd63584f-64f7-4f26-bcb9-18ec2f0546db");
 INSERT INTO Follow (followee, follower) VALUES ("547d4edf-0447-4908-9fea-0aac2a3e7361", "d959be11-5966-430b-a3ab-e9ca60349490");

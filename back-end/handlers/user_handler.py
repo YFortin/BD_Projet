@@ -185,6 +185,7 @@ class UserHandler(Handler):
             content = request.json
             username = content['username']
             user_id = self.user_service.get_userid_with_username(username)
+            is_follow = self.user_service.i_am_following(user.id, user_id)
             nb_follows = self.user_service.get_user_follows(user_id)
             nb_likes = self.user_service.get_user_likes(user_id)
             user = self.user_service.get_user_at_id(user_id)
@@ -202,9 +203,11 @@ class UserHandler(Handler):
                           'comments': comments}
                 memes_tuples.append(result)
 
-            userprofile = {'username': user.name, 'avatar': user.avatar, 'followers': nb_follows, 'likes': nb_likes,
+            userprofile = {'username': user.name, 'avatar': user.avatar, 'followers': nb_follows, 'following': is_follow ,'likes': nb_likes,
                            'memes': memes_tuples}
             return jsonify(userprofile)
+
+
 
         @self.app.route('/myaccount', methods=['PUT'])
         @self.login_required
