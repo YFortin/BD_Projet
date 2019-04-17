@@ -102,7 +102,10 @@ class Repository(ABC):
     def follow(self, user_id_follower, user_id_followee):
         ...
 
+    @abstractmethod
     def unfollow(self, user_id_follower, user_id_followee):
         ...
 
-
+    @abstractmethod
+    def delete_old_token(self):
+        ...

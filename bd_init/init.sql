@@ -40,8 +40,10 @@ CREATE TABLE Follow
     followee VARCHAR(36) NOT NULL,
     follower VARCHAR(36) NOT NULL,
 
-    FOREIGN KEY (follower) REFERENCES Users (id),
+    FOREIGN KEY (follower) REFERENCES Users (id)
+        ON UPDATE CASCADE,
     FOREIGN KEY (followee) REFERENCES Users (id)
+        ON UPDATE CASCADE
 );
 
 
@@ -52,8 +54,10 @@ CREATE TABLE Seen
     date   DATE,
 
 
-    FOREIGN KEY (userId) REFERENCES Users (id),
+    FOREIGN KEY (userId) REFERENCES Users (id)
+        ON UPDATE CASCADE,
     FOREIGN KEY (memeId) REFERENCES Memes (id)
+        ON UPDATE CASCADE
 );
 
 CREATE TABLE Liked
@@ -62,8 +66,11 @@ CREATE TABLE Liked
     memeId VARCHAR(36) NOT NULL,
 
 
-    FOREIGN KEY (userId) REFERENCES Users (id),
+    FOREIGN KEY (userId) REFERENCES Users (id)
+        ON UPDATE CASCADE,
     FOREIGN KEY (memeId) REFERENCES Memes (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 );
 
 CREATE TABLE Disliked
@@ -72,11 +79,12 @@ CREATE TABLE Disliked
     memeId VARCHAR(36) NOT NULL,
 
 
-    FOREIGN KEY (userId) REFERENCES Users (id),
+    FOREIGN KEY (userId) REFERENCES Users (id)
+        ON UPDATE CASCADE,
     FOREIGN KEY (memeId) REFERENCES Memes (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 );
-
-
 
 CREATE TABLE Uploaded
 (
@@ -85,7 +93,7 @@ CREATE TABLE Uploaded
     date   DATE,
 
     FOREIGN KEY (userId) REFERENCES Users (id)
-        ON DELETE CASCADE,
+        ON UPDATE CASCADE,
     FOREIGN KEY (memeId) REFERENCES Memes (id)
         ON DELETE CASCADE
 );
@@ -99,8 +107,11 @@ CREATE TABLE Comment
     text      VARCHAR(1000),
 
     PRIMARY KEY (commentId),
-    FOREIGN KEY (userId) REFERENCES Users (id),
+    FOREIGN KEY (userId) REFERENCES Users (id)
+        ON UPDATE CASCADE,
     FOREIGN KEY (memeId) REFERENCES Memes (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 );
 
 CREATE TABLE Token
@@ -112,6 +123,8 @@ CREATE TABLE Token
 
     PRIMARY KEY (id),
     FOREIGN KEY (userId) REFERENCES Users (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 );
 
 
@@ -121,6 +134,8 @@ CREATE TABLE Top
 
     PRIMARY KEY (memeId),
     FOREIGN KEY (memeId) REFERENCES Memes (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 );
 
 -- TODO remove before deposit
@@ -134,6 +149,12 @@ VALUES ('admin', 'admin', '2021-01-01');
 -- TODO trigger on Liked to Top
 -- TODO trigger verify username validity
 -- TODO trigger remove old token
+
+-- Triggers
+delimiter //
+DROP PROCEDURE IF EXISTS remove_old_token;
+CREATE PROCEDURE remove_old_token() DELETE FROM Token WHERE expiredDate <= CURRENT_DATE();
+delimiter ;
 
 -- Indexes
 CREATE UNIQUE INDEX token_index ON Token (token) USING HASH;

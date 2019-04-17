@@ -6,6 +6,9 @@ from flask_cors import CORS
 from gevent import monkey
 from gevent.pywsgi import WSGIServer
 
+from apscheduler.schedulers.background import BackgroundScheduler
+import atexit
+
 from db.mysql_repository import MySQLRepository
 from handlers.meme_handler import MemeHandler
 from handlers.user_handler import UserHandler
@@ -52,6 +55,11 @@ user_handler.register_routes()
 meme_service = MemeService(repository)
 meme_handler = MemeHandler(app, meme_service, repository)
 meme_handler.register_routes()
+
+scheduler = BackgroundScheduler()
+
+scheduler.add_job(lambda: repository.delete_old_token(), trigger='interval', seconds=5)
+atexit.register(lambda: scheduler.shutdown())
 
 print(__name__)
 
