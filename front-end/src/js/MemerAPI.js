@@ -11,11 +11,11 @@ export default class MemerAPI {
           '$1'
         );*/
         return {
-          headers: {
-            AuthorizationMemer: 'admin'
-          }
+            headers: {
+                AuthorizationMemer: 'admin'
+            }
         };
-      }
+    }
 
     static Memes = class {
 
@@ -58,7 +58,7 @@ export default class MemerAPI {
         }
 
         static comment(comment, id) {
-            
+
             const params = {
                 "content": comment
             }
@@ -83,7 +83,7 @@ export default class MemerAPI {
             }
 
             return axios.post(`${MemerAPI.BASE_URL}/signup`, params);
-        } 
+        }
 
         static login(email, password) {
 
@@ -112,10 +112,11 @@ export default class MemerAPI {
         static getUserProfile(username) {
 
             const params = {
-                "username": username,
+                "username": "admin"
             }
-
-            return axios.get(`${MemerAPI.User.USERS_URL}/userprofile`, params);
+            console.log("this is the getuserprofile call");
+            console.log(params.username);
+            return axios.get(`${MemerAPI.User.USERS_URL}/userprofile`, params, MemerAPI.AUTH_HEADER);
 
         }
 
