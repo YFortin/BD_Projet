@@ -1,3 +1,4 @@
+import sys
 import time
 
 import mysql.connector
@@ -57,6 +58,7 @@ meme_handler = MemeHandler(app, meme_service, repository)
 meme_handler.register_routes()
 
 # Remove expired token periodically
+print('setting up scheduler', file=sys.stderr)
 scheduler = BackgroundScheduler()
 scheduler.add_job(lambda: repository.delete_old_token(), trigger='interval', seconds=5)
 scheduler.start()
