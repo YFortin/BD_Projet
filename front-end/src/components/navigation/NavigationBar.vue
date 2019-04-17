@@ -12,7 +12,6 @@
       <v-toolbar-items>
         <v-btn flat to="/Nav/Memes">Memes</v-btn>
         <v-btn flat @click="showSearch">Search User</v-btn>
-        <v-btn flat to="/Nav/UserProfile">User Profile</v-btn>
         <v-btn flat to="/Nav/MyAccount">My account</v-btn>
         <v-btn flat @click="signout">Sign out</v-btn>
       </v-toolbar-items>
