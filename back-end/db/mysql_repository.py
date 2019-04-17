@@ -26,6 +26,7 @@ class MySQLRepository(Repository):
         val = (user_id, str(token), expire_date)
         cursor.execute(sql, val)
         self.db_connection.commit()
+        cursor.close()
 
     @staticmethod
     def _datetime_to_str(date: datetime.datetime):
@@ -45,6 +46,8 @@ class MySQLRepository(Repository):
             return None
 
         user = self.tuple_to_user(res[0])
+        cursor.close()
+
         return user
 
     @staticmethod
@@ -66,6 +69,8 @@ class MySQLRepository(Repository):
         if len(res) == 0:
             return []
         user = self._res_to_user(res[0])
+        cursor.close()
+
         return user
 
     def get_user_with_email(self, email):
@@ -79,6 +84,8 @@ class MySQLRepository(Repository):
         if len(res) == 0:
             return None
         user_info = res[0]
+        cursor.close()
+
         return self._res_to_user(user_info)
 
     def get_userid_with_username(self, username):
@@ -92,6 +99,8 @@ class MySQLRepository(Repository):
         if len(res) == 0:
             return None
         user_id = res[0]
+        cursor.close()
+
         return user_id[0]
 
     def autocomplete_username(self, name_input, limit):
@@ -104,7 +113,9 @@ class MySQLRepository(Repository):
 
         val = (('%' + name_input + '%'), int(limit))
         cursor.execute(sql, val)
-        return cursor.fetchall()
+        res = cursor.fetchall()
+        cursor.close()
+        return res
 
     def add_user(self, user: User):
         cursor = self.db_connection.cursor()
@@ -115,6 +126,7 @@ class MySQLRepository(Repository):
         except IntegrityError:
             raise RepositoryException()
         self.db_connection.commit()
+        cursor.close()
 
     def edit_user(self, user: User):
         cursor = self.db_connection.cursor()
@@ -123,12 +135,16 @@ class MySQLRepository(Repository):
                    WHERE u.id = %s"""
         values = (user.id, user.name, user.email, user.hashed_password, user.salt, user.id)
         cursor.execute(query, values)
+        self.db_connection.commit()
+        cursor.close()
 
     def remove_user(self, user_id):
         cursor = self.db_connection.cursor()
         query = """DELETE * FROM Users u WHERE u.id = %s"""
         values = user_id
         cursor.execute(query, values)
+        self.db_connection.commit()
+        cursor.close()
 
     def get_user_uploadedmemes(self, user_id):
         cursor = self.db_connection.cursor()
@@ -142,6 +158,7 @@ class MySQLRepository(Repository):
         cursor.execute(sql, val)
         memes_tuple = cursor.fetchall()
         memes = self._res_to_memes(memes_tuple)
+        cursor.close()
         return memes
 
     def get_user_likes(self, user_id):
@@ -154,7 +171,9 @@ class MySQLRepository(Repository):
 
         cursor.execute(sql, val)
 
-        return str(cursor.fetchone()[0])
+        res = str(cursor.fetchone()[0])
+        cursor.close()
+        return res
 
     def get_user_follows(self, user_id):
         cursor = self.db_connection.cursor()
@@ -164,7 +183,9 @@ class MySQLRepository(Repository):
                                      """
         val = (user_id,)
         cursor.execute(sql, val)
-        return str(cursor.fetchone()[0])
+        res = str(cursor.fetchone()[0])
+        cursor.close()
+        return res
 
     def is_following(self, user_id_follower, user_id_followee):
         cursor = self.db_connection.cursor()
@@ -174,7 +195,9 @@ class MySQLRepository(Repository):
                                              """
         val = (user_id_followee, user_id_follower)
         cursor.execute(sql, val)
-        return cursor.fetchone()[0] != 0
+        res = cursor.fetchone()[0] != 0
+        cursor.close()
+        return res
 
     def follow(self, user_id_follower, user_id_followee):
         cursor = self.db_connection.cursor()
@@ -183,6 +206,8 @@ class MySQLRepository(Repository):
                                              """
         val = (user_id_followee, user_id_follower)
         cursor.execute(sql, val)
+        self.db_connection.commit()
+        cursor.close()
 
     def unfollow(self, user_id_follower, user_id_followee):
         cursor = self.db_connection.cursor()
@@ -191,6 +216,8 @@ class MySQLRepository(Repository):
                                              """
         val = (user_id_followee, user_id_follower)
         cursor.execute(sql, val)
+        self.db_connection.commit()
+        cursor.close()
 
     def get_unseen_memes(self, user: User, limit: int):
         cursor = self.db_connection.cursor()
@@ -215,6 +242,7 @@ class MySQLRepository(Repository):
         if len(memes_tuples) == 0:
             return []
         memes = self._res_to_memes(memes_tuples)
+        cursor.close()
         return memes
 
     def _res_to_memes(self, memes_tuples):
@@ -237,6 +265,7 @@ class MySQLRepository(Repository):
             print(e, file=sys.stderr)
             raise RepositoryException
         comments = [self._tuple_to_comment(c) for c in cursor.fetchall()]
+        cursor.close()
         return comments
 
     def _tuple_to_comment(self, c):
@@ -257,7 +286,7 @@ class MySQLRepository(Repository):
         except Exception as e:
             print(e, file=sys.stderr)
             raise RepositoryException
-
+        cursor.close()
         return Comment(text, date, comment_id, user_name, user_id, meme_id)
 
     @staticmethod
@@ -282,6 +311,7 @@ class MySQLRepository(Repository):
             raise RepositoryException
 
         self.db_connection.commit()
+        cursor.close()
 
     def remove_meme(self, meme_id):
         cursor = self.db_connection.cursor()
@@ -292,6 +322,7 @@ class MySQLRepository(Repository):
         except Exception:
             raise RepositoryException
         self.db_connection.commit()
+        cursor.close()
 
     def upvote_meme(self, user: User, meme_id):
         cursor = self.db_connection.cursor()
@@ -303,6 +334,7 @@ class MySQLRepository(Repository):
         except Exception:
             raise RepositoryException
         self.db_connection.commit()
+        cursor.close()
 
     def downvote_meme(self, user: User, meme_id):
         cursor = self.db_connection.cursor()
@@ -314,6 +346,7 @@ class MySQLRepository(Repository):
         except Exception:
             raise RepositoryException
         self.db_connection.commit()
+        cursor.close()
 
     def seen_meme(self, user: User, meme_id, date):
         cursor = self.db_connection.cursor()
@@ -325,6 +358,7 @@ class MySQLRepository(Repository):
         except Exception:
             raise RepositoryException
         self.db_connection.commit()
+        cursor.close()
 
     def comment_meme(self, comment: Comment):
         cursor = self.db_connection.cursor()
@@ -337,6 +371,7 @@ class MySQLRepository(Repository):
         except Exception:
             raise RepositoryException
         self.db_connection.commit()
+        cursor.close()
 
     def is_username_free(self, username):
         cursor = self.db_connection.cursor()
@@ -346,7 +381,9 @@ class MySQLRepository(Repository):
             cursor.execute(sql, params)
         except Exception:
             raise RepositoryException
-        return cursor.fetchone()[0] == 0
+        res = cursor.fetchone()[0] == 0
+        cursor.close()
+        return res
 
     def is_email_free(self, email):
         cursor = self.db_connection.cursor()
@@ -356,4 +393,6 @@ class MySQLRepository(Repository):
             cursor.execute(sql, params)
         except Exception:
             raise RepositoryException
-        return cursor.fetchone()[0] == 0
+        res = cursor.fetchone()[0] == 0
+        cursor.close()
+        return res
