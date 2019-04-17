@@ -60,10 +60,11 @@ export default class MemerAPI {
         static comment(comment, id) {
 
             const params = {
-                "content": comment
+                "contents": comment,
+                "meme_id": id,
             }
 
-            return axios.post(`${this.MEMES_URL}/${id}/comment`, params, MemerAPI.AUTH_HEADER);
+            return axios.post(`${this.MEMES_URL}/comment`, params, MemerAPI.AUTH_HEADER);
         }
 
     }
