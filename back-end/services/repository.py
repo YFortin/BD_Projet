@@ -40,6 +40,10 @@ class Repository(ABC):
         ...
 
     @abstractmethod
+    def get_userid_with_username(self, username):
+        ...
+
+    @abstractmethod
     def add_token(self, user, token):
         ...
 
@@ -75,6 +79,9 @@ class Repository(ABC):
     def get_user_uploadedmemes(self, user_id):
         ...
 
+    def get_user_follows(self, user_id):
+        ...
+
     @abstractmethod
     def get_user_likes(self, user_id):
         ...
@@ -86,3 +93,16 @@ class Repository(ABC):
     @abstractmethod
     def is_email_free(self, email):
         ...
+
+    @abstractmethod
+    def is_following(self, user_id_follower, user_id_followee):
+        ...
+
+    @abstractmethod
+    def follow(self, user_id_follower, user_id_followee):
+        ...
+
+    def unfollow(self, user_id_follower, user_id_followee):
+        ...
+
+

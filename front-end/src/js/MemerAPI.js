@@ -6,16 +6,16 @@ export default class MemerAPI {
     }
 
     static get AUTH_HEADER() {
-        /*const token = document.cookie.replace(
+        const token = document.cookie.replace(
           /(?:(?:^|.*;\s*)AuthorizationMemer\s*=\s*([^;]*).*$)|^.*$/,
           '$1'
-        );*/
+        );
         return {
-          headers: {
-            AuthorizationMemer: 'admin'
-          }
+            headers: {
+                AuthorizationMemer: token,
+            }
         };
-      }
+    }
 
     static Memes = class {
 
@@ -58,7 +58,7 @@ export default class MemerAPI {
         }
 
         static comment(comment, id) {
-            
+
             const params = {
                 "content": comment
             }
@@ -83,7 +83,7 @@ export default class MemerAPI {
             }
 
             return axios.post(`${MemerAPI.BASE_URL}/signup`, params);
-        } 
+        }
 
         static login(email, password) {
 
@@ -109,14 +109,25 @@ export default class MemerAPI {
             return axios.get(`/myaccount`, MemerAPI.AUTH_HEADER);
         }
 
-        static getUserProfile(id) {
+        static getUserProfile(username) {
 
             const params = {
-                "user_id": id,
+                "username": username
+            }
+            return axios.post(`${MemerAPI.User.USERS_URL}/userprofile`, params, MemerAPI.AUTH_HEADER);
+
+        }
+
+        static followUser(username) {
+            const params = {
+                "username": username
             }
 
-            return axios.get(`${MemerAPI.User.USERS_URL}/userprofile`, params);
+            return axios.post(`${MemerAPI.User.USERS_URL}/follow`, params, MemerAPI.AUTH_HEADER);
+        }
 
+        static async validateToken() {
+            return await axios.get(`/validateToken`, MemerAPI.AUTH_HEADER);
         }
 
     }

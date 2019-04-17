@@ -40,6 +40,10 @@ class MySQLRepository(Repository):
         val = (token,)
         cursor.execute(query, val)
         res = cursor.fetchall()
+
+        if len(res) == 0:
+            return None
+
         user = self.tuple_to_user(res[0])
         return user
 
@@ -56,8 +60,11 @@ class MySQLRepository(Repository):
         query = """SELECT * 
                    FROM Users u 
                    WHERE u.id=%s"""
-        cursor.execute(query, (user_id,))
+        val = (user_id,)
+        cursor.execute(query, val)
         res = cursor.fetchall()
+        if len(res) == 0:
+            return []
         user = self._res_to_user(res[0])
         return user
 
@@ -73,6 +80,19 @@ class MySQLRepository(Repository):
             return None
         user_info = res[0]
         return self._res_to_user(user_info)
+
+    def get_userid_with_username(self, username):
+        cursor = self.db_connection.cursor()
+        query = """SELECT u.id 
+                   FROM Users u 
+                   WHERE u.username=%s"""
+        val = (username,)
+        cursor.execute(query, val)
+        res = cursor.fetchall()
+        if len(res) == 0:
+            return None
+        user_id = res[0]
+        return user_id[0]
 
     def autocomplete_username(self, name_input, limit):
         cursor = self.db_connection.cursor()
@@ -139,11 +159,37 @@ class MySQLRepository(Repository):
     def get_user_follows(self, user_id):
         cursor = self.db_connection.cursor()
         sql = """
-                                        SELECT COUNT(*) FROM Liked l
-                                        WHERE l.userId = %s
+                                        SELECT COUNT(*) FROM Follow f
+                                        WHERE f.followee = %s
                                      """
         val = (user_id,)
+        cursor.execute(sql, val)
+        return str(cursor.fetchone()[0])
 
+    def is_following(self, user_id_follower, user_id_followee):
+        cursor = self.db_connection.cursor()
+        sql = """
+                                                SELECT COUNT(*) FROM Follow f
+                                                WHERE f.followee = %s AND f.follower = %s
+                                             """
+        val = (user_id_followee, user_id_follower)
+        cursor.execute(sql, val)
+        return cursor.fetchone()[0] != 0
+
+    def follow(self, user_id_follower, user_id_followee):
+        cursor = self.db_connection.cursor()
+        sql = """
+                                                INSERT INTO Follow (followee, follower) VALUES (%s, %s)
+                                             """
+        val = (user_id_followee, user_id_follower)
+        cursor.execute(sql, val)
+
+    def unfollow(self, user_id_follower, user_id_followee):
+        cursor = self.db_connection.cursor()
+        sql = """
+                                                DELETE FROM Follow WHERE %s = followee AND %s = follower
+                                             """
+        val = (user_id_followee, user_id_follower)
         cursor.execute(sql, val)
 
     def get_unseen_memes(self, user: User, limit: int):
@@ -166,6 +212,8 @@ class MySQLRepository(Repository):
             raise RepositoryException
 
         memes_tuples = cursor.fetchall()
+        if len(memes_tuples) == 0:
+            return []
         memes = self._res_to_memes(memes_tuples)
         return memes
 
