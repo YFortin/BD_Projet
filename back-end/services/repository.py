@@ -97,3 +97,12 @@ class Repository(ABC):
     @abstractmethod
     def is_following(self, user_id_follower, user_id_followee):
         ...
+
+    @abstractmethod
+    def follow(self, user_id_follower, user_id_followee):
+        ...
+
+    def unfollow(self, user_id_follower, user_id_followee):
+        ...
+
+

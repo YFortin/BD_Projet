@@ -203,11 +203,10 @@ class UserHandler(Handler):
                           'comments': comments}
                 memes_tuples.append(result)
 
-            userprofile = {'username': user.name, 'avatar': user.avatar, 'followers': nb_follows, 'following': is_follow ,'likes': nb_likes,
+            userprofile = {'username': user.name, 'avatar': user.avatar, 'followers': nb_follows,
+                           'following': is_follow, 'likes': nb_likes,
                            'memes': memes_tuples}
             return jsonify(userprofile)
-
-
 
         @self.app.route('/myaccount', methods=['PUT'])
         @self.login_required
@@ -237,23 +236,20 @@ class UserHandler(Handler):
 
             self.user_service.update_user(user, username, email, password, avatar)
 
-        @self.app.route('/users/<int:user_id>/follow', methods=['POST'])
-        def follow_user(user_id):
-            """
-            The current user follow the user with user_id
-            :param user_id: user to follow user_id
-            :return:
-            """
-            raise NotImplementedError
-
-        @self.app.route('/users/<int:user_id>/unfollow', methods=['POST'])
-        def unfollow_user(user_id):
+        @self.app.route('/users/follow', methods=['POST'])
+        @self.login_required
+        def follow_user(user):
             """
             The current user unfollow the user with user_id
-            :param user_id: user to unfollow user_id
-            :return:
-            """
-            raise NotImplementedError
+           {
+               user_id = "" : string
+           }
+           :return:
+           """
+            content = request.json
+            user_id = content['user_id']
+
+            self.user_service.follow(user.id, user_id)
 
         @self.app.route('/users/autocomplete', methods=['POST'])
         def autocomplete_username():
