@@ -107,5 +107,9 @@ class Repository(ABC):
         ...
 
     @abstractmethod
+    def get_top_meme(self):
+        ...
+
+    @abstractmethod
     def delete_old_token(self):
         ...
