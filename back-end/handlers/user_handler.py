@@ -242,14 +242,16 @@ class UserHandler(Handler):
             """
             The current user unfollow the user with user_id
            {
-               user_id = "" : string
+               username = "" : string
            }
            :return:
            """
             content = request.json
-            user_id = content['user_id']
-
+            username = content['username']
+            user_id = self.user_service.get_userid_with_username(username)
             self.user_service.follow(user.id, user_id)
+
+            return Response(status=200)
 
         @self.app.route('/users/autocomplete', methods=['POST'])
         def autocomplete_username():

@@ -183,7 +183,7 @@ class MySQLRepository(Repository):
     def unfollow(self, user_id_follower, user_id_followee):
         cursor = self.db_connection.cursor()
         sql = """
-                                                DELETE FROM Follow f WHERE f.followee = %s AND f.follower = %s
+                                                DELETE FROM Follow WHERE %s = followee AND %s = follower
                                              """
         val = (user_id_followee, user_id_follower)
         cursor.execute(sql, val)
