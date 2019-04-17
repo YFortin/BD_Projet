@@ -9,8 +9,6 @@ from entities.user import User
 from services.repository import Repository
 from services.repository_exception import RepositoryException
 
-from flask import jsonify
-
 
 class MySQLRepository(Repository):
 

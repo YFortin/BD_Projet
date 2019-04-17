@@ -17,8 +17,8 @@ monkey.patch_all()
 
 def connect_to_database() -> MySQLRepository:
     database_config = {
-        'user': 'root',
-        'password': 'root',
+        'user': 'memer_api',
+        'password': '4215Hello!@',
         'host': 'db',
         'port': '3306',
         'database': 'Memer'
